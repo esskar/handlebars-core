@@ -1,42 +1,24 @@
-﻿using System;
-
-namespace HandlebarsDotNet.Compiler.Lexer
+﻿namespace HandlebarsDotNet.Compiler.Lexer
 {
     internal class StartExpressionToken : ExpressionScopeToken
     {
-        private readonly bool _isEscaped;
-        private readonly bool _trimWhitespace;
-
         public StartExpressionToken(bool isEscaped, bool trimWhitespace)
         {
-            _isEscaped = isEscaped;
-            _trimWhitespace = trimWhitespace;
+            IsEscaped = isEscaped;
+            TrimPreceedingWhitespace = trimWhitespace;
         }
 
-        public bool IsEscaped
-        {
-            get { return _isEscaped; }
-        }
+        public bool IsEscaped { get; }
 
-        public bool TrimPreceedingWhitespace
-        {
-            get { return _trimWhitespace; }
-        }
+        public bool TrimPreceedingWhitespace { get; }
 
-        public override string Value
-        {
-            get { return IsEscaped ? "{{" : "{{{"; }
-        }
+        public override string Value => IsEscaped ? "{{" : "{{{";
 
-        public override TokenType Type
-        {
-            get { return TokenType.StartExpression; }
-        }
+        public override TokenType Type => TokenType.StartExpression;
 
         public override string ToString()
         {
-            return this.Value;
+            return Value;
         }
     }
 }
-

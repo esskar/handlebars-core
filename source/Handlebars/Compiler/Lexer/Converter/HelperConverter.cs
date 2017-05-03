@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class HelperConverter : TokenConverter
+    internal class HelperConverter : ITokenConverter
     {
         private static readonly string[] BuiltInHelpers = { "else", "each" };
 
@@ -23,7 +23,7 @@ namespace HandlebarsDotNet.Compiler
             _configuration = configuration;
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();
             while (enumerator.MoveNext())

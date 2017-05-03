@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class PathConverter : TokenConverter
+    internal class PathConverter : ITokenConverter
     {
         public static IEnumerable<object> Convert(IEnumerable<object> sequence)
         {
@@ -15,7 +15,7 @@ namespace HandlebarsDotNet.Compiler
         {
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             foreach (var item in sequence)
             {

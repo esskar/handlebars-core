@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HandlebarsDotNet.Compiler.Lexer;
 using System.Linq.Expressions;
 using System.Linq;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class LiteralConverter : TokenConverter
+    internal class LiteralConverter : ITokenConverter
     {
         public static IEnumerable<object> Convert(IEnumerable<object> sequence)
         {
@@ -17,13 +16,14 @@ namespace HandlebarsDotNet.Compiler
         {
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             foreach (var item in sequence)
             {
-                if (item is LiteralExpressionToken)
+                var literalExpressionToken = item as LiteralExpressionToken;
+                if (literalExpressionToken != null)
                 {
-                    yield return Expression.Constant(((LiteralExpressionToken)item).Value);
+                    yield return Expression.Constant(literalExpressionToken.Value);
                 }
                 else
                 {

@@ -5,7 +5,7 @@ using HandlebarsDotNet.Compiler.Lexer;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class HelperArgumentAccumulator : TokenConverter
+    internal class HelperArgumentAccumulator : ITokenConverter
     {
         public static IEnumerable<object> Accumulate(IEnumerable<object> sequence)
         {
@@ -16,7 +16,7 @@ namespace HandlebarsDotNet.Compiler
         {
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();
             while (enumerator.MoveNext())

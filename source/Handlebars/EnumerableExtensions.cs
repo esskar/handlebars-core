@@ -13,10 +13,5 @@ namespace HandlebarsDotNet
                 return enumerator.Current is TExpected && !enumerator.MoveNext();
             }
         }
-
-        public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
-        {
-            dictionary[key] = value;
-        }
     }
 }

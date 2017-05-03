@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Collections.Concurrent;
 using HandlebarsDotNet.Compiler.Resolvers;
 
 namespace HandlebarsDotNet
 {
     public class HandlebarsConfiguration
     {
-        public IDictionary<string, HandlebarsHelper> Helpers { get; private set; }
+        public ConcurrentDictionary<string, HandlebarsHelper> Helpers { get; private set; }
 
-        public IDictionary<string, HandlebarsBlockHelper> BlockHelpers { get; private set; }
+        public ConcurrentDictionary<string, HandlebarsBlockHelper> BlockHelpers { get; private set; }
 
-        public IDictionary<string, Action<TextWriter, object>> RegisteredTemplates { get; private set; }
+        public HandlebarsTemplateRegistration RegisteredTemplates { get; private set; }
 
         public IExpressionNameResolver ExpressionNameResolver { get; set; }
 
@@ -25,9 +24,9 @@ namespace HandlebarsDotNet
 
 	    public HandlebarsConfiguration()
         {
-            Helpers = new Dictionary<string, HandlebarsHelper>(StringComparer.OrdinalIgnoreCase);
-            BlockHelpers = new Dictionary<string, HandlebarsBlockHelper>(StringComparer.OrdinalIgnoreCase);
-            RegisteredTemplates = new Dictionary<string, Action<TextWriter, object>>(StringComparer.OrdinalIgnoreCase);
+            Helpers = new ConcurrentDictionary<string, HandlebarsHelper>(StringComparer.OrdinalIgnoreCase);
+            BlockHelpers = new ConcurrentDictionary<string, HandlebarsBlockHelper>(StringComparer.OrdinalIgnoreCase);
+            RegisteredTemplates = new HandlebarsTemplateRegistration();
             TextEncoder = new HtmlEncoder();
 	        ThrowOnUnresolvedBindingExpression = false;
         }

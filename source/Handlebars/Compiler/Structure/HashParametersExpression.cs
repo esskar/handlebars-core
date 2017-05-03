@@ -13,15 +13,9 @@ namespace HandlebarsDotNet.Compiler
             Parameters = parameters;
         }
 
-        public override ExpressionType NodeType
-        {
-            get { return (ExpressionType)HandlebarsExpressionType.HashParametersExpression; }
-        }
+        public override ExpressionType NodeType => (ExpressionType)HandlebarsExpressionType.HashParametersExpression;
 
-        public override Type Type
-        {
-            get { return typeof(object); }
-        }
+        public override Type Type => typeof(object);
     }
 }
 

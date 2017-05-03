@@ -1,16 +1,11 @@
-﻿using System;
-
-namespace HandlebarsDotNet.Compiler.Lexer
+﻿namespace HandlebarsDotNet.Compiler.Lexer
 {
     internal class StaticToken : Token
     {
-        private readonly string _value;
-        private readonly string _original;
-
         private StaticToken(string value, string original)
         {
-            _value = value;
-            _original = original;
+            Value = value;
+            Original = original;
         }
 
         internal StaticToken(string value)
@@ -18,24 +13,15 @@ namespace HandlebarsDotNet.Compiler.Lexer
         {
         }
 
-        public override TokenType Type
-        {
-            get { return TokenType.Static; }
-        }
+        public override TokenType Type => TokenType.Static;
 
-        public override string Value
-        {
-            get { return _value; }
-        }
+        public override string Value { get; }
 
-        public string Original
-        {
-            get { return _original; }
-        }
+        public string Original { get; }
 
         public StaticToken GetModifiedToken(string value)
         {
-            return new StaticToken(value, _original);
+            return new StaticToken(value, Original);
         }
     }
 }

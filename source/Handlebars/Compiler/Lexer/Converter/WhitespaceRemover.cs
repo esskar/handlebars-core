@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class WhitespaceRemover : TokenConverter
+    internal class WhitespaceRemover : ITokenConverter
     {
         private static readonly Regex MatchLastStartsWithWhitespace = new Regex(@"^[ \t]*(\r?\n|$)");
         private static readonly Regex MatchStartsWithWhitespace = new Regex(@"^[ \t]*\r?\n");
@@ -30,7 +30,7 @@ namespace HandlebarsDotNet.Compiler
             return sequence as List<object> ?? sequence.ToList();
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var list = ToList(sequence);
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace HandlebarsDotNet.Compiler.Lexer
 {
     internal enum TokenType
@@ -18,4 +16,3 @@ namespace HandlebarsDotNet.Compiler.Lexer
         HashParameter = 11
     }
 }
-

@@ -5,13 +5,13 @@ namespace HandlebarsDotNet
 {
     public interface IHandlebars
     {
+        HandlebarsConfiguration Configuration { get; }
+
         Action<TextWriter, object> Compile(TextReader template);
 
         Func<object, string> Compile(string template);
 
         Func<object, string> CompileView(string templatePath);
-
-        HandlebarsConfiguration Configuration { get; }
 
         void RegisterTemplate(string templateName, Action<TextWriter, object> template);
 

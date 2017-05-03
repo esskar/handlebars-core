@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using HandlebarsDotNet.Compiler;
 
 namespace HandlebarsDotNet
@@ -19,6 +20,8 @@ namespace HandlebarsDotNet
             RegisterBuiltinHelpers();
         }
 
+        public HandlebarsConfiguration Configuration { get; }
+
         public Func<object, string> CompileView(string templatePath)
         {
             var compiledView = _compiler.CompileView(templatePath);
@@ -32,8 +35,6 @@ namespace HandlebarsDotNet
                 return sb.ToString();
             };
         }
-
-        public HandlebarsConfiguration Configuration { get; }
 
         public Action<TextWriter, object> Compile(TextReader template)
         {
@@ -59,10 +60,7 @@ namespace HandlebarsDotNet
 
         public void RegisterTemplate(string templateName, Action<TextWriter, object> template)
         {
-            lock (Configuration)
-            {
-                Configuration.RegisteredTemplates.AddOrUpdate(templateName, template);
-            }
+            Configuration.RegisteredTemplates.AddOrUpdate(templateName, template);
         }
 
         public void RegisterTemplate(string templateName, string template)
@@ -75,18 +73,12 @@ namespace HandlebarsDotNet
 
         public void RegisterHelper(string helperName, HandlebarsHelper helperFunction)
         {
-            lock (Configuration)
-            {
-                Configuration.Helpers.AddOrUpdate(helperName, helperFunction);
-            }
+            Configuration.Helpers.AddOrUpdate(helperName, n => helperFunction, (n, h) => helperFunction);
         }
 
         public void RegisterHelper(string helperName, HandlebarsBlockHelper helperFunction)
         {
-            lock (Configuration)
-            {
-                Configuration.BlockHelpers.AddOrUpdate(helperName, helperFunction);
-            }
+            Configuration.BlockHelpers.AddOrUpdate(helperName, n => helperFunction, (n, h) => helperFunction);
         }
 
         private void RegisterBuiltinHelpers()

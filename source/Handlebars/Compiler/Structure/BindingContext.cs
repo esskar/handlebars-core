@@ -4,12 +4,11 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class BindingContext
     {
-        private readonly object _value;
         private readonly BindingContext _parent;
 
-        public string TemplatePath { get; private set; }
+        public string TemplatePath { get; }
 
-        public EncodedTextWriter TextWriter { get; private set; }
+        public EncodedTextWriter TextWriter { get; }
 
         public bool SuppressEncoding
         {
@@ -21,19 +20,13 @@ namespace HandlebarsDotNet.Compiler
         {
             TemplatePath = parent != null ? (parent.TemplatePath ?? templatePath) : templatePath;
             TextWriter = writer;
-            _value = value;
+            Value = value;
             _parent = parent;
         }
 
-        public virtual object Value
-        {
-            get { return _value; }
-        }
+        public virtual object Value { get; }
 
-        public virtual BindingContext ParentContext
-        {
-            get { return _parent; }
-        }
+        public virtual BindingContext ParentContext => _parent;
 
         public virtual object Root
         {
@@ -63,13 +56,13 @@ namespace HandlebarsDotNet.Compiler
             var member = target.GetType().GetMember(variableName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
             if (member.Length > 0)
             {
-                if (member[0] is PropertyInfo)
+                if (member[0] is PropertyInfo propertyInfo)
                 {
-                    returnValue = ((PropertyInfo)member[0]).GetValue(target, null);
+                    returnValue = propertyInfo.GetValue(target, null);
                 }
-                else if (member[0] is FieldInfo)
+                else if (member[0] is FieldInfo fieldInfo)
                 {
-                    returnValue = ((FieldInfo)member[0]).GetValue(target);
+                    returnValue = fieldInfo.GetValue(target);
                 }
                 else
                 {

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class HashParametersConverter : TokenConverter
+    internal class HashParametersConverter : ITokenConverter
     {
         public static IEnumerable<object> Convert(IEnumerable<object> sequence)
         {
@@ -13,7 +13,7 @@ namespace HandlebarsDotNet.Compiler
 
         private HashParametersConverter() { }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();
             while (enumerator.MoveNext())

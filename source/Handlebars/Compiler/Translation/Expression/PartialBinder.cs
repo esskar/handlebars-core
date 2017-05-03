@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq.Expressions;
 #if netstandard
 using System.Reflection;
@@ -24,10 +25,7 @@ namespace HandlebarsDotNet.Compiler
             {
                 return Visit(sex.Body);
             }
-            else
-            {
-                return sex;
-            }
+            return sex;
         }
 
         protected override Expression VisitPartialExpression(PartialExpression pex)
@@ -72,7 +70,7 @@ namespace HandlebarsDotNet.Compiler
             string partialName)
         {
             throw new HandlebarsRuntimeException(
-                string.Format("Referenced partial name {0} could not be resolved", partialName));
+                $"Referenced partial name {partialName} could not be resolved");
         }
 
         private static bool InvokePartial(
@@ -80,7 +78,7 @@ namespace HandlebarsDotNet.Compiler
             BindingContext context,
             HandlebarsConfiguration configuration)
         {
-            if (configuration.RegisteredTemplates.ContainsKey(partialName) == false)
+            if (!configuration.RegisteredTemplates.TryGetTemplate(partialName, out Action<TextWriter, object> template))
             {
                 if (configuration.FileSystem != null && context.TemplatePath != null)
                 {
@@ -88,12 +86,12 @@ namespace HandlebarsDotNet.Compiler
                         "partials/" + partialName + ".hbs");
                     if (partialPath != null)
                     {
-                        var compiled = Handlebars.Create(configuration)
-                            .CompileView(partialPath);
-                        configuration.RegisteredTemplates.Add(partialName, (writer, o) =>
+                        var compiled = Handlebars.Create(configuration).CompileView(partialPath);
+                        template = (writer, o) =>
                         {
                             writer.Write(compiled(o));
-                        });
+                        };
+                        configuration.RegisteredTemplates.AddOrUpdate(partialName, template);
                     }
                     else
                     {
@@ -109,7 +107,7 @@ namespace HandlebarsDotNet.Compiler
 
             try
             {
-                configuration.RegisteredTemplates[partialName](context.TextWriter, context);
+                template(context.TextWriter, context);
                 return true;
             }
             catch (Exception exception)

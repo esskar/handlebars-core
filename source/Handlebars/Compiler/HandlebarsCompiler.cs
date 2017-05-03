@@ -11,15 +11,15 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class HandlebarsCompiler
     {
-        private Tokenizer _tokenizer;
-        private FunctionBuilder _functionBuilder;
-        private ExpressionBuilder _expressionBuilder;
-        private HandlebarsConfiguration _configuration;
+        private readonly Tokenizer _tokenizer;
+        private readonly FunctionBuilder _functionBuilder;
+        private readonly ExpressionBuilder _expressionBuilder;
+        private readonly HandlebarsConfiguration _configuration;
 
         public HandlebarsCompiler(HandlebarsConfiguration configuration)
         {
             _configuration = configuration;
-            _tokenizer = new Tokenizer(configuration);
+            _tokenizer = new Tokenizer();
             _expressionBuilder = new ExpressionBuilder(configuration);
             _functionBuilder = new FunctionBuilder(configuration);
         }
@@ -34,10 +34,14 @@ namespace HandlebarsDotNet.Compiler
         internal Action<TextWriter, object> CompileView(string templatePath)
         {
             var fs = _configuration.FileSystem;
-            if (fs == null) throw new InvalidOperationException("Cannot compile view when configuration.FileSystem is not set");
+            if (fs == null)
+                throw new InvalidOperationException("Cannot compile view when configuration.FileSystem is not set");
+
             var template = fs.GetFileContent(templatePath);
-            if (template == null) throw new InvalidOperationException("Cannot find template at '" + templatePath + "'");
-            IEnumerable<object> tokens = null;
+            if (template == null)
+                throw new InvalidOperationException("Cannot find template at '" + templatePath + "'");
+
+            IEnumerable<object> tokens;
             using (var sr = new StringReader(template))
             {
                 tokens = _tokenizer.Tokenize(sr).ToList();
@@ -46,13 +50,14 @@ namespace HandlebarsDotNet.Compiler
 
             var expressions = _expressionBuilder.ConvertTokensToExpressions(tokens);
             var compiledView = _functionBuilder.Compile(expressions, templatePath);
-            if (layoutToken == null) return compiledView;
+            if (layoutToken == null)
+                return compiledView;
 
             var layoutPath = fs.Closest(templatePath, layoutToken.Value + ".hbs");
-            if (layoutPath == null) throw new InvalidOperationException("Cannot find layout '" + layoutPath + "' for template '" + templatePath + "'");
+            if (layoutPath == null)
+                throw new InvalidOperationException("Cannot find layout path for template '" + templatePath + "'");
 
             var compiledLayout = CompileView(layoutPath);
-
             return (tw, vm) =>
             {
                 var sb = new StringBuilder();
@@ -69,7 +74,7 @@ namespace HandlebarsDotNet.Compiler
         internal class DynamicViewModel : DynamicObject
         {
             private readonly object[] _objects;
-            private static readonly BindingFlags BindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
+            private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase;
 
             public DynamicViewModel(params object[] objects)
             {
@@ -91,14 +96,14 @@ namespace HandlebarsDotNet.Compiler
                     var member = target.GetType().GetMember(binder.Name, BindingFlags);
                     if (member.Length > 0)
                     {
-                        if (member[0] is PropertyInfo)
+                        if (member[0] is PropertyInfo propertyInfo)
                         {
-                            result = ((PropertyInfo)member[0]).GetValue(target, null);
+                            result = propertyInfo.GetValue(target, null);
                             return true;
                         }
-                        if (member[0] is FieldInfo)
+                        if (member[0] is FieldInfo fieldInfo)
                         {
-                            result = ((FieldInfo)member[0]).GetValue(target);
+                            result = fieldInfo.GetValue(target);
                             return true;
                         }
                     }

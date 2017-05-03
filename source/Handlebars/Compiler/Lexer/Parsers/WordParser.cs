@@ -7,7 +7,7 @@ namespace HandlebarsDotNet.Compiler.Lexer
 {
     internal class WordParser : Parser
     {
-        private const string validWordStartCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$.@[]";
+        private const string ValidWordStartCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$.@[]";
 
         public override Token Parse(TextReader reader)
         {
@@ -19,23 +19,20 @@ namespace HandlebarsDotNet.Compiler.Lexer
                 {
                     return Token.HashParameter(buffer);
                 }
-                else
-                {
-                    return Token.Word(buffer);
-                }
+                return Token.Word(buffer);
             }
             return null;
         }
 
-        private bool IsWord(TextReader reader)
+        private static bool IsWord(TextReader reader)
         {
             var peek = (char)reader.Peek();
-            return validWordStartCharacters.Contains(peek.ToString());
+            return ValidWordStartCharacters.Contains(peek.ToString());
         }
 
-        private string AccumulateWord(TextReader reader)
+        private static string AccumulateWord(TextReader reader)
         {
-            StringBuilder buffer = new StringBuilder();
+            var buffer = new StringBuilder();
 
             var inString = false;
 
@@ -52,7 +49,6 @@ namespace HandlebarsDotNet.Compiler.Lexer
                 }
 
                 var node = reader.Read();
-
                 if (node == -1)
                 {
                     throw new InvalidOperationException("Reached end of template before the expression was closed.");
@@ -74,10 +70,13 @@ namespace HandlebarsDotNet.Compiler.Lexer
             return buffer.ToString().Trim();
         }
 
-        private bool CanBreakAtSpace(string buffer)
+        private static bool CanBreakAtSpace(string buffer)
         {
-            var bufferQueryable = buffer.OfType<char>();
-            return (!buffer.Contains("[") || (bufferQueryable.Count(x => x == '[') == bufferQueryable.Count(x => x == ']')));
+            if (!buffer.Contains("["))
+                return true;
+
+            var chars = buffer.ToCharArray();
+            return chars.Count(x => x == '[') == chars.Count(x => x == ']');
         }
 
     }

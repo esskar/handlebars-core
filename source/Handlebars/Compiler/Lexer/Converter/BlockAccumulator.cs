@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class BlockAccumulator : TokenConverter
+    internal class BlockAccumulator : ITokenConverter
     {
         public static IEnumerable<object> Accumulate(
             IEnumerable<object> tokens,
@@ -21,7 +20,7 @@ namespace HandlebarsDotNet.Compiler
             _configuration = configuration;
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();
             while (enumerator.MoveNext())
@@ -30,7 +29,7 @@ namespace HandlebarsDotNet.Compiler
                 var context = BlockAccumulatorContext.Create(item, _configuration);
                 if (context != null)
                 {
-                    item = UnwrapStatement(item);
+                    // item = UnwrapStatement(item);
                     yield return AccumulateBlock(enumerator, context);
                 }
                 else
@@ -65,16 +64,10 @@ namespace HandlebarsDotNet.Compiler
                 $"Reached end of template before block expression '{context.Name}' was closed");
         }
 
-        private Expression UnwrapStatement(Expression item)
+        private static Expression UnwrapStatement(Expression item)
         {
-            if (item is StatementExpression)
-            {
-                return ((StatementExpression)item).Body;
-            }
-            else
-            {
-                return item;
-            }
+            var statementExpression = item as StatementExpression;
+            return statementExpression != null ? statementExpression.Body : item;
         }
     }
 }

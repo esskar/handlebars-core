@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
 {
-    internal class ExpressionScopeConverter : TokenConverter
+    internal class ExpressionScopeConverter : ITokenConverter
     {
         public static IEnumerable<object> Convert(IEnumerable<object> sequence)
         {
@@ -17,7 +17,7 @@ namespace HandlebarsDotNet.Compiler
         {
         }
 
-        public override IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
+        public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();
             while (enumerator.MoveNext())

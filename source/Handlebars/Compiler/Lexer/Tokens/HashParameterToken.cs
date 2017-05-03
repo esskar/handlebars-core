@@ -1,25 +1,15 @@
-﻿using System;
-
-namespace HandlebarsDotNet.Compiler.Lexer
+﻿namespace HandlebarsDotNet.Compiler.Lexer
 {
     internal class HashParameterToken : ExpressionToken
     {
-        private readonly string _parameter;
-
         public HashParameterToken(string parameter)
         {
-            _parameter = parameter;
+            Value = parameter;
         }
 
-        public override TokenType Type
-        {
-            get { return TokenType.HashParameter; }
-        }
+        public override TokenType Type => TokenType.HashParameter;
 
-        public override string Value
-        {
-            get { return _parameter; }
-        }
+        public override string Value { get; }
     }
 }
 
