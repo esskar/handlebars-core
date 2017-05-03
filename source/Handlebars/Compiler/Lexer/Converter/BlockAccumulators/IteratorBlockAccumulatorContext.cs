@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
@@ -12,10 +11,8 @@ namespace HandlebarsDotNet.Compiler
         private List<Expression> _body = new List<Expression>();
 
         public IteratorBlockAccumulatorContext(Expression startingNode)
-            : base(startingNode)
         {
-            startingNode = UnwrapStatement(startingNode);
-            _startingNode = (HelperExpression)startingNode;
+            _startingNode = (HelperExpression)UnwrapStatement(startingNode);
         }
 
         public string BlockName => _startingNode.HelperName;
@@ -24,40 +21,36 @@ namespace HandlebarsDotNet.Compiler
         {
             if (IsElseBlock(item))
             {
-                _accumulatedExpression = HandlebarsExpression.Iterator(
+                _accumulatedExpression = HandlebarsExpression.IteratorExpression(
                     _startingNode.Arguments.Single(),
                     Expression.Block(_body));
                 _body = new List<Expression>();
             }
             else
             {
-                _body.Add((Expression)item);
+                _body.Add(item);
             }
         }
 
         public override bool IsClosingElement(Expression item)
         {
-            if (IsClosingNode(item))
+            if (!IsClosingNode(item))
+                return false;
+
+            if (_accumulatedExpression == null)
             {
-                if (_accumulatedExpression == null)
-                {
-                    _accumulatedExpression = HandlebarsExpression.Iterator(
-                        _startingNode.Arguments.Single(),
-                        Expression.Block(_body));
-                }
-                else
-                {
-                    _accumulatedExpression = HandlebarsExpression.Iterator(
-                        ((IteratorExpression)_accumulatedExpression).Sequence,
-                        ((IteratorExpression)_accumulatedExpression).Template,
-                        Expression.Block(_body));
-                }
-                return true;
+                _accumulatedExpression = HandlebarsExpression.IteratorExpression(
+                    _startingNode.Arguments.Single(),
+                    Expression.Block(_body));
             }
             else
             {
-                return false;
+                _accumulatedExpression = HandlebarsExpression.IteratorExpression(
+                    ((IteratorExpression)_accumulatedExpression).Sequence,
+                    ((IteratorExpression)_accumulatedExpression).Template,
+                    Expression.Block(_body));
             }
+            return true;
         }
 
         public override Expression GetAccumulatedBlock()
@@ -65,16 +58,16 @@ namespace HandlebarsDotNet.Compiler
             return _accumulatedExpression;
         }
 
-        private bool IsClosingNode(Expression item)
+        private static bool IsClosingNode(Expression item)
         {
-            item = UnwrapStatement(item);
-            return item is PathExpression && ((PathExpression)item).Path.Replace("#", "") == "/each";
+            var pathExpression = UnwrapStatement(item) as PathExpression;
+            return pathExpression != null && pathExpression.Path.Replace("#", "") == "/each";
         }
 
-        private bool IsElseBlock(Expression item)
+        private static bool IsElseBlock(Expression item)
         {
-            item = UnwrapStatement(item);
-            return item is HelperExpression && ((HelperExpression)item).HelperName == "else";
+            var helperExpression = UnwrapStatement(item) as HelperExpression;
+            return helperExpression != null && helperExpression.HelperName == "else";
         }
     }
 }

@@ -25,21 +25,9 @@ namespace HandlebarsDotNet
             }
         }
 
-        public static IEnumerable<KeyValuePair<string, HandlebarsHelper>> Helpers
-        {
-            get
-            {
-                return GetHelpers<HandlebarsHelper>();
-            }
-        }
+        public static IEnumerable<KeyValuePair<string, HandlebarsHelper>> Helpers => GetHelpers<HandlebarsHelper>();
 
-        public static IEnumerable<KeyValuePair<string, HandlebarsBlockHelper>> BlockHelpers
-        {
-            get
-            {
-                return GetHelpers<HandlebarsBlockHelper>();
-            }
-        }
+        public static IEnumerable<KeyValuePair<string, HandlebarsBlockHelper>> BlockHelpers => GetHelpers<HandlebarsBlockHelper>();
 
         private static IEnumerable<KeyValuePair<string, T>> GetHelpers<T>()
         {
@@ -50,7 +38,7 @@ namespace HandlebarsDotNet
                 try
                 {
 #if netstandard
-                        possibleDelegate = method.CreateDelegate(typeof(T));
+                    possibleDelegate = method.CreateDelegate(typeof(T));
 #else
                     possibleDelegate = Delegate.CreateDelegate(typeof(T), method);
 #endif

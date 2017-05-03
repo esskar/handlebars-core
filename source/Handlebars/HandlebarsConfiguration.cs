@@ -20,15 +20,16 @@ namespace HandlebarsDotNet
         public ViewEngineFileSystem FileSystem { get; set; }
 
 	    public string UnresolvedBindingFormatter { get; set; }
+
 	    public bool ThrowOnUnresolvedBindingExpression { get; set; }
 
 	    public HandlebarsConfiguration()
         {
-            this.Helpers = new Dictionary<string, HandlebarsHelper>(StringComparer.OrdinalIgnoreCase);
-            this.BlockHelpers = new Dictionary<string, HandlebarsBlockHelper>(StringComparer.OrdinalIgnoreCase);
-            this.RegisteredTemplates = new Dictionary<string, Action<TextWriter, object>>(StringComparer.OrdinalIgnoreCase);
-            this.TextEncoder = new HtmlEncoder();
-	        this.ThrowOnUnresolvedBindingExpression = false;
+            Helpers = new Dictionary<string, HandlebarsHelper>(StringComparer.OrdinalIgnoreCase);
+            BlockHelpers = new Dictionary<string, HandlebarsBlockHelper>(StringComparer.OrdinalIgnoreCase);
+            RegisteredTemplates = new Dictionary<string, Action<TextWriter, object>>(StringComparer.OrdinalIgnoreCase);
+            TextEncoder = new HtmlEncoder();
+	        ThrowOnUnresolvedBindingExpression = false;
         }
     }
 }

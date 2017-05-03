@@ -9,8 +9,7 @@ namespace HandlebarsDotNet
     {
         public object[] Objects { get; set; }
 
-        private static readonly BindingFlags BindingFlags = BindingFlags.Public | BindingFlags.Instance |
-                                                            BindingFlags.IgnoreCase;
+        private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase;
 
         public DynamicViewModel(params object[] objects)
         {
@@ -34,14 +33,14 @@ namespace HandlebarsDotNet
 
                 if (member.Length > 0)
                 {
-                    if (member[0] is PropertyInfo)
+                    if (member[0] is PropertyInfo propertyInfo)
                     {
-                        result = ((PropertyInfo) member[0]).GetValue(target, null);
+                        result = propertyInfo.GetValue(target, null);
                         return true;
                     }
-                    if (member[0] is FieldInfo)
+                    if (member[0] is FieldInfo fieldInfo)
                     {
-                        result = ((FieldInfo) member[0]).GetValue(target);
+                        result = fieldInfo.GetValue(target);
                         return true;
                     }
                 }

@@ -26,7 +26,7 @@ namespace HandlebarsDotNet.Compiler
 #else
             var method = new Action<object, BindingContext, Action<TextWriter, object>, Action<TextWriter, object>>(RenderSection).Method;
 #endif
-            Expression path = HandlebarsExpression.Path(dsex.Path.Path.Substring(1));
+            Expression path = HandlebarsExpression.PathExpression(dsex.Path.Path.Substring(1));
             Expression context = CompilationContext.BindingContext;
             Expression[] templates = GetDeferredSectionTemplates(dsex);
 

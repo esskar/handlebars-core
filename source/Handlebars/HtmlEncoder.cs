@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
 namespace HandlebarsDotNet
@@ -9,13 +8,13 @@ namespace HandlebarsDotNet
         public string Encode(string text)
         {
             if (text == null)
-                return String.Empty;
+                return string.Empty;
 
             var sb = new StringBuilder(text.Length);
 
-            for (var i = 0; i < text.Length; i++)
+            foreach (var c in text)
             {
-                switch (text[i])
+                switch (c)
                 {
                     case '"':
                         sb.Append("&quot;");
@@ -31,14 +30,14 @@ namespace HandlebarsDotNet
                         break;
 
                     default:
-                        if (text[i] > 159)
+                        if (c > 159)
                         {
                             sb.Append("&#");
-                            sb.Append(((int) text[i]).ToString(CultureInfo.InvariantCulture));
+                            sb.Append(((int) c).ToString(CultureInfo.InvariantCulture));
                             sb.Append(";");
                         }
                         else
-                            sb.Append(text[i]);
+                            sb.Append(c);
                         break;
                 }
             }

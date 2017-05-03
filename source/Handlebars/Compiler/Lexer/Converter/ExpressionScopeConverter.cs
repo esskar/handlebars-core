@@ -34,7 +34,7 @@ namespace HandlebarsDotNet.Compiler
                 var possibleBody = GetNext(enumerator);
                 if (!(possibleBody is Expression))
                 {
-                    throw new HandlebarsCompilerException(String.Format("Token '{0}' could not be converted to an expression", possibleBody));
+                    throw new HandlebarsCompilerException(string.Format("Token '{0}' could not be converted to an expression", possibleBody));
                 }
 
                 var endExpression = GetNext(enumerator) as EndExpressionToken;
@@ -48,7 +48,7 @@ namespace HandlebarsDotNet.Compiler
                     throw new HandlebarsCompilerException("Starting and ending handlebars do not match");
                 }
 
-                yield return HandlebarsExpression.Statement(
+                yield return HandlebarsExpression.StatementExpression(
                     (Expression) possibleBody,
                     startExpression.IsEscaped,
                     startExpression.TrimPreceedingWhitespace,

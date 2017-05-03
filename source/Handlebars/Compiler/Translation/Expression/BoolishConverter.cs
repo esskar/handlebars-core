@@ -26,7 +26,7 @@ namespace HandlebarsDotNet.Compiler
 #else
                 new Func<object, bool>(HandlebarsUtils.IsTruthyOrNonEmpty).Method,
 #endif
-                Visit(bex.Condition));
+                Visit(bex.ConditionExpression));
         }
 
         protected override Expression VisitBlock(BlockExpression node)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Linq;
 using HandlebarsDotNet.Compiler.Lexer;
@@ -23,23 +22,21 @@ namespace HandlebarsDotNet.Compiler
             while (enumerator.MoveNext())
             {
                 var item = enumerator.Current;
-                if (item is HelperExpression)
+                if (item is HelperExpression helperExpression)
                 {
-                    var helper = item as HelperExpression;
                     var helperArguments = AccumulateArguments(enumerator);
-                    yield return HandlebarsExpression.Helper(
-                        helper.HelperName,
+                    yield return HandlebarsExpression.HelperExpression(
+                        helperExpression.HelperName,
                         helperArguments);
                     yield return enumerator.Current;
                 }
-                else if (item is PathExpression)
+                else if (item is PathExpression pathExpression)
                 {
                     var helperArguments = AccumulateArguments(enumerator);
                     if (helperArguments.Count > 0)
                     {
-                        var path = item as PathExpression;
-                        yield return HandlebarsExpression.Helper(
-                            path.Path,
+                        yield return HandlebarsExpression.HelperExpression(
+                            pathExpression.Path,
                             helperArguments);
                         yield return enumerator.Current;
                     }
@@ -59,13 +56,11 @@ namespace HandlebarsDotNet.Compiler
         private static List<Expression> AccumulateArguments(IEnumerator<object> enumerator)
         {
             var item = GetNext(enumerator);
-            List<Expression> helperArguments = new List<Expression>();
-            while ((item is EndExpressionToken) == false)
+            var helperArguments = new List<Expression>();
+            while (!(item is EndExpressionToken))
             {
-                if ((item is Expression) == false)
-                {
+                if (!(item is Expression))
                     throw new HandlebarsCompilerException(string.Format("Token '{0}' could not be converted to an expression", item));
-                }
                 helperArguments.Add((Expression)item);
                 item = GetNext(enumerator);
             }

@@ -22,24 +22,17 @@ namespace HandlebarsDotNet
             {
                 return true;
             }
-            else if (value is bool)
+            if (value is bool boolValue)
             {
-                return !(bool)value;
+                return !boolValue;
             }
-            else if (value is string)
+            if (value is string stringValue)
             {
-                if ((string)value == "")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return stringValue == "";
             }
-            else if (IsNumber(value))
+            if (IsNumber(value))
             {
-                return !System.Convert.ToBoolean(value);
+                return !Convert.ToBoolean(value);
             }
             return false;
         }
@@ -55,11 +48,8 @@ namespace HandlebarsDotNet
             {
                 return true;
             }
-            else if (value is IEnumerable && ((IEnumerable)value).OfType<object>().Any() == false)
-            {
-                return true;
-            }
-            return false;
+            var enumerable = value as IEnumerable;
+            return enumerable != null && !enumerable.OfType<object>().Any();
         }
 
         private static bool IsNumber(object value)

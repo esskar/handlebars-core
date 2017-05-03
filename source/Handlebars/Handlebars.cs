@@ -6,12 +6,12 @@ namespace HandlebarsDotNet
     public delegate void HandlebarsHelper(TextWriter output, dynamic context, params object[] arguments);
     public delegate void HandlebarsBlockHelper(TextWriter output, HelperOptions options, dynamic context, params object[] arguments);
 
-    public sealed partial class Handlebars
+    public sealed class Handlebars
     {
         // Lazy-load Handlebars environment to ensure thread safety.  See Jon Skeet's excellent article on this for more info. http://csharpindepth.com/Articles/General/Singleton.aspx
-        private static readonly Lazy<IHandlebars> lazy = new Lazy<IHandlebars>(() => new HandlebarsEnvironment(new HandlebarsConfiguration()));
+        private static readonly Lazy<IHandlebars> Lazy = new Lazy<IHandlebars>(() => new HandlebarsEnvironment(new HandlebarsConfiguration()));
 
-        private static IHandlebars Instance { get { return lazy.Value; } }
+        private static IHandlebars Instance => Lazy.Value;
 
         public static IHandlebars Create(HandlebarsConfiguration configuration = null)
         {
@@ -52,9 +52,6 @@ namespace HandlebarsDotNet
         /// <summary>
         /// Expose the configuration on order to have access in all Helpers and Templates.
         /// </summary>
-        public static HandlebarsConfiguration Configuration
-        {
-            get { return Instance.Configuration; }
-        }
+        public static HandlebarsConfiguration Configuration => Instance.Configuration;
     }
 }

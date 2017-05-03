@@ -21,17 +21,17 @@ namespace HandlebarsDotNet.Compiler
 
     internal abstract class HandlebarsExpression : Expression
     {
-        public static HelperExpression Helper(string helperName, IEnumerable<Expression> arguments)
+        public static HelperExpression HelperExpression(string helperName, IEnumerable<Expression> arguments)
         {
             return new HelperExpression(helperName, arguments);
         }
 
-        public static HelperExpression Helper(string helperName)
+        public static HelperExpression HelperExpression(string helperName)
         {
             return new HelperExpression(helperName);
         }
 
-        public static BlockHelperExpression BlockHelper(
+        public static BlockHelperExpression BlockHelperExpression(
             string helperName,
             IEnumerable<Expression> arguments,
             Expression body,
@@ -40,29 +40,29 @@ namespace HandlebarsDotNet.Compiler
             return new BlockHelperExpression(helperName, arguments, body, inversion);
         }
 
-        public static PathExpression Path(string path)
+        public static PathExpression PathExpression(string path)
         {
             return new PathExpression(path);
         }
 
-        public static StaticExpression Static(string value)
+        public static StaticExpression StaticExpression(string value)
         {
             return new StaticExpression(value);
         }
 
-        public static StatementExpression Statement(Expression body, bool isEscaped, bool trimBefore, bool trimAfter)
+        public static StatementExpression StatementExpression(Expression body, bool isEscaped, bool trimBefore, bool trimAfter)
         {
             return new StatementExpression(body, isEscaped, trimBefore, trimAfter);
         }
 
-        public static IteratorExpression Iterator(
+        public static IteratorExpression IteratorExpression(
             Expression sequence,
             Expression template)
         {
             return new IteratorExpression(sequence, template);
         }
 
-        public static IteratorExpression Iterator(
+        public static IteratorExpression IteratorExpression(
             Expression sequence,
             Expression template,
             Expression ifEmpty)
@@ -70,7 +70,7 @@ namespace HandlebarsDotNet.Compiler
             return new IteratorExpression(sequence, template, ifEmpty);
         }
 
-        public static DeferredSectionExpression DeferredSection(
+        public static DeferredSectionExpression DeferredSectionExpression(
             PathExpression path,
             BlockExpression body,
             BlockExpression inversion)
@@ -78,27 +78,27 @@ namespace HandlebarsDotNet.Compiler
             return new DeferredSectionExpression(path, body, inversion);
         }
 
-        public static PartialExpression Partial(Expression partialName)
+        public static PartialExpression PartialExpression(Expression partialName)
         {
-            return Partial(partialName, null);
+            return PartialExpression(partialName, null);
         }
 
-        public static PartialExpression Partial(Expression partialName, Expression argument)
+        public static PartialExpression PartialExpression(Expression partialName, Expression argument)
         {
             return new PartialExpression(partialName, argument, null);
         }
 
-        public static PartialExpression Partial(Expression partialName, Expression argument, Expression fallback)
+        public static PartialExpression PartialExpression(Expression partialName, Expression argument, Expression fallback)
         {
             return new PartialExpression(partialName, argument, fallback);
         }
 
-        public static BoolishExpression Boolish(Expression condition)
+        public static BoolishExpression BoolishExpression(Expression condition)
         {
             return new BoolishExpression(condition);
         }
 
-        public static SubExpressionExpression SubExpression(Expression expression)
+        public static SubExpressionExpression SubExpressionExpression(Expression expression)
         {
             return new SubExpressionExpression(expression);
         }
@@ -108,7 +108,7 @@ namespace HandlebarsDotNet.Compiler
             return new HashParametersExpression(parameters);
         }
 
-	    public static CommentExpression Comment( string value )
+	    public static CommentExpression CommentExpression(string value)
 	    {
 		    return new CommentExpression(value);
 	    }

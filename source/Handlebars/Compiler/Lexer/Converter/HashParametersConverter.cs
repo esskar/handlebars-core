@@ -44,11 +44,9 @@ namespace HandlebarsDotNet.Compiler
 
             var item = enumerator.Current;
 
-            while ((item is EndExpressionToken) == false)
+            while (!(item is EndExpressionToken))
             {
-                var parameter = item as HashParameterToken;
-
-                if (parameter != null)
+                if (item is HashParameterToken parameter)
                 {
                     var segments = parameter.Value.Split('=');
                     var value = ParseValue(segments[1]);
@@ -72,22 +70,16 @@ namespace HandlebarsDotNet.Compiler
             {
                 return value.Trim('\'', '"');
             }
-
-            bool boolValue;
-
-            if (bool.TryParse(value, out boolValue))
+            if (bool.TryParse(value, out bool boolValue))
             {
                 return boolValue;
             }
-
-            int intValue;
-
-            if (int.TryParse(value, out intValue))
+            if (int.TryParse(value, out int intValue))
             {
                 return intValue;
             }
 
-            return HandlebarsExpression.Path(value);
+            return HandlebarsExpression.PathExpression(value);
         }
 
         private static object GetNext(IEnumerator<object> enumerator)

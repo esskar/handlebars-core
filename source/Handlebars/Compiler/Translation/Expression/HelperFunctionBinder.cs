@@ -22,7 +22,7 @@ namespace HandlebarsDotNet.Compiler
         {
             return Expression.Block(
                 node.Variables,
-                node.Expressions.Select(expr => Visit(expr)));
+                node.Expressions.Select(Visit));
         }
 
         protected override Expression VisitStatementExpression(StatementExpression sex)
@@ -39,21 +39,21 @@ namespace HandlebarsDotNet.Compiler
 
         protected override Expression VisitBoolishExpression(BoolishExpression bex)
         {
-            return HandlebarsExpression.Boolish(Visit(bex.Condition));
+            return HandlebarsExpression.BoolishExpression(Visit(bex.ConditionExpression));
         }
 
         protected override Expression VisitBlockHelperExpression(BlockHelperExpression bhex)
         {
-            return HandlebarsExpression.BlockHelper(
+            return HandlebarsExpression.BlockHelperExpression(
                 bhex.HelperName,
-                bhex.Arguments.Select(arg => Visit(arg)),
+                bhex.Arguments.Select(Visit),
                 Visit(bhex.Body),
                 Visit(bhex.Inversion));
         }
 
         protected override Expression VisitSubExpression(SubExpressionExpression subex)
         {
-            return HandlebarsExpression.SubExpression(
+            return HandlebarsExpression.SubExpressionExpression(
                 Visit(subex.Expression));
         }
 
@@ -78,7 +78,7 @@ namespace HandlebarsDotNet.Compiler
 #else
                         typeof(BindingContext).GetProperty("Value")),
 #endif
-                    Expression.NewArrayInit(typeof(object), hex.Arguments.Select(a => Visit(a)))
+                    Expression.NewArrayInit(typeof(object), hex.Arguments.Select(Visit))
                 };
                 if (helper.Target != null)
                 {

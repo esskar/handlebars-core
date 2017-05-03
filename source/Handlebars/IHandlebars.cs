@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using HandlebarsDotNet.Compiler;
-using System.Text;
 
 namespace HandlebarsDotNet
 {

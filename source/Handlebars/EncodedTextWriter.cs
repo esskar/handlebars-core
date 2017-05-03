@@ -5,14 +5,13 @@ namespace HandlebarsDotNet
 {
 	internal class EncodedTextWriter : TextWriter
 	{
-		private readonly TextWriter _underlyingWriter;
-		private readonly ITextEncoder _encoder;
+	    private readonly ITextEncoder _encoder;
 
 		public bool SuppressEncoding { get; set; }
 
 		public EncodedTextWriter(TextWriter writer, ITextEncoder encoder)
 		{
-			_underlyingWriter = writer;
+			UnderlyingWriter = writer;
 			_encoder = encoder;
 		}
 
@@ -25,12 +24,12 @@ namespace HandlebarsDotNet
 
 		public void Write(string value, bool encode)
 		{
-			if(encode && !SuppressEncoding && (_encoder != null))
+			if(encode && !SuppressEncoding && _encoder != null)
 			{
 				value = _encoder.Encode(value);
 			}
 
-			_underlyingWriter.Write(value);
+			UnderlyingWriter.Write(value);
 		}
 
 		public override void Write(string value)
@@ -54,14 +53,8 @@ namespace HandlebarsDotNet
 			Write(value.ToString(), encode);
 		}
 
-		public TextWriter UnderlyingWriter
-		{
-			get { return _underlyingWriter; }
-		}
+		public TextWriter UnderlyingWriter { get; }
 
-		public override Encoding Encoding
-		{
-			get { return _underlyingWriter.Encoding; }
-		}
+	    public override Encoding Encoding => UnderlyingWriter.Encoding;
 	}
 }

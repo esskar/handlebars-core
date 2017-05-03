@@ -5,27 +5,16 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class PathExpression : HandlebarsExpression
     {
-        private readonly string _path;
-
         public PathExpression(string path)
         {
-            _path = path;
+            Path = path;
         }
 
-        public string Path
-        {
-            get { return _path; }
-        }
+        public string Path { get; }
 
-        public override ExpressionType NodeType
-        {
-            get { return (ExpressionType)HandlebarsExpressionType.PathExpression; }
-        }
+        public override ExpressionType NodeType => (ExpressionType)HandlebarsExpressionType.PathExpression;
 
-        public override Type Type
-        {
-            get { return typeof(object); }
-        }
+        public override Type Type => typeof(object);
     }
 }
 

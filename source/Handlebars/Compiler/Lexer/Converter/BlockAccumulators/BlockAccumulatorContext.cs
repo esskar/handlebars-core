@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
@@ -36,15 +35,14 @@ namespace HandlebarsDotNet.Compiler
         {
             get
             {
-                var type = GetType();
-                if (type == typeof(BlockHelperAccumulatorContext))
-                    return ((BlockHelperAccumulatorContext)this).HelperName;
+                if (this is BlockHelperAccumulatorContext blockHelperAccumulatorContext)
+                    return blockHelperAccumulatorContext.HelperName;
 
-                if (type == typeof(ConditionalBlockAccumulatorContext))
-                    return ((ConditionalBlockAccumulatorContext)this).BlockName;
+                if (this is ConditionalBlockAccumulatorContext conditionalBlockAccumulatorContext)
+                    return conditionalBlockAccumulatorContext.BlockName;
 
-                if (type == typeof(IteratorBlockAccumulatorContext))
-                    return ((IteratorBlockAccumulatorContext)this).BlockName;
+                if (this is IteratorBlockAccumulatorContext iteratorBlockAccumulatorContext)
+                    return iteratorBlockAccumulatorContext.BlockName;
 
                 return null;
             }
@@ -53,58 +51,49 @@ namespace HandlebarsDotNet.Compiler
         private static bool IsConditionalBlock(Expression item)
         {
             item = UnwrapStatement(item);
-            return (item is HelperExpression) && new[] { "#if", "#unless" }.Contains(((HelperExpression)item).HelperName);
+            var helperExpression = item as HelperExpression;
+            return helperExpression != null && new[] { "#if", "#unless" }.Contains(helperExpression.HelperName);
         }
 
         private static bool IsBlockHelper(Expression item, HandlebarsConfiguration configuration)
         {
             item = UnwrapStatement(item);
-            return (item is HelperExpression) && configuration.BlockHelpers.ContainsKey(((HelperExpression)item).HelperName.Replace("#", ""));
+            var helperExpression = item as HelperExpression;
+            return helperExpression != null && configuration.BlockHelpers.ContainsKey(helperExpression.HelperName.Replace("#", ""));
         }
 
         private static bool IsIteratorBlock(Expression item)
         {
             item = UnwrapStatement(item);
-            return (item is HelperExpression) && new[] { "#each" }.Contains(((HelperExpression)item).HelperName);
+            var helperExpression = item as HelperExpression;
+            return helperExpression != null && new[] { "#each" }.Contains(helperExpression.HelperName);
         }
 
         private static bool IsDeferredBlock(Expression item)
         {
             item = UnwrapStatement(item);
-            return (item is PathExpression) && (((PathExpression)item).Path.StartsWith("#") || ((PathExpression)item).Path.StartsWith("^"));
+            var pathExpression = item as PathExpression;
+            return pathExpression != null && (pathExpression.Path.StartsWith("#") || pathExpression.Path.StartsWith("^"));
         }
 
-        private static bool IsPartialBlock (Expression item)
+        private static bool IsPartialBlock(Expression item)
         {
             item = UnwrapStatement (item);
-            if (item is PathExpression)
+            if (item is PathExpression pathExpression)
             {
-                return ((PathExpression)item).Path.StartsWith("#>");
+                return pathExpression.Path.StartsWith("#>");
             }
-            else if (item is HelperExpression)
+            if (item is HelperExpression helperExpression)
             {
-                return ((HelperExpression)item).HelperName.StartsWith("#>");
+                return helperExpression.HelperName.StartsWith("#>");
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         protected static Expression UnwrapStatement(Expression item)
         {
-            if (item is StatementExpression)
-            {
-                return ((StatementExpression)item).Body;
-            }
-            else
-            {
-                return item;
-            }
-        }
-
-        protected BlockAccumulatorContext(Expression startingNode)
-        {
+            var statementExpression = item as StatementExpression;
+            return statementExpression != null ? statementExpression.Body : item;
         }
 
         public abstract void HandleElement(Expression item);

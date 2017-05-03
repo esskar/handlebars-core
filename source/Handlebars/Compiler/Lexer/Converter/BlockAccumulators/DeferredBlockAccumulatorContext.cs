@@ -13,10 +13,8 @@ namespace HandlebarsDotNet.Compiler
 
 
         public DeferredBlockAccumulatorContext(Expression startingNode)
-            : base(startingNode)
         {
-            startingNode = UnwrapStatement(startingNode);
-            _startingNode = (PathExpression)startingNode;
+            _startingNode = (PathExpression)UnwrapStatement(startingNode);
         }
 
         public override Expression GetAccumulatedBlock()
@@ -35,7 +33,7 @@ namespace HandlebarsDotNet.Compiler
                 _accumulatedInversion = Expression.Block(Expression.Empty());
             }
 
-            return HandlebarsExpression.DeferredSection(
+            return HandlebarsExpression.DeferredSectionExpression(
                 _startingNode,
                 _accumulatedBody,
                 _accumulatedInversion);
@@ -56,15 +54,15 @@ namespace HandlebarsDotNet.Compiler
 
         public override bool IsClosingElement(Expression item)
         {
-            item = UnwrapStatement(item);
             var blockName = _startingNode.Path.Replace("#", "").Replace("^", "");
-            return item is PathExpression && ((PathExpression)item).Path == "/" + blockName;
+            var pathExpression = UnwrapStatement(item) as PathExpression;
+            return pathExpression != null && pathExpression.Path == "/" + blockName;
         }
 
-        private bool IsInversionBlock(Expression item)
+        private static bool IsInversionBlock(Expression item)
         {
-            item = UnwrapStatement(item);
-            return item is HelperExpression && ((HelperExpression)item).HelperName == "else";
+            var helperExpression = UnwrapStatement(item) as HelperExpression;
+            return helperExpression != null && helperExpression.HelperName == "else";
         }
     }
 }

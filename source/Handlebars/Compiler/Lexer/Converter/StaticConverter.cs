@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HandlebarsDotNet.Compiler.Lexer;
 using System.Linq;
 
@@ -20,15 +19,11 @@ namespace HandlebarsDotNet.Compiler
         {
             foreach (var item in sequence)
             {
-                if (item is StaticToken)
+                if (item is StaticToken staticToken)
                 {
-                    if (((StaticToken)item).Value != string.Empty)
+                    if (staticToken.Value != string.Empty)
                     {
-                        yield return HandlebarsExpression.Static(((StaticToken)item).Value);
-                    }
-                    else
-                    {
-                        continue;
+                        yield return HandlebarsExpression.StaticExpression(((StaticToken)item).Value);
                     }
                 }
                 else

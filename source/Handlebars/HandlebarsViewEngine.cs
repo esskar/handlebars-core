@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace HandlebarsDotNet
 {
@@ -12,10 +9,12 @@ namespace HandlebarsDotNet
 
         private static string GetDir(string currentFilePath)
         {
-            if (currentFilePath == "") return null;
-            var parts = currentFilePath.Split(new[] {'\\', '/'});
-            if (parts.Length == 1) return "";
-            return string.Join("/", parts.Take(parts.Length - 1));
+            if (string.IsNullOrWhiteSpace(currentFilePath))
+                return null;
+            var parts = currentFilePath.Split('\\', '/');
+            return parts.Length == 1 
+                ? "" 
+                : string.Join("/", parts.Take(parts.Length - 1));
         }
 
         public string Closest(string filename, string otherFileName)
@@ -23,9 +22,11 @@ namespace HandlebarsDotNet
             var dir = GetDir(filename);
             while (true)
             {
-                if (dir == null) break;
+                if (dir == null)
+                    break;
                 var fullFileName = CombinePath(dir, otherFileName);
-                if (this.FileExists(fullFileName)) return fullFileName;
+                if (FileExists(fullFileName))
+                    return fullFileName;
                 dir = GetDir(dir);
             }
             return null;

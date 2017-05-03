@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HandlebarsDotNet
+﻿namespace HandlebarsDotNet
 {
     public interface ISafeString
     {

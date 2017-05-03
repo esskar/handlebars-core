@@ -56,7 +56,7 @@ namespace HandlebarsDotNet.Compiler
 
         protected override Expression VisitSubExpression(SubExpressionExpression subex)
         {
-            return HandlebarsExpression.SubExpression(
+            return HandlebarsExpression.SubExpressionExpression(
                 Visit(subex.Expression));
         }
 
@@ -75,10 +75,7 @@ namespace HandlebarsDotNet.Compiler
                         "TextWriter"),
                     writeMethod, Visit(sex.Body));
             }
-            else
-            {
-                return Visit(sex.Body);
-            }
+            return Visit(sex.Body);
         }
 
         protected override Expression VisitPathExpression(PathExpression pex)
@@ -96,7 +93,7 @@ namespace HandlebarsDotNet.Compiler
 
         protected override Expression VisitHelperExpression(HelperExpression hex)
         {
-            return HandlebarsExpression.Helper(
+            return HandlebarsExpression.HelperExpression(
                 hex.HelperName,
                 hex.Arguments.Select(Visit));
         }
@@ -121,15 +118,7 @@ namespace HandlebarsDotNet.Compiler
             foreach (var parameter in hpex.Parameters)
             {
                 var path = parameter.Value as PathExpression;
-
-                if (path != null)
-                {
-                    parameters.Add(parameter.Key, ResolvePath(context, path.Path));
-                }
-                else
-                {
-                    parameters.Add(parameter.Key, parameter.Value);
-                }
+                parameters.Add(parameter.Key, path != null ? ResolvePath(context, path.Path) : parameter.Value);
             }
 
             return parameters;
@@ -158,7 +147,8 @@ namespace HandlebarsDotNet.Compiler
                     context = context.ParentContext;
                     if (context == null)
                     {
-                        if (containsVariable) return string.Empty;
+                        if (containsVariable)
+                            return string.Empty;
 
                         throw new HandlebarsCompilerException("Path expression tried to reference parent of root");
                     }
@@ -183,10 +173,10 @@ namespace HandlebarsDotNet.Compiler
                         }
 
                         instance = ResolveValue(context.ParentContext, context.ParentContext.Value, memberName);
-                        if (instance is UndefinedBindingResult)
+                        if (instance is UndefinedBindingResult undefinedBindingResult)
                         {
                             if (CompilationContext.Configuration.ThrowOnUnresolvedBindingExpression)
-                                throw new HandlebarsUndefinedBindingException(path, (instance as UndefinedBindingResult).Value);
+                                throw new HandlebarsUndefinedBindingException(path, undefinedBindingResult.Value);
                             return instance;
                         }
                     }
@@ -230,8 +220,7 @@ namespace HandlebarsDotNet.Compiler
                 var match = IndexRegex.Match(memberName);
                 if (match.Success)
                 {
-                    int index;
-                    if (match.Groups["index"].Success == false || int.TryParse(match.Groups["index"].Value, out index) == false)
+                    if (match.Groups["index"].Success == false || int.TryParse(match.Groups["index"].Value, out int index) == false)
                     {
                         return new UndefinedBindingResult(memberName, CompilationContext.Configuration);
                     }
@@ -249,10 +238,7 @@ namespace HandlebarsDotNet.Compiler
                 try
                 {
                     var result = GetProperty(instance, resolvedMemberName);
-                    if (result == null)
-                        return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
-
-                    return result;
+                    return result ?? new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
                 }
                 catch
                 {
@@ -288,11 +274,8 @@ namespace HandlebarsDotNet.Compiler
                 {
                     return instanceType.GetMethod("get_Item").Invoke(instance, new[] { key });
                 }
-                else
-                {
-                    // Key doesn't exist.
-                    return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
-                }
+                // Key doesn't exist.
+                return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
             }
             // Check if the instance is IDictionary (ie, System.Collections.Hashtable)
             if (typeof(IDictionary).IsAssignableFrom(instanceType))
@@ -309,7 +292,7 @@ namespace HandlebarsDotNet.Compiler
             {
                 return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
             }
-            else if (members.Length > 1)
+            if (members.Length > 1)
             {
                 preferredMember = members.FirstOrDefault(m => m.Name == resolvedMemberName) ?? members[0];
             }
@@ -318,21 +301,21 @@ namespace HandlebarsDotNet.Compiler
                 preferredMember = members[0];
             }
 
-            var propertyInfo = preferredMember as PropertyInfo;
-            if (propertyInfo != null)
+            
+            if (preferredMember is PropertyInfo propertyInfo)
             {
                 var propertyValue = propertyInfo.GetValue(instance, null);
                 return propertyValue ?? new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
             }
-            if (preferredMember is FieldInfo)
+            if (preferredMember is FieldInfo fieldInfo)
             {
-                var fieldValue = ((FieldInfo)preferredMember).GetValue(instance);
+                var fieldValue = fieldInfo.GetValue(instance);
                 return fieldValue ?? new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
             }
             return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
         }
 
-        static Type FirstGenericDictionaryTypeInstance(Type instanceType)
+        private static Type FirstGenericDictionaryTypeInstance(Type instanceType)
         {
             return instanceType.GetInterfaces()
                 .FirstOrDefault(i =>

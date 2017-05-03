@@ -32,22 +32,21 @@ namespace HandlebarsDotNet.Compiler
 
                     var partialName = arguments[0];
 
-                    if (partialName is PathExpression)
+                    if (partialName is PathExpression pathExpression)
                     {
-                        partialName = Expression.Constant(((PathExpression)partialName).Path);
+                        partialName = Expression.Constant(pathExpression.Path);
                     }
 
-                    if (arguments.Count == 1)
+                    switch (arguments.Count)
                     {
-                        yield return HandlebarsExpression.Partial(partialName);
-                    }
-                    else if (arguments.Count == 2)
-                    {
-                        yield return HandlebarsExpression.Partial(partialName, arguments [1]);
-                    }
-                    else
-                    {
-                        throw new HandlebarsCompilerException("A partial can only accept 0 or 1 arguments");
+                        case 1:
+                            yield return HandlebarsExpression.PartialExpression(partialName);
+                            break;
+                        case 2:
+                            yield return HandlebarsExpression.PartialExpression(partialName, arguments [1]);
+                            break;
+                        default:
+                            throw new HandlebarsCompilerException("A partial can only accept 0 or 1 arguments");
                     }
                     yield return enumerator.Current;
                 }
@@ -61,10 +60,10 @@ namespace HandlebarsDotNet.Compiler
         private static List<Expression> AccumulateArguments(IEnumerator<object> enumerator)
         {
             var item = GetNext(enumerator);
-            List<Expression> helperArguments = new List<Expression>();
-            while ((item is EndExpressionToken) == false)
+            var helperArguments = new List<Expression>();
+            while (!(item is EndExpressionToken))
             {
-                if ((item is Expression) == false)
+                if (!(item is Expression))
                 {
                     throw new HandlebarsCompilerException(string.Format("Token '{0}' could not be converted to an expression", item));
                 }

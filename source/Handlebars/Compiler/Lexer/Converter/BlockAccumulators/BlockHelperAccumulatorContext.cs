@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace HandlebarsDotNet.Compiler
         private List<Expression> _body = new List<Expression>();
 
         public BlockHelperAccumulatorContext(Expression startingNode)
-            : base(startingNode)
         {
             startingNode = UnwrapStatement(startingNode);
             _startingNode = (HelperExpression)startingNode;
@@ -30,26 +28,26 @@ namespace HandlebarsDotNet.Compiler
             }
             else
             {
-                _body.Add((Expression)item);
+                _body.Add(item);
             }
         }
 
-        private bool IsInversionBlock(Expression item)
+        private static bool IsInversionBlock(Expression item)
         {
-            item = UnwrapStatement(item);
-            return item is HelperExpression && ((HelperExpression)item).HelperName == "else";
+            var helperExpression = UnwrapStatement(item) as HelperExpression;
+            return helperExpression != null && helperExpression.HelperName == "else";
         }
 
         public override bool IsClosingElement(Expression item)
         {
-            item = UnwrapStatement(item);
-            return IsClosingNode(item);
+            return IsClosingNode(UnwrapStatement(item));
         }
 
         private bool IsClosingNode(Expression item)
         {
             var helperName = _startingNode.HelperName.Replace("#", "");
-            return item is PathExpression && ((PathExpression)item).Path == "/" + helperName;
+            var pathExpression = item as PathExpression;
+            return pathExpression != null && pathExpression.Path == "/" + helperName;
         }
 
         public override Expression GetAccumulatedBlock()
@@ -67,7 +65,7 @@ namespace HandlebarsDotNet.Compiler
             {
                 _accumulatedInversion = Expression.Block(Expression.Empty());
             }
-            return HandlebarsExpression.BlockHelper(
+            return HandlebarsExpression.BlockHelperExpression(
                 _startingNode.HelperName,
                 _startingNode.Arguments,
                 _accumulatedBody,

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using HandlebarsDotNet.Compiler.Lexer;
 using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
@@ -10,7 +9,7 @@ namespace HandlebarsDotNet.Compiler
     internal class FunctionBuilder
     {
         private readonly HandlebarsConfiguration _configuration;
-        private static readonly Expression _emptyLambda =
+        private static readonly Expression EmptyLambda =
             Expression.Lambda<Action<TextWriter, object>>(
                 Expression.Empty(),
                 Expression.Parameter(typeof(TextWriter)),
@@ -25,16 +24,18 @@ namespace HandlebarsDotNet.Compiler
         {
             try
             {
-                if (expressions.Any() == false)
+                var expressionsList = expressions as IList<Expression> ?? expressions.ToList();
+
+                if (expressionsList.Count == 0)
                 {
-                    return _emptyLambda;
+                    return EmptyLambda;
                 }
-                if (expressions.IsOneOf<Expression, DefaultExpression>() == true)
+                if (expressionsList.IsOneOf<Expression, DefaultExpression>())
                 {
-                    return _emptyLambda;
+                    return EmptyLambda;
                 }
                 var compilationContext = new CompilationContext(_configuration);
-                var expression = CreateExpressionBlock(expressions);
+                var expression = CreateExpressionBlock(expressionsList);
                 expression = CommentVisitor.Visit(expression, compilationContext);
                 expression = UnencodedStatementVisitor.Visit(expression, compilationContext);
                 expression = PartialBinder.Bind(expression, compilationContext);
@@ -69,7 +70,7 @@ namespace HandlebarsDotNet.Compiler
         }
 
 
-        private Expression CreateExpressionBlock(IEnumerable<Expression> expressions)
+        private static Expression CreateExpressionBlock(IEnumerable<Expression> expressions)
         {
             return Expression.Block(expressions);
         }

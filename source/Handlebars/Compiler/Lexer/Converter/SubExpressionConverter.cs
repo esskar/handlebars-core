@@ -43,8 +43,8 @@ namespace HandlebarsDotNet.Compiler
                 throw new HandlebarsCompilerException("Found a sub-expression that does not contain a path expression");
             }
             var helperArguments = AccumulateSubExpression(enumerator);
-            return HandlebarsExpression.SubExpression(
-                HandlebarsExpression.Helper(
+            return HandlebarsExpression.SubExpressionExpression(
+                HandlebarsExpression.HelperExpression(
                     path.Path,
                     helperArguments));
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HandlebarsDotNet.Compiler.Lexer;
 using System.Linq.Expressions;
@@ -8,7 +7,7 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class HelperConverter : TokenConverter
     {
-        private static readonly string[] builtInHelpers = new [] { "else", "each" };
+        private static readonly string[] BuiltInHelpers = { "else", "each" };
 
         public static IEnumerable<object> Convert(
             IEnumerable<object> sequence,
@@ -39,10 +38,9 @@ namespace HandlebarsDotNet.Compiler
                         yield return item;
                         continue;
                     }
-                    var word = item as WordExpressionToken;
-                    if (word != null && IsRegisteredHelperName(word.Value))
+                    if (item is WordExpressionToken word && IsRegisteredHelperName(word.Value))
                     {
-                        yield return HandlebarsExpression.Helper(word.Value);
+                        yield return HandlebarsExpression.HelperExpression(word.Value);
                     }
                     else
                     {
@@ -61,8 +59,8 @@ namespace HandlebarsDotNet.Compiler
         {
             name = name.Replace("#", "");
             return _configuration.Helpers.ContainsKey(name)
-            || _configuration.BlockHelpers.ContainsKey(name)
-            || builtInHelpers.Contains(name);
+                || _configuration.BlockHelpers.ContainsKey(name)
+                || BuiltInHelpers.Contains(name);
         }
 
         private static object GetNext(IEnumerator<object> enumerator)
