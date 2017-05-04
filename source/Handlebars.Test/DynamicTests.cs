@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using System;
 using System.Dynamic;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
@@ -17,7 +16,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(model);
+            var output = template.Render(model);
 
             Assert.Equal("Foo: 1\nBar: hello world", output);
         }
@@ -31,7 +30,7 @@ namespace HandlebarsDotNet.Test
 
 			var template = Handlebars.Compile(source);
 
-			var output = template(model);
+			var output = template.Render(model);
 
 			Assert.Equal("test1test2", output);
 		}
@@ -45,7 +44,7 @@ namespace HandlebarsDotNet.Test
 
 			var template = Handlebars.Compile(source);
 
-			var output = template(model);
+			var output = template.Render(model);
 
 			Assert.Equal("test1", output);
 		}
@@ -59,7 +58,7 @@ namespace HandlebarsDotNet.Test
 
 			var template = Handlebars.Compile(source);
 
-			var output = template(model);
+			var output = template.Render(model);
 
 			Assert.Equal("test1", output);
 		}
@@ -72,7 +71,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(model);
+            var output = template.Render(model);
 
             Assert.Equal("Key1Val1Key2Val2", output);
         }
@@ -86,7 +85,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(model);
+            var output = template.Render(model);
 
             Assert.Equal("", output);
         }
@@ -102,7 +101,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(model);
+            var output = template.Render(model);
 
             Assert.Equal("Key1Val1Key2Val2", output);
         }
@@ -111,7 +110,7 @@ namespace HandlebarsDotNet.Test
 
         private class MyDynamicModel : DynamicObject
         {
-            private Dictionary<string, object> properties = new Dictionary<string, object>
+            private readonly Dictionary<string, object> _properties = new Dictionary<string, object>
             {
                 { "foo", 1 },
                 { "bar", "hello world" }
@@ -119,16 +118,13 @@ namespace HandlebarsDotNet.Test
 
             public override bool TryGetMember(GetMemberBinder binder, out object result)
             {
-                if(properties.ContainsKey(binder.Name))
+                if(_properties.ContainsKey(binder.Name))
                 {
-                    result = properties[binder.Name];
+                    result = _properties[binder.Name];
                     return true;
                 }
-                else
-                {
-                    result = null;
-                    return false;
-                }
+                result = null;
+                return false;
             }
         }
     }

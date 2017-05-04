@@ -7,13 +7,13 @@ namespace HandlebarsDotNet
     {
         HandlebarsConfiguration Configuration { get; }
 
-        Action<TextWriter, object> Compile(TextReader template);
+        HandlebarsTemplate Compile(TextReader template);
 
-        Func<object, string> Compile(string template);
+        HandlebarsTemplate Compile(string template);
 
-        Func<object, string> CompileView(string templatePath);
+        HandlebarsTemplate CompileView(string templateName, string parentTemplateName = null, bool throwOnErrors = true);
 
-        void RegisterTemplate(string templateName, Action<TextWriter, object> template);
+        void RegisterTemplate(string templateName, HandlebarsTemplate template);
 
         void RegisterTemplate(string templateName, string template);
 

@@ -20,7 +20,7 @@ namespace HandlebarsDotNet.Compiler
             _configuration = configuration;
         }
 
-        public Expression Compile(IEnumerable<Expression> expressions, Expression parentContext, string templatePath = null)
+        public Expression Compile(IEnumerable<Expression> expressions, Expression parentContext, string templateName = null)
         {
             try
             {
@@ -47,25 +47,25 @@ namespace HandlebarsDotNet.Compiler
                 expression = BoolishConverter.Convert(expression, compilationContext);
                 expression = PathBinder.Bind(expression, compilationContext);
                 expression = SubExpressionVisitor.Visit(expression, compilationContext);
-                expression = ContextBinder.Bind(expression, compilationContext, parentContext, templatePath);
+                expression = ContextBinder.Bind(expression, compilationContext, parentContext, templateName);
                 return expression;
             }
             catch (Exception ex)
             {
-                throw new HandlebarsCompilerException("An unhandled exception occurred while trying to compile the template", ex);
+                throw new HandlebarsCompilerException("An unhandled exception occurred while trying to compile the template.", ex);
             }
         }
 
-        public Action<TextWriter, object> Compile(IEnumerable<Expression> expressions, string templatePath = null)
+        public Action<TextWriter, object> Compile(IEnumerable<Expression> expressions, string templateName = null)
         {
             try
             {
-                var expression = Compile(expressions, null, templatePath);
+                var expression = Compile(expressions, null, templateName);
                 return ((Expression<Action<TextWriter, object>>)expression).Compile();
             }
             catch (Exception ex)
             {
-                throw new HandlebarsCompilerException("An unhandled exception occurred while trying to compile the template", ex);
+                throw new HandlebarsCompilerException("An unhandled exception occurred while trying to compile the template.", ex);
             }
         }
 

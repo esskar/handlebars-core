@@ -20,17 +20,17 @@ namespace HandlebarsDotNet.Compiler.Lexer
             return token;
         }
 
-        private bool IsComment(TextReader reader)
+        private static bool IsComment(TextReader reader)
         {
             var peek = (char)reader.Peek();
             return peek == '!';
         }
 
-        private string AccumulateComment(TextReader reader)
+        private static string AccumulateComment(TextReader reader)
         {
             reader.Read();
             bool? escaped = null;
-            StringBuilder buffer = new StringBuilder();
+            var buffer = new StringBuilder();
             while (true)
             {
                 if (escaped == null)
@@ -43,35 +43,27 @@ namespace HandlebarsDotNet.Compiler.Lexer
                 }
                 var node = reader.Read();
                 if (node == -1)
-                {
                     throw new InvalidOperationException("Reached end of template in the middle of a comment");
-                }
-                else
-                {
-                    buffer.Append((char)node);
-                }
+                buffer.Append((char)node);
             }
             return buffer.ToString();
         }
 
         private static bool IsClosed(TextReader reader, StringBuilder buffer, bool isEscaped)
         {
-            return (isEscaped && CheckIfEscaped(reader, buffer) && CheckIfStatementClosed(reader)) || (isEscaped == false && CheckIfStatementClosed(reader));
+            return isEscaped && CheckIfEscaped(reader, buffer) && CheckIfStatementClosed(reader) 
+                || !isEscaped && CheckIfStatementClosed(reader);
         }
 
         private static bool CheckIfStatementClosed(TextReader reader)
         {
-            var isClosed = false;
-            if ((char)reader.Peek() == '}')
-            {
-                isClosed = true;
-            }
+            var isClosed = (char)reader.Peek() == '}';
             return isClosed;
         }
 
         private static bool CheckIfEscaped(TextReader reader, StringBuilder buffer)
         {
-            bool escaped = false;
+            var escaped = false;
             if ((char)reader.Peek() == '-')
             {
                 var first = reader.Read();

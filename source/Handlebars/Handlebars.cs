@@ -19,17 +19,17 @@ namespace HandlebarsDotNet
             return new HandlebarsEnvironment(configuration);
         }
 
-        public static Action<TextWriter, object> Compile(TextReader template)
+        public static HandlebarsTemplate Compile(TextReader template)
         {
             return Instance.Compile(template);
         }
 
-        public static Func<object, string> Compile(string template)
+        public static HandlebarsTemplate Compile(string template)
         {
             return Instance.Compile(template);
         }
 
-        public static void RegisterTemplate(string templateName, Action<TextWriter, object> template)
+        public static void RegisterTemplate(string templateName, HandlebarsTemplate template)
         {
             Instance.RegisterTemplate(templateName, template);
         }

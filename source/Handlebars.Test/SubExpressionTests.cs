@@ -24,7 +24,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Hello world";
 
@@ -48,7 +48,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Outer Inner inner-arg";
 
@@ -58,14 +58,14 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void BasicSubExpressionWithHashArgument()
         {
-            var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
-            var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
+            var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
+            var subHelperName = "subhelper-" + Guid.NewGuid(); //randomize helper name
             Handlebars.RegisterHelper(helperName, (writer, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
             Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
-                var hash = args[0] as Dictionary<string, object>;
+                var hash = (Dictionary<string, object>)args[0];
                 writer.Write("Inner " + hash["item1"] + "-" + hash["item2"]);
             });
 
@@ -73,7 +73,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Outer Inner inner-arg";
 
@@ -98,7 +98,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Math 3";
 
@@ -122,7 +122,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { 
+            var output = template.Render(new { 
                 property = "inner-arg"
             });
 
@@ -149,7 +149,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Math 3 7";
 
@@ -174,7 +174,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "3 hello";
 
@@ -199,7 +199,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "6";
 

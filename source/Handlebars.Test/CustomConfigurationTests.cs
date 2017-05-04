@@ -32,7 +32,7 @@ namespace HandlebarsDotNet.Test
         public void LowerCamelCaseInputModelNaming()
         {
             var template = "Hello {{person.name}} {{person.surname}} from {{person.address.homeCountry}}. You're {{{description}}}.";
-            var output = this.HandlebarsInstance.Compile(template).Invoke(Value);
+            var output = this.HandlebarsInstance.Compile(template).Render(Value);
 
             Assert.Equal(output, ExpectedOutput);
         }
@@ -41,7 +41,7 @@ namespace HandlebarsDotNet.Test
         public void UpperCamelCaseInputModelNaming()
         {
             var template = "Hello {{person.name}} {{person.surname}} from {{person.address.homeCountry}}. You're {{{description}}}.";
-            var output = this.HandlebarsInstance.Compile(template).Invoke(Value);
+            var output = this.HandlebarsInstance.Compile(template).Render(Value);
 
             Assert.Equal(output, ExpectedOutput);
         }
@@ -50,7 +50,7 @@ namespace HandlebarsDotNet.Test
         public void SnakeCaseInputModelNaming()
         {
             var template = "Hello {{person.name}} {{person.surname}} from {{person.address.home_Country}}. You're {{{description}}}.";
-            var output = this.HandlebarsInstance.Compile(template).Invoke(Value);
+            var output = this.HandlebarsInstance.Compile(template).Render(Value);
 
             Assert.Equal(output, ExpectedOutput);
         }
@@ -82,7 +82,7 @@ namespace HandlebarsDotNet.Test
 
             var handlebarsInstance = Handlebars.Create(configuration);
 
-            var output = handlebarsInstance.Compile(template).Invoke(Value);
+            var output = handlebarsInstance.Compile(template).Render(Value);
 
             Assert.Equal(ExpectedOutput, output);
         }
@@ -101,7 +101,7 @@ namespace HandlebarsDotNet.Test
             var handlebarsInstance = Handlebars.Create(configuration);
 
             var value = new {Username = "\"<Eric>\"\n<Sharp>"};
-            var output = handlebarsInstance.Compile(template).Invoke(value);
+            var output = handlebarsInstance.Compile(template).Render(value);
 
             Assert.Equal(@"No html entities, \""<Eric>\""\n<Sharp>.", output);
         }

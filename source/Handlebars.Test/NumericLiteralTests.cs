@@ -21,7 +21,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3 4}}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -31,7 +31,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3  4}}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -41,7 +41,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3 4 }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -51,7 +51,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3    4 }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -61,7 +61,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd    3    4 }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -71,7 +71,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3 \"4\"}}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -81,7 +81,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3 \"4\" }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -91,7 +91,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd 3    \"4\" }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -101,7 +101,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd    3   \"4\" }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -111,7 +111,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd \"3\" 4}}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
 
@@ -121,7 +121,7 @@ namespace HandlebarsDotNet.Test
             var source = "{{numericLiteralAdd \"3\" 4 }}";
             var template = Handlebars.Compile(source);
             var data = new {};
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("7", result);
         }
     }

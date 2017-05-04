@@ -129,7 +129,8 @@ namespace HandlebarsDotNet.Compiler
             }
             else
             {
-                throw new HandlebarsRuntimeException(string.Format("Template references a helper that is not registered. Could not find helper '{0}'", helperName));
+                throw new HandlebarsRuntimeException(
+                    $"Template references a helper that is not registered. Could not find helper '{helperName}'");
             }
         }
     }

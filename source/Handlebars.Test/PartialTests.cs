@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Xunit;
 using System.IO;
 
@@ -25,7 +24,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc!", result);
         }
 
@@ -43,7 +42,7 @@ namespace HandlebarsDotNet.Test
             var partialSource = "{{name}}";           
             Handlebars.RegisterTemplate("person", partialSource);            
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc!", result);
         }
 
@@ -67,7 +66,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc!", result);
         }
 
@@ -85,7 +84,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(null);
+            var result = template.Render(null);
             Assert.Equal("Hello, Pete!", result);
         }
 
@@ -103,7 +102,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(null);
+            var result = template.Render(null);
             Assert.Equal("Hello, Pete Sampras!", result);
         }
 
@@ -132,7 +131,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc!", result);
         }
 
@@ -161,7 +160,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc Smith!", result);
         }
 
@@ -179,7 +178,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(null);
+            var result = template.Render(null);
             Assert.Equal("Hello, 1 True!", result);
         }
 
@@ -197,7 +196,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(null);
+            var result = template.Render(null);
             Assert.Equal("Hello, Pe ({~te~}) !", result);
         }
 
@@ -219,7 +218,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
             var data = new { };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, world!", result);
         }
 
@@ -242,7 +241,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
             var data = new { };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, world!", result);
         }
 
@@ -274,7 +273,7 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc Smith!", result);
         }
 
@@ -301,7 +300,7 @@ namespace HandlebarsDotNet.Test
                 name = "test"
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc Smith!", result);
         }
 
@@ -323,7 +322,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc!", result);
         }
 
@@ -347,7 +346,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc Smith!", result);
         }
 
@@ -371,7 +370,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc !", result);
         }
 
@@ -399,7 +398,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Marc !", result);
         }
 
@@ -415,7 +414,7 @@ namespace HandlebarsDotNet.Test
                 lastName = "Jones"
             };
 
-            var result1 = template(data);
+            var result1 = template.Render(data);
             Assert.Equal ("Hello, friend!", result1);
 
             var partialSource = "{{firstName}} {{lastName}}";
@@ -424,7 +423,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person1", partialTemplate);
             }
 
-            var result2 = template(data);
+            var result2 = template.Render(data);
             Assert.Equal("Hello, Pete Jones!", result2);
         }
 
@@ -440,7 +439,7 @@ namespace HandlebarsDotNet.Test
                 lastName = "Jones"
             };
 
-            var result1 = template (data);
+            var result1 = template.Render(data);
             Assert.Equal ("Hello, friend!", result1);
 
             var partialSource = "{{arg}}";
@@ -449,7 +448,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate ("person2", partialTemplate);
             }
 
-            var result2 = template (data);
+            var result2 = template.Render(data);
             Assert.Equal ("Hello, Todd!", result2);
         }
     }

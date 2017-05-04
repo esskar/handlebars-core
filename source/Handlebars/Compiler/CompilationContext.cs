@@ -1,31 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
 {
     internal class CompilationContext
     {
-        private readonly HandlebarsConfiguration _configuration;
-        private readonly ParameterExpression _bindingContext;
-
         public CompilationContext(HandlebarsConfiguration configuration)
         {
-            _configuration = configuration;
-            _bindingContext = Expression.Variable(typeof(BindingContext), "context");
+            Configuration = configuration;
+            BindingContext = Expression.Variable(typeof(BindingContext), "context");
         }
 
-        public virtual HandlebarsConfiguration Configuration
-        {
-            get { return _configuration; }
-        }
+        public virtual HandlebarsConfiguration Configuration { get; }
 
-        public virtual ParameterExpression BindingContext
-        {
-            get { return _bindingContext; }
-        }
+        public virtual ParameterExpression BindingContext { get; }
     }
 }

@@ -1,21 +1,22 @@
 ﻿using System.IO;
 using Xunit;
 
-namespace HandlebarsDotNet.Test.ViewEngine
+namespace HandlebarsDotNet.Test.Providers
 {
     public class CasparTests
     {
         [Fact]
         public void CanRenderCasparIndexTemplate()
         {
-            var fs = (new DiskFileSystem());
-            var handlebars = HandlebarsDotNet.Handlebars.Create(new HandlebarsConfiguration()
+            var configuration = new HandlebarsConfiguration
             {
-                FileSystem = fs
-            });
+                TemplateContentProvider = new DiskFileSystemTemplateContentProvider()
+            };
+
+            var handlebars = Handlebars.Create(configuration);
             AddHelpers(handlebars);
-            var renderView = handlebars.CompileView("ViewEngine/Casper-master/index.hbs");
-            var output = renderView(new
+            var renderView = handlebars.CompileView("Providers/Casper-master/index.hbs");
+            var output = renderView.Render(new
             {
                 blog = new
                 {
@@ -38,14 +39,15 @@ namespace HandlebarsDotNet.Test.ViewEngine
         [Fact]
         public void CanRenderCasparPostTemplate()
         {
-            var fs = (new DiskFileSystem());
-            var handlebars = HandlebarsDotNet.Handlebars.Create(new HandlebarsConfiguration()
+            var configuration = new HandlebarsConfiguration
             {
-                FileSystem = fs
-            });
+                TemplateContentProvider = new DiskFileSystemTemplateContentProvider()
+            };
+
+            var handlebars = Handlebars.Create(configuration);
             AddHelpers(handlebars);
-            var renderView = handlebars.CompileView("ViewEngine/Casper-master/post.hbs");
-            var output = renderView(new
+            var renderView = handlebars.CompileView("Providers/Casper-master/post.hbs");
+            var output = renderView.Render(new
             {
                 blog = new
                 {
@@ -80,13 +82,16 @@ namespace HandlebarsDotNet.Test.ViewEngine
         [Fact]
         public void CanRenderCasparPostNoLayoutTemplate()
         {
-            var fs = (new DiskFileSystem());
-            var handlebarsConfiguration = new HandlebarsConfiguration() {FileSystem = fs};
-            var handlebars = Handlebars.Create(handlebarsConfiguration);
+            var configuration = new HandlebarsConfiguration
+            {
+                TemplateContentProvider = new DiskFileSystemTemplateContentProvider()
+            };
+
+            var handlebars = Handlebars.Create(configuration);
 
             AddHelpers(handlebars);
-            var renderView = handlebars.CompileView("ViewEngine/Casper-master/post-no-layout.hbs");
-            var output = renderView(new
+            var renderView = handlebars.CompileView("Providers/Casper-master/post-no-layout.hbs");
+            var output = renderView.Render(new
             {
                 post = new
                 {
@@ -99,9 +104,9 @@ namespace HandlebarsDotNet.Test.ViewEngine
             Assert.Equal("My Post Title", cq["h1.post-title"].Html());
         }
 
-        class DiskFileSystem : ViewEngineFileSystem
+        private class DiskFileSystemTemplateContentProvider : FileSystemTemplateContentProvider
         {
-            public override string GetFileContent(string filename)
+            protected override string GetFileContent(string filename)
             {
                 return File.ReadAllText(filename);
             }
@@ -111,7 +116,7 @@ namespace HandlebarsDotNet.Test.ViewEngine
                 return Path.Combine(dir, otherFileName);
             }
 
-            public override bool FileExists(string filePath)
+            protected override bool FileExists(string filePath)
             {
                 return File.Exists(filePath);
             }

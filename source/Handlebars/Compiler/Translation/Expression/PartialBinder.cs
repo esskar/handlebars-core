@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq.Expressions;
 #if netstandard
 using System.Reflection;
@@ -78,26 +77,16 @@ namespace HandlebarsDotNet.Compiler
             BindingContext context,
             HandlebarsConfiguration configuration)
         {
-            if (!configuration.RegisteredTemplates.TryGetTemplate(partialName, out Action<TextWriter, object> template))
+            if (!configuration.TemplateRegistration.TryGetTemplate(partialName, out HandlebarsTemplate template))
             {
-                if (configuration.FileSystem != null && context.TemplatePath != null)
+                var partialLookupKey = string.Format("{0}+{1}", 
+                    context.TemplateName ?? string.Empty, partialName);
+                if (!configuration.TemplateRegistration.TryGetTemplate(partialLookupKey, out template))
                 {
-                    var partialPath = configuration.FileSystem.Closest(context.TemplatePath,
-                        "partials/" + partialName + ".hbs");
-                    if (partialPath != null)
-                    {
-                        var compiled = Handlebars.Create(configuration).CompileView(partialPath);
-                        template = (writer, o) =>
-                        {
-                            writer.Write(compiled(o));
-                        };
-                        configuration.RegisteredTemplates.AddOrUpdate(partialName, template);
-                    }
-                    else
-                    {
-                        // Failed to find partial in filesystem
+                    template = Handlebars.Create(configuration).CompileView(partialName, context.TemplateName, false);
+                    if (template == null)
                         return false;
-                    }
+                    configuration.TemplateRegistration.RegisterTemplate(partialLookupKey, template);
                 }
                 else
                 {
@@ -107,7 +96,7 @@ namespace HandlebarsDotNet.Compiler
 
             try
             {
-                template(context.TextWriter, context);
+                template.RenderTo(context.TextWriter, context);
                 return true;
             }
             catch (Exception exception)

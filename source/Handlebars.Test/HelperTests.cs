@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace HandlebarsDotNet.Test
@@ -22,7 +21,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Here are some things: \nThing 1: foo\nThing 2: bar";
 
@@ -32,13 +31,13 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void HelperWithLiteralArgumentsWithQuotes()
         {
-            var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
+            var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
             Handlebars.RegisterHelper(helperName, (writer, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
                     writer.WriteSafeString(
-                        string.Format("\nThing {0}: {1}", ++count, arg));
+                        $"\nThing {++count}: {arg}");
                 }
             });
 
@@ -46,7 +45,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Here are some things: \nThing 1: My \"favorite\" movie\nThing 2: bar";
 
@@ -58,7 +57,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "{{^key}}No key!{{/key}}";
             var template = Handlebars.Compile(source);
-            var output = template(new { });
+            var output = template.Render(new { });
             var expected = "No key!";
             Assert.Equal(expected, output);
         }
@@ -72,7 +71,7 @@ namespace HandlebarsDotNet.Test
             {
                 key = false
             };
-            var output = template(data);
+            var output = template.Render(data);
             var expected = "Falsy value!";
             Assert.Equal(expected, output);
         }
@@ -86,7 +85,7 @@ namespace HandlebarsDotNet.Test
                 {
                     key = new string[] { }
                 };
-            var output = template(data);
+            var output = template.Render(data);
             var expected = "Empty sequence!";
             Assert.Equal(expected, output);
         }
@@ -98,9 +97,9 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
             var data = new
                 {
-                    key = new string[] { "element" }
+                    key = new[] { "element" }
                 };
-            var output = template(data);
+            var output = template.Render(data);
             var expected = "";
             Assert.Equal(expected, output);
         }
@@ -134,9 +133,9 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var outputIsSame = template(dataWithSameValues);
+            var outputIsSame = template.Render(dataWithSameValues);
             var expectedIsSame = "Args are same";
-            var outputIsDifferent = template(dataWithDifferentValues);
+            var outputIsDifferent = template.Render(dataWithDifferentValues);
             var expectedIsDifferent = "Args are not same";
 
             Assert.Equal(expectedIsSame, outputIsSame);
@@ -158,7 +157,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Here are some things: \nThing 1: 123\nThing 2: 4567\nThing 3: -98.76";
 
@@ -169,7 +168,7 @@ namespace HandlebarsDotNet.Test
         public void HelperWithHashArgument()
         {
             Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
-                var hash = args[2] as Dictionary<string, object>;
+                var hash = (Dictionary<string, object>)args[2];
                 foreach(var item in hash)
                 {
                     writer.Write(" {0}: {1}", item.Key, item.Value);
@@ -180,7 +179,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var output = template(new { });
+            var output = template.Render(new { });
 
             var expected = "Here are some things: item1: val1 item2: val2";
 
@@ -200,11 +199,11 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
         
             var expectedIsTrue = "True";
-            var outputIsTrue = template(new { arg1 = 1, arg2 = 1 });
+            var outputIsTrue = template.Render(new { arg1 = 1, arg2 = 1 });
             Assert.Equal(expectedIsTrue, outputIsTrue);
         
             var expectedIsFalse = "";
-            var outputIsFalse = template(new { arg1 = 1, arg2 = 2 });
+            var outputIsFalse = template.Render(new { arg1 = 1, arg2 = 2 });
             Assert.Equal(expectedIsFalse, outputIsFalse);
         }
 
@@ -228,7 +227,7 @@ namespace HandlebarsDotNet.Test
                 args = new[] { new { arg = "foo" }, new { arg = "bar" } }
             };
 
-            var output = template(data);
+            var output = template.Render(data);
 
             var expected = "Here are some things: \nThing 1: foo\nThing 2: bar\nThing 3: another argument";
 

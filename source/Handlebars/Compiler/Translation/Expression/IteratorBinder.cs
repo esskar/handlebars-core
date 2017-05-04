@@ -26,7 +26,7 @@ namespace HandlebarsDotNet.Compiler
             return Expression.Block(
                 node.Type,
                 node.Variables,
-                node.Expressions.Select(n => Visit(n)));
+                node.Expressions.Select(Visit));
         }
 
         protected override Expression VisitConditional(ConditionalExpression node)
@@ -49,7 +49,7 @@ namespace HandlebarsDotNet.Compiler
         {
             var iteratorBindingContext = Expression.Variable(typeof(BindingContext), "context");
             return Expression.Block(
-                new ParameterExpression[]
+                new[]
                 {
                     iteratorBindingContext
                 },
@@ -80,15 +80,14 @@ namespace HandlebarsDotNet.Compiler
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
-                        typeof(IteratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }),
-                        new Expression[] { CompilationContext.BindingContext })),
+                        typeof(IteratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }), CompilationContext.BindingContext)),
                 Expression.Call(
 #if netstandard
                     new Action<IteratorBindingContext, IEnumerable, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).GetMethodInfo(),
 #else
                     new Action<IteratorBindingContext, IEnumerable, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).Method,
 #endif
-                    new Expression[]
+                    new[]
                     {
                         Expression.Convert(contextParameter, typeof(IteratorBindingContext)),
                         Expression.Convert(iex.Sequence, typeof(IEnumerable)),
@@ -103,15 +102,14 @@ namespace HandlebarsDotNet.Compiler
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
-                        typeof(ObjectEnumeratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }),
-                        new Expression[] { CompilationContext.BindingContext })),
+                        typeof(ObjectEnumeratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }), CompilationContext.BindingContext)),
                 Expression.Call(
 #if netstandard
                     new Action<ObjectEnumeratorBindingContext, object, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).GetMethodInfo(),
 #else
                     new Action<ObjectEnumeratorBindingContext, object, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).Method,
 #endif
-                    new Expression[]
+                    new[]
                     {
                         Expression.Convert(contextParameter, typeof(ObjectEnumeratorBindingContext)),
                         iex.Sequence,
@@ -126,15 +124,14 @@ namespace HandlebarsDotNet.Compiler
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
-                        typeof(ObjectEnumeratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }),
-                        new Expression[] { CompilationContext.BindingContext })),
+                        typeof(ObjectEnumeratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }), CompilationContext.BindingContext)),
                 Expression.Call(
 #if netstandard
                     new Action<ObjectEnumeratorBindingContext, IEnumerable, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).GetMethodInfo(),
 #else
                     new Action<ObjectEnumeratorBindingContext, IEnumerable, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).Method,
 #endif
-                    new Expression[]
+                    new[]
                     {
                         Expression.Convert(contextParameter, typeof(ObjectEnumeratorBindingContext)),
                         Expression.Convert(iex.Sequence, typeof(IEnumerable)),
@@ -149,15 +146,14 @@ namespace HandlebarsDotNet.Compiler
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
-                        typeof(ObjectEnumeratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }),
-                        new Expression[] { CompilationContext.BindingContext })),
+                        typeof(ObjectEnumeratorBindingContext).GetConstructor(new[] { typeof(BindingContext) }), CompilationContext.BindingContext)),
                 Expression.Call(
 #if netstandard
                     new Action<ObjectEnumeratorBindingContext, IDynamicMetaObjectProvider, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).GetMethodInfo(),
 #else
                     new Action<ObjectEnumeratorBindingContext, IDynamicMetaObjectProvider, Action<TextWriter, object>, Action<TextWriter, object>>(Iterate).Method,
 #endif
-                    new Expression[]
+                    new[]
                     {
                         Expression.Convert(contextParameter, typeof(ObjectEnumeratorBindingContext)),
                         Expression.Convert(iex.Sequence, typeof(IDynamicMetaObjectProvider)),
@@ -243,7 +239,7 @@ namespace HandlebarsDotNet.Compiler
                         {
                             context.Key = key.ToString();
                             var value = target.GetType().GetMethod("get_Item").Invoke(target, new[] { key });
-                            context.First = (context.Index == 0);
+                            context.First = context.Index == 0;
                             template(context.TextWriter, value);
                             context.Index++;
                         }
@@ -274,7 +270,7 @@ namespace HandlebarsDotNet.Compiler
                 {
                     context.Key = name;
                     var value = GetProperty(target, name);
-                    context.First = (context.Index == 0);
+                    context.First = context.Index == 0;
                     template(context.TextWriter, value);
                     context.Index++;
                 }
@@ -306,7 +302,7 @@ namespace HandlebarsDotNet.Compiler
                     while (!context.Last)
                     {
                         context.Last = !iter.MoveNext();
-                        context.First = (context.Index == 0);
+                        context.First = context.Index == 0;
                         template(context.TextWriter, item);
                         context.Index++;
 
@@ -334,7 +330,7 @@ namespace HandlebarsDotNet.Compiler
         private class IteratorBindingContext : BindingContext
         {
             public IteratorBindingContext(BindingContext context)
-                : base(context.Value, context.TextWriter, context.ParentContext, context.TemplatePath)
+                : base(context.Value, context.TextWriter, context.ParentContext, context.TemplateName)
             {
             }
 
@@ -348,7 +344,7 @@ namespace HandlebarsDotNet.Compiler
         private class ObjectEnumeratorBindingContext : BindingContext
         {
             public ObjectEnumeratorBindingContext(BindingContext context)
-                : base(context.Value, context.TextWriter, context.ParentContext, context.TemplatePath)
+                : base(context.Value, context.TextWriter, context.ParentContext, context.TemplateName)
             {
             }
 
@@ -361,13 +357,13 @@ namespace HandlebarsDotNet.Compiler
 
         private static object AccessMember(object instance, MemberInfo member)
         {
-            if (member is PropertyInfo)
+            if (member is PropertyInfo propertyInfo)
             {
-                return ((PropertyInfo)member).GetValue(instance, null);
+                return propertyInfo.GetValue(instance, null);
             }
-            if (member is FieldInfo)
+            if (member is FieldInfo fieldInfo)
             {
-                return ((FieldInfo)member).GetValue(instance);
+                return fieldInfo.GetValue(instance);
             }
             throw new InvalidOperationException("Requested member was not a field or property");
         }

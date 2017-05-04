@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using HandlebarsDotNet.Compiler;
 
 namespace HandlebarsDotNet
@@ -14,53 +12,35 @@ namespace HandlebarsDotNet
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
-            
+            _compiler = new HandlebarsCompiler(configuration);
+
             Configuration = configuration;
-            _compiler = new HandlebarsCompiler(Configuration);
             RegisterBuiltinHelpers();
         }
 
         public HandlebarsConfiguration Configuration { get; }
 
-        public Func<object, string> CompileView(string templatePath)
+        public HandlebarsTemplate CompileView(string templateName, string parentTemplateName, bool throwOnErrors)
         {
-            var compiledView = _compiler.CompileView(templatePath);
-            return vm =>
-            {
-                var sb = new StringBuilder();
-                using (var tw = new StringWriter(sb))
-                {
-                    compiledView(tw, vm);
-                }
-                return sb.ToString();
-            };
+            return _compiler.CompileView(templateName, parentTemplateName, throwOnErrors);
         }
 
-        public Action<TextWriter, object> Compile(TextReader template)
+        public HandlebarsTemplate Compile(TextReader template)
         {
             return _compiler.Compile(template);
         }
 
-        public Func<object, string> Compile(string template)
+        public HandlebarsTemplate Compile(string template)
         {
             using (var reader = new StringReader(template))
             {
-                var compiledTemplate = Compile(reader);
-                return context =>
-                {
-                    var builder = new StringBuilder();
-                    using (var writer = new StringWriter(builder))
-                    {
-                        compiledTemplate(writer, context);
-                    }
-                    return builder.ToString();
-                };
+                return Compile(reader);
             }
         }
 
-        public void RegisterTemplate(string templateName, Action<TextWriter, object> template)
+        public void RegisterTemplate(string templateName, HandlebarsTemplate template)
         {
-            Configuration.RegisteredTemplates.AddOrUpdate(templateName, template);
+            Configuration.TemplateRegistration.RegisterTemplate(templateName, template);
         }
 
         public void RegisterTemplate(string templateName, string template)

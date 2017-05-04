@@ -3,6 +3,7 @@
   <PropertyGroup>
     <DebugType>full</DebugType>
     <TargetFrameworks>net461;netcoreapp1.1</TargetFrameworks>
+    <RootNamespace>HandlebarsDotNet.Test</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp1.1'">
@@ -36,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ViewEngine\**\*.hbs" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Providers\**\*.hbs" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp1.1'">

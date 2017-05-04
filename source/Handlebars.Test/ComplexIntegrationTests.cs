@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using System;
 using System.IO;
 using System.Collections;
 
@@ -7,7 +6,7 @@ namespace HandlebarsDotNet.Test
 {
     public class ComplexIntegrationTests
     {
-		private const string naturalLanguageListTemplate = "{{#each County}}" +
+		private const string NaturalLanguageListTemplate = "{{#each County}}" +
 			"{{#if @first}}" + 
 			"{{this}}" +
 			"{{else}}" +
@@ -53,10 +52,10 @@ namespace HandlebarsDotNet.Test
                     inner_bool = false
                 }
             };
-            var resultTrueTrue = template(trueTrue);
-            var resultTrueFalse = template(trueFalse);
-            var resultFalseTrue = template(falseTrue);
-            var resultFalseFalse = template(falseFalse);
+            var resultTrueTrue = template.Render(trueTrue);
+            var resultTrueFalse = template.Render(trueFalse);
+            var resultFalseTrue = template.Render(falseTrue);
+            var resultFalseFalse = template.Render(falseFalse);
             Assert.Equal(@"a is true
 ", resultTrueTrue);
             Assert.Equal(@"a is false
@@ -87,7 +86,7 @@ namespace HandlebarsDotNet.Test
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("<a href='http://google.com/'>Google</a><a href='http://yahoo.com/'>Yahoo!</a>", result);
         }
 
@@ -109,7 +108,7 @@ namespace HandlebarsDotNet.Test
             });
 
             Handlebars.RegisterHelper("block_helper", (writer, options, context, arguments) => {
-                foreach(var item in arguments[0] as IEnumerable)
+                foreach(var item in (IEnumerable)arguments[0])
                 {
                     options.Template(writer, item);
                 }
@@ -117,7 +116,7 @@ namespace HandlebarsDotNet.Test
 
 			var template = Handlebars.Compile(source);
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("<a href='http://google.com/'>Google</a><a href='http://yahoo.com/'>Yahoo!</a>", result);
         }
 
@@ -128,7 +127,7 @@ namespace HandlebarsDotNet.Test
 
             var expected = @"Foo: FooAA,FooAAA,;Foo: FooBB,FooBBB,;";
 
-            var result = template(new
+            var result = template.Render(new
             {
                 Bar = "Foo",
                 Foo = new[] { 
@@ -154,9 +153,9 @@ namespace HandlebarsDotNet.Test
 				County = new[] { "Kane" }
 			};
 
-			var template = Handlebars.Compile(naturalLanguageListTemplate);
+			var template = Handlebars.Compile(NaturalLanguageListTemplate);
 
-			var result = template(data);
+			var result = template.Render(data);
 
 			Assert.Equal("Kane", result);
 		}
@@ -169,9 +168,9 @@ namespace HandlebarsDotNet.Test
 				County = new[] { "Kane", "Salt Lake" }
 			};
 
-			var template = Handlebars.Compile(naturalLanguageListTemplate);
+			var template = Handlebars.Compile(NaturalLanguageListTemplate);
 
-			var result = template(data);
+			var result = template.Render(data);
 
 			Assert.Equal("Kane and Salt Lake", result);
 		}
@@ -184,9 +183,9 @@ namespace HandlebarsDotNet.Test
 				County = new[] { "Kane", "Salt Lake", "Weber" }
 			};
 
-			var template = Handlebars.Compile(naturalLanguageListTemplate);
+			var template = Handlebars.Compile(NaturalLanguageListTemplate);
 
-			var result = template(data);
+			var result = template.Render(data);
 
 			Assert.Equal("Kane, Salt Lake and Weber", result);
 		}
@@ -210,7 +209,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("personcity", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Marc is from Wilmington!", result);
         }
     }

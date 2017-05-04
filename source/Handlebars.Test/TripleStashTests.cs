@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 using System.IO;
 
 namespace HandlebarsDotNet.Test
@@ -24,7 +23,7 @@ namespace HandlebarsDotNet.Test
 				Handlebars.RegisterTemplate("unenc_person", partialTemplate);
 			}
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, <div>Marc</div>!", result);
 		}
 
@@ -46,7 +45,7 @@ namespace HandlebarsDotNet.Test
 				Handlebars.RegisterTemplate("enc_person", partialTemplate);
 			}
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, <div><div>Marc</div></div>!", result);
 		}
 
@@ -63,7 +62,7 @@ namespace HandlebarsDotNet.Test
 					bar = "<div>world</div>"
 				}
 			};
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("<div>hello</div> <div>world</div> ", result);
 		}
 
@@ -80,7 +79,7 @@ namespace HandlebarsDotNet.Test
                     dangerous_value = "<div>There's HTML here</div>"
                 };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, <div>There's HTML here</div>!", result);
         }
 
@@ -97,7 +96,7 @@ namespace HandlebarsDotNet.Test
                     dangerous_value = "<div>There's HTML here</div>"
                 };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("<div>There's HTML here</div>...&lt;div&gt;There's HTML here&lt;/div&gt;...<div>There's HTML here</div>!", result);
         }
 	}

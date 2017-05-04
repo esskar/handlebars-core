@@ -4,10 +4,6 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class BindingContext
     {
-        private readonly BindingContext _parent;
-
-        public string TemplatePath { get; }
-
         public EncodedTextWriter TextWriter { get; }
 
         public bool SuppressEncoding
@@ -16,17 +12,17 @@ namespace HandlebarsDotNet.Compiler
             set { TextWriter.SuppressEncoding = value; }
         }
 
-        public BindingContext(object value, EncodedTextWriter writer, BindingContext parent, string templatePath)
+        public BindingContext(object value, EncodedTextWriter writer, BindingContext parent, string templateName)
         {
-            TemplatePath = parent != null ? (parent.TemplatePath ?? templatePath) : templatePath;
             TextWriter = writer;
             Value = value;
-            _parent = parent;
+            ParentContext = parent;
+            TemplateName = templateName;
         }
 
         public virtual object Value { get; }
 
-        public virtual BindingContext ParentContext => _parent;
+        public virtual BindingContext ParentContext { get; }
 
         public virtual object Root
         {
@@ -40,6 +36,8 @@ namespace HandlebarsDotNet.Compiler
                 return currentContext.Value;
             }
         }
+
+        public string TemplateName { get; }
 
         public virtual object GetContextVariable(string variableName)
         {
@@ -69,9 +67,9 @@ namespace HandlebarsDotNet.Compiler
                     throw new HandlebarsRuntimeException("Context variable references a member that is not a field or property");
                 }
             }
-            else if (_parent != null)
+            else if (ParentContext != null)
             {
-                returnValue = _parent.GetContextVariable(variableName);
+                returnValue = ParentContext.GetContextVariable(variableName);
             }
             else
             {
@@ -82,7 +80,7 @@ namespace HandlebarsDotNet.Compiler
 
         public virtual BindingContext CreateChildContext(object value)
         {
-            return new BindingContext(value, TextWriter, this, TemplatePath);
+            return new BindingContext(value, TextWriter, this, TemplateName);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -36,7 +36,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, ('foo' is undefined)!", result);
         }
 
@@ -55,7 +55,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-	        Assert.Throws<HandlebarsUndefinedBindingException>( () => template( data ) );
+	        Assert.Throws<HandlebarsUndefinedBindingException>( () => template.Render( data ) );
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace HandlebarsDotNet.Test
 
             try
             {
-                template(data);
+                template.Render(data);
             }
             catch (HandlebarsUndefinedBindingException ex)
             {
@@ -100,7 +100,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -112,7 +112,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, {name}!", result);
         }
 
@@ -124,7 +124,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, \\{name\\}!", result);
         }
 
@@ -137,7 +137,7 @@ namespace HandlebarsDotNet.Test
             {
                 names = new[] {"Foo", "Handlebars.Net"}
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -150,7 +150,7 @@ namespace HandlebarsDotNet.Test
             {
                 names = new[] {new {name = "Foo"}, new {name = "Handlebars.Net"}}
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -163,7 +163,7 @@ namespace HandlebarsDotNet.Test
             {
                 names = new[] { new { name = "Foo" }, new { name = "Handlebars.Net" } }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
         
@@ -176,7 +176,7 @@ namespace HandlebarsDotNet.Test
                 {
                     nestedObject = "A dot goes a long way"
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("A dot goes a long way", result);
         }
 
@@ -189,7 +189,7 @@ namespace HandlebarsDotNet.Test
                 {
                     nestedObject = "Relative dots, yay"
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("{ nestedObject = Relative dots, yay }", result);
         }
         
@@ -202,7 +202,7 @@ namespace HandlebarsDotNet.Test
                 {
                     names = new[] { new { name = "Foo" }, new { name = "Handlebars.Net" } }
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Array is 2 item(s) long", result);
         }
 
@@ -217,8 +217,8 @@ namespace HandlebarsDotNet.Test
             var falseData = new {
                 basic_bool = false
             };
-            var resultTrue = template(trueData);
-            var resultFalse = template(falseData);
+            var resultTrue = template.Render(trueData);
+            var resultFalse = template.Render(falseData);
             Assert.Equal("Hello, Bob!", resultTrue);
             Assert.Equal("Hello, Sam!", resultFalse);
         }
@@ -234,8 +234,8 @@ namespace HandlebarsDotNet.Test
             var inactiveData = new {
                 isInactive = true
             };
-            var resultTrue = template(activeData);
-            var resultFalse = template(inactiveData);
+            var resultTrue = template.Render(activeData);
+            var resultFalse = template.Render(inactiveData);
             Assert.Equal("active", resultTrue);
             Assert.Equal("inactive", resultFalse);
         }
@@ -253,9 +253,9 @@ namespace HandlebarsDotNet.Test
             };
             var elseData = new {
             };
-            var resultActive = template(activeData);
-            var resultInactive = template(inactiveData);
-            var resultElse = template(elseData);
+            var resultActive = template.Render(activeData);
+            var resultInactive = template.Render(inactiveData);
+            var resultElse = template.Render(elseData);
             Assert.Equal("active", resultActive);
             Assert.Equal("inactive", resultInactive);
             Assert.Equal("nada", resultElse);
@@ -271,7 +271,7 @@ namespace HandlebarsDotNet.Test
                     name = "Erik"
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, my good friend Erik!", result);
         }
 
@@ -281,9 +281,9 @@ namespace HandlebarsDotNet.Test
             var source = "Hello, {{#with person}} my good friend{{else}}nevermind{{/with}}";
             var template = Handlebars.Compile(source);
 
-			Assert.Equal("Hello, nevermind", template(new {}));
-			Assert.Equal("Hello, nevermind", template(new {person = false}));
-			Assert.Equal("Hello, nevermind", template(new {person = new string[] {}}));
+			Assert.Equal("Hello, nevermind", template.Render(new {}));
+			Assert.Equal("Hello, nevermind", template.Render(new {person = false}));
+			Assert.Equal("Hello, nevermind", template.Render(new {person = new string[] {}}));
         }
 
         [Fact]
@@ -295,7 +295,7 @@ namespace HandlebarsDotNet.Test
             {
                 name = "<b>Bob</b>"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, &lt;b&gt;Bob&lt;/b&gt;!", result);
         }
 
@@ -308,7 +308,7 @@ namespace HandlebarsDotNet.Test
             {
                 name = "Carl"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Carl!", result);
         }
 
@@ -321,7 +321,7 @@ namespace HandlebarsDotNet.Test
             {
                 name = "Carl"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Carl!", result);
         }
 
@@ -338,7 +338,7 @@ namespace HandlebarsDotNet.Test
                     bar = "world"
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("hello world ", result);
         }
 
@@ -355,7 +355,7 @@ namespace HandlebarsDotNet.Test
                     bar = "world"
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("foo: hello bar: world ", result);
         }
 
@@ -372,7 +372,7 @@ namespace HandlebarsDotNet.Test
                     { "bar", "world" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("hello world ", result);
         }
 
@@ -389,7 +389,7 @@ namespace HandlebarsDotNet.Test
                     { 1000000017, "world" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("hello world ", result);
         }
 
@@ -406,7 +406,7 @@ namespace HandlebarsDotNet.Test
                     { "bar", "world" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("foo: hello bar: world ", result);
         }
 
@@ -423,7 +423,7 @@ namespace HandlebarsDotNet.Test
                     { 100000000000017L, "world" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("42: hello 100000000000017: world ", result);
         }
 
@@ -440,7 +440,7 @@ namespace HandlebarsDotNet.Test
                     { "Foo" , "Handlebars.Net" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -456,7 +456,7 @@ namespace HandlebarsDotNet.Test
                     { "Foo" , "Handlebars.Net" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -472,7 +472,7 @@ namespace HandlebarsDotNet.Test
                     { 42 , "Handlebars.Net" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -488,7 +488,7 @@ namespace HandlebarsDotNet.Test
                     { 42 , "Handlebars.Net" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -504,7 +504,7 @@ namespace HandlebarsDotNet.Test
                     { 42 , "Handlebars.Net" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -520,7 +520,7 @@ namespace HandlebarsDotNet.Test
                     { 42 , "Handlebars.Net" }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -534,7 +534,7 @@ namespace HandlebarsDotNet.Test
             data.enumerateMe = new ExpandoObject();
             data.enumerateMe.foo = "hello";
             data.enumerateMe.bar = "world";
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("hello world ", result);
         }
 
@@ -547,7 +547,7 @@ namespace HandlebarsDotNet.Test
             data.enumerateMe = new ExpandoObject();
             data.enumerateMe.foo = "hello";
             data.enumerateMe.bar = "world";
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("foo: hello bar: world ", result);
         }
 
@@ -567,7 +567,7 @@ namespace HandlebarsDotNet.Test
                 text = "Handlebars.Net"
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Click here: <a href='https://github.com/rexm/handlebars.net'>Handlebars.Net</a>", result);
         }
 
@@ -587,7 +587,7 @@ namespace HandlebarsDotNet.Test
 				text = "Handlebars.Net"
 			};
 
-			var result = template(data);
+			var result = template.Render(data);
 
 
 			Assert.Equal("Click here: <a href='https://github.com/rexm/handlebars.net'>Handlebars.Net</a>", result);
@@ -606,7 +606,7 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Bill!", result);
         }
 
@@ -617,7 +617,7 @@ namespace HandlebarsDotNet.Test
             
             var template = Handlebars.Compile(source);
             
-            var result = template(new {person = "Bill"});
+            var result = template.Render(new {person = "Bill"});
             Assert.Equal(" -Bill- ", result);
         }
 
@@ -634,7 +634,7 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Bill!", result);
         }
 
@@ -649,7 +649,7 @@ namespace HandlebarsDotNet.Test
                 person = false
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, !", result);
         }
 
@@ -664,7 +664,7 @@ namespace HandlebarsDotNet.Test
                 person = (object)null
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, !", result);
         }
 
@@ -682,7 +682,7 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Bill Mary !", result);
         }
 
@@ -698,7 +698,7 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, nobody!", result);
         }
 
@@ -707,8 +707,8 @@ namespace HandlebarsDotNet.Test
         {
             var template = Handlebars.Compile("Hello, {{^obj}}{{name}}{{/obj}}!");
             
-            Assert.Equal("Hello, nobody!", template(new {name = "nobody"}));
-            Assert.Equal("Hello, nobody!", template(new {name = "nobody", obj = new string[0]}));
+            Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody"}));
+            Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody", obj = new string[0]}));
         }
         
         [Fact]
@@ -716,9 +716,9 @@ namespace HandlebarsDotNet.Test
         {
             var template = Handlebars.Compile("Hello, {{#obj}}somebody{{else}}{{name}}{{/obj}}!");
         
-            Assert.Equal("Hello, nobody!", template(new {name = "nobody"}));
-            Assert.Equal("Hello, nobody!", template(new {name = "nobody", obj = false}));
-            Assert.Equal("Hello, nobody!", template(new {name = "nobody", obj = new string[0]}));
+            Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody"}));
+            Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody", obj = false}));
+            Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody", obj = new string[0]}));
         }
         
         [Fact]
@@ -733,9 +733,9 @@ namespace HandlebarsDotNet.Test
                 new {name = "Sarah"}
             };
         
-            Assert.Equal("Hello, John and Sarah!", template(new {obj = array}));
-            Assert.Equal("Hello, somebody!", template(new {obj = true, name = "somebody"}));
-            Assert.Equal("Hello, person!", template(new {obj = new {name = "person"}}));
+            Assert.Equal("Hello, John and Sarah!", template.Render(new {obj = array}));
+            Assert.Equal("Hello, somebody!", template.Render(new {obj = true, name = "somebody"}));
+            Assert.Equal("Hello, person!", template.Render(new {obj = new {name = "person"}}));
         }
 
 		[Fact]
@@ -749,7 +749,7 @@ namespace HandlebarsDotNet.Test
 				first = "Marc"
 			};
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, Marc !", result);
 		}
 
@@ -764,7 +764,7 @@ namespace HandlebarsDotNet.Test
                 name = (object)null
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, !", result);
         }
 
@@ -779,7 +779,7 @@ namespace HandlebarsDotNet.Test
 				falsy = 0
 			};
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, ", result);
 		}
 
@@ -794,7 +794,7 @@ namespace HandlebarsDotNet.Test
                 falsy = (object)null
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, ", result);
         }
 
@@ -809,7 +809,7 @@ namespace HandlebarsDotNet.Test
 				truthy = -0.1
 			};
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, Truthy!", result);
 		}
 
@@ -824,7 +824,7 @@ namespace HandlebarsDotNet.Test
 				falsy = ""
 			};
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, ", result);
 		}
 
@@ -839,7 +839,7 @@ namespace HandlebarsDotNet.Test
                 Array = new object[] {}
             };
 
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("", result);
         }
@@ -855,7 +855,7 @@ namespace HandlebarsDotNet.Test
 				dangerous_value = "<div>There's HTML here</div>"
 			};
 
-			var result = template(data);
+			var result = template.Render(data);
 			Assert.Equal("Hello, <div>There's HTML here</div>!", result);
 		}
 
@@ -871,7 +871,7 @@ namespace HandlebarsDotNet.Test
                 raw_value = "<div>I shouldn't display</div>"
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal(@"Hello, {{raw_value}}!", result);
         }
 
@@ -887,7 +887,7 @@ namespace HandlebarsDotNet.Test
 
             var data = new { };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("2 3", result);
         }
 
@@ -902,7 +902,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
             
             var data = new { };
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("{{foo}} something {{bar}}", result);
         }
@@ -923,7 +923,7 @@ namespace HandlebarsDotNet.Test
                     }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("- Rex is member of Engineering\n- Todd is member of Engineering\n", result);
         }
 
@@ -940,7 +940,7 @@ namespace HandlebarsDotNet.Test
             };
 
             var compiler = Handlebars.Compile(template);
-            var result = compiler.Invoke(data);
+            var result = compiler.Render(data);
             Assert.Equal("Welcome to New York City", result);
         }
 
@@ -953,21 +953,25 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var embeded = new Dictionary<string, object>();
-            embeded.Add("userInfo", 
-                new
+            var embeded = new Dictionary<string, object>
+            {
                 {
-                    userName = "Ondrej",
-                    language = "Slovak"
-                });
-            embeded.Add("clientSettings",
-                new
+                    "userInfo", new
+                    {
+                        userName = "Ondrej",
+                        language = "Slovak"
+                    }
+                },
                 {
-                    width = 120,
-                    height = 80
-                });
+                    "clientSettings", new
+                    {
+                        width = 120,
+                        height = 80
+                    }
+                }
+            };
 
-            var result = template(embeded);
+            var result = template.Render(embeded);
             var expectedResult = 
                 "<div id='userInfo'>UserName: Ondrej Language: Slovak</div>"
                 + "<div id='main' style='width:120px; height:80px'>body</div>";
@@ -982,7 +986,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
             {
                 dictionary = new Hashtable
                 {
@@ -1001,7 +1005,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
             {
                 dictionary = new Hashtable
                 {
@@ -1020,7 +1024,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
             {
                 dictionary = new MockDictionary()
             });
@@ -1037,7 +1041,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
                 {
                     dictionary = new MockDictionary()
                 });
@@ -1054,7 +1058,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
                 {
                     dictionary = new Dictionary<string, object>
                     {
@@ -1079,7 +1083,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
             {
                 dictionary = new MockDictionary()
             });
@@ -1096,7 +1100,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
             {
                 dictionary = new MockDictionary()
             });
@@ -1113,7 +1117,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
             {
                 dictionary = new MockDictionary()
             });
@@ -1140,7 +1144,7 @@ namespace HandlebarsDotNet.Test
 
             var template = Handlebars.Compile(source);
 
-            var result = template(new
+            var result = template.Render(new
                 {
                     ProgramID = "1081"
                 });
@@ -1156,7 +1160,7 @@ namespace HandlebarsDotNet.Test
         {
             string source = @"{{#ADictionary}}{{@key}},{{value}}{{/ADictionary}}";
             var template = Handlebars.Compile(source);
-            var result = template(new 
+            var result = template.Render(new 
                 {
                     ADictionary = new Dictionary<string, int>
                         {
@@ -1175,7 +1179,7 @@ namespace HandlebarsDotNet.Test
         {
             string source = @"{{#each myObject}}{{#if this.length}}<b>{{@key}}</b>{{#each this}}<li>{{this}}</li>{{/each}}<br>{{/if}}{{/each}}";
             var template = Handlebars.Compile(source);
-            var result = template(new 
+            var result = template.Render(new 
                 {
                     myObject = new {
                         arr = new []{ "hello", "world" },
@@ -1202,7 +1206,7 @@ namespace HandlebarsDotNet.Test
                     }
             };
 
-            var result = template(data);
+            var result = template.Render(data);
 
             var expectedResult =
                 "Hello Dictionary!";

@@ -31,45 +31,47 @@ namespace HandlebarsDotNet.Compiler
             return _functionBuilder.Compile(expressions);
         }
 
-        internal Action<TextWriter, object> CompileView(string templatePath)
+        internal HandlebarsTemplate CompileView(string templateName, string parentTemplateName = null, bool throwOnErrors = true)
         {
-            var fs = _configuration.FileSystem;
-            if (fs == null)
-                throw new InvalidOperationException("Cannot compile view when configuration.FileSystem is not set");
-
-            var template = fs.GetFileContent(templatePath);
-            if (template == null)
-                throw new InvalidOperationException("Cannot find template at '" + templatePath + "'");
-
+            var templateLocator = _configuration.TemplateContentProvider;
+            if (templateLocator == null)
+            {
+                if (throwOnErrors)
+                    throw new InvalidOperationException("Cannot compile view when configuration.TemplateLocator is not set");
+                return null;
+            }
+            var templateContent = templateLocator.GetTemplateContent(templateName, parentTemplateName);
+            if (templateContent == null)
+            {
+                if (throwOnErrors)
+                    throw new InvalidOperationException("Cannot find template content for templateName '" + templateName + "'");
+                return null;
+            }
             IEnumerable<object> tokens;
-            using (var sr = new StringReader(template))
+            using (var sr = new StringReader(templateContent))
             {
                 tokens = _tokenizer.Tokenize(sr).ToList();
             }
             var layoutToken = tokens.OfType<LayoutToken>().SingleOrDefault();
 
             var expressions = _expressionBuilder.ConvertTokensToExpressions(tokens);
-            var compiledView = _functionBuilder.Compile(expressions, templatePath);
+            var compiledView = _functionBuilder.Compile(expressions, templateName);
+            var compiledTemplate = new HandlebarsTemplate(compiledView, templateName);
             if (layoutToken == null)
-                return compiledView;
+                return compiledTemplate;
 
-            var layoutPath = fs.Closest(templatePath, layoutToken.Value + ".hbs");
-            if (layoutPath == null)
-                throw new InvalidOperationException("Cannot find layout path for template '" + templatePath + "'");
-
-            var compiledLayout = CompileView(layoutPath);
-            return (tw, vm) =>
+            var compiledLayout = CompileView(layoutToken.Value, templateName);
+            return new HandlebarsTemplate((tw, vm) =>
             {
                 var sb = new StringBuilder();
                 using (var innerWriter = new StringWriter(sb))
                 {
-                    compiledView(innerWriter, vm);
+                    compiledTemplate.RenderTo(innerWriter, vm);
                 }
                 var inner = sb.ToString();
-                compiledLayout(tw, new DynamicViewModel(new { body = inner }));
-            };
+                compiledLayout.RenderTo(tw, new DynamicViewModel(new { body = inner }));
+            });
         }
-
 
         internal class DynamicViewModel : DynamicObject
         {

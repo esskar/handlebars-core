@@ -65,7 +65,7 @@ namespace HandlebarsDotNet.Compiler
             {
                 if (!(item is Expression))
                 {
-                    throw new HandlebarsCompilerException(string.Format("Token '{0}' could not be converted to an expression", item));
+                    throw new HandlebarsCompilerException($"Token '{item}' could not be converted to an expression");
                 }
                 helperArguments.Add((Expression)item);
                 item = GetNext(enumerator);

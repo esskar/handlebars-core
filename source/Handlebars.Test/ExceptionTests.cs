@@ -9,7 +9,7 @@ namespace HandlebarsDotNet.Test
         {
             Assert.Throws<HandlebarsCompilerException>(() =>
             {
-                Handlebars.Compile("{{#if 0}}test")(new { });
+                Handlebars.Compile("{{#if 0}}test").Render(new { });
             });
         }
     }

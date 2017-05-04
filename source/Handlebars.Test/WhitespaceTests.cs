@@ -13,7 +13,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello,Handlebars.Net !", result);
         }
 
@@ -25,7 +25,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, Handlebars.Net!", result);
         }
 
@@ -37,7 +37,7 @@ namespace HandlebarsDotNet.Test
             var data = new {
                 name = "Handlebars.Net"
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello,Handlebars.Net!", result);
         }
 
@@ -69,7 +69,7 @@ namespace HandlebarsDotNet.Test
                     }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal(@"<a href=""https://google.com"">Google</a><a href=""https://bing.com"">Empty</a>", result);
         }
 
@@ -96,7 +96,7 @@ namespace HandlebarsDotNet.Test
                     }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal( "Links:\n  <a href=\"https://google.com\">\n    Google\n  </a>\n  <a href=\"https://bing.com\">\n    Empty\n  </a>\n", result);
         }
 
@@ -108,7 +108,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {none = "No people"};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("No people\n", result);
         }
@@ -121,7 +121,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {none = "No people"};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("No people\n", result);
         }
@@ -133,7 +133,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {none = "No people"};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("No people\n", result);
         }
@@ -145,7 +145,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {none = "No people"};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("No people\n", result);
         }
@@ -157,7 +157,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {data = new[] {1, 3, 5}};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("1\n3\n5\nOK.", result);
         }
@@ -170,7 +170,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {none = "No people"};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("People: \nNo people\n", result);
         }
@@ -183,7 +183,7 @@ namespace HandlebarsDotNet.Test
             var template = Handlebars.Compile(source);
 
             var data = new {none = "No people"};
-            var result = template(data);
+            var result = template.Render(data);
 
             Assert.Equal("People: \n No people\n", result);
         }
@@ -204,7 +204,7 @@ namespace HandlebarsDotNet.Test
                 Handlebars.RegisterTemplate("person", partialTemplate);
             }
 
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Here are:\nMarcMarc", result);
         }
 

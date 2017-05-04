@@ -20,7 +20,7 @@ namespace HandlebarsDotNet.Test
                     }
                 }
             };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello,\n- Erik\n- Helen", result);
         }
 
@@ -40,7 +40,7 @@ namespace HandlebarsDotNet.Test
                         }
                     }
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello,\n0. Erik\n1. Helen", result);
         }
 
@@ -111,7 +111,7 @@ namespace HandlebarsDotNet.Test
                     }
             };
 
-            var result = template( data );
+            var result = template.Render(data);
 
             const string expected = @"
                             id=0
@@ -194,7 +194,7 @@ namespace HandlebarsDotNet.Test
                         }
                     }
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello,\n0. Erik (Erik is first)\n1. Helen (Helen is not first)", result);
         }
 
@@ -214,7 +214,7 @@ namespace HandlebarsDotNet.Test
                         }
                     }
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello,\n0. Erik (Erik is not last)\n1. Helen (Helen is last)", result);
         }
 
@@ -227,7 +227,7 @@ namespace HandlebarsDotNet.Test
                 {
                     people = new object[] { }
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, (no one listed)", result);
         }
 
@@ -240,7 +240,7 @@ namespace HandlebarsDotNet.Test
                 {
                     people = (object)null
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, (no one listed)", result);
         }
 
@@ -253,7 +253,7 @@ namespace HandlebarsDotNet.Test
                 {
                     people = (object[])null
                 };
-            var result = template(data);
+            var result = template.Render(data);
             Assert.Equal("Hello, (no one listed)", result);
         }
     }
