@@ -31,7 +31,7 @@ var data = new {
     body = "This is my first post!"
 };
 
-var result = template(data);
+var result = template.Render(data);
 
 /* Would render:
 <div class="entry">
@@ -70,7 +70,7 @@ var data = new {
   }
 };
 
-var result = template(data);
+var result = template.Render(data);
 
 /* Would render:
 <h2>Names</h2>
@@ -95,7 +95,7 @@ var data = new {
     text = "Handlebars.Net"
 };
 
-var result = template(data);
+var result = template.Render(data);
 
 /* Would render:
 Click here: <a href='https://github.com/rexm/handlebars.net'>Handlebars.Net</a>
