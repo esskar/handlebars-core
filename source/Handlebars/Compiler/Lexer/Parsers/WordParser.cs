@@ -2,8 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using Handlebars.Compiler.Lexer.Tokens;
 
-namespace HandlebarsDotNet.Compiler.Lexer
+namespace Handlebars.Compiler.Lexer.Parsers
 {
     internal class WordParser : Parser
     {

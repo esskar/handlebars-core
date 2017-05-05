@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Handlebars.Compiler.Structure;
+
 #if netstandard
 using System.Reflection;
 #endif
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class ContextBinder : HandlebarsExpressionVisitor
     {

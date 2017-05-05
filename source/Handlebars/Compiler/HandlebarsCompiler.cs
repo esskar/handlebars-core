@@ -5,9 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using HandlebarsDotNet.Compiler.Lexer;
+using Handlebars.Compiler.Lexer;
+using Handlebars.Compiler.Lexer.Tokens;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler
 {
     internal class HandlebarsCompiler
     {
@@ -113,9 +114,5 @@ namespace HandlebarsDotNet.Compiler
                 return false;
             }
         }
-
     }
-
-
 }
-

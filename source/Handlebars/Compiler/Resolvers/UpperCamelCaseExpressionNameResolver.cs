@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HandlebarsDotNet.Compiler.Resolvers
+namespace Handlebars.Compiler.Resolvers
 {
     public class UpperCamelCaseExpressionNameResolver : IExpressionNameResolver
     {

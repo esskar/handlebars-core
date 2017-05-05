@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace HandlebarsDotNet
+namespace Handlebars
 {
     public class HandlebarsTemplate
     {

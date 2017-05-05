@@ -1,4 +1,4 @@
-﻿namespace HandlebarsDotNet.Compiler.Resolvers
+﻿namespace Handlebars.Compiler.Resolvers
 {
     public interface IExpressionNameResolver
     {

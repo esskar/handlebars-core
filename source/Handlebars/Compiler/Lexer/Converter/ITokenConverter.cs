@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Lexer.Converter
 {
     internal interface ITokenConverter
     {

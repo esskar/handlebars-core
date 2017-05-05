@@ -1,4 +1,4 @@
-﻿namespace HandlebarsDotNet
+﻿namespace Handlebars
 {
     public interface ITemplateContentProvider
     {

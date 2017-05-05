@@ -3,9 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using HandlebarsDotNet.Compiler;
+using Handlebars.Compiler.Translation.Expressions;
 
-namespace HandlebarsDotNet.Test
+namespace Handlebars.Test
 {
     public class BasicIntegrationTests
     {

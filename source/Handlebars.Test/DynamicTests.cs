@@ -3,7 +3,7 @@ using System.Dynamic;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace HandlebarsDotNet.Test
+namespace Handlebars.Test
 {
     public class DynamicTests
     {

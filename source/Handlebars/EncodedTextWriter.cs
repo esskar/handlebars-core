@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace HandlebarsDotNet
+namespace Handlebars
 {
 	internal class EncodedTextWriter : TextWriter
 	{

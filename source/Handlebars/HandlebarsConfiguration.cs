@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using HandlebarsDotNet.Compiler.Resolvers;
+using Handlebars.Compiler.Resolvers;
 
-namespace HandlebarsDotNet
+namespace Handlebars
 {
     public class HandlebarsConfiguration
     {

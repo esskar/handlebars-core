@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Structure
 {
     internal class PartialExpression : HandlebarsExpression
     {

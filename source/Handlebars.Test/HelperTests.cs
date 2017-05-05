@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace HandlebarsDotNet.Test
+namespace Handlebars.Test
 {
     public class HelperTests
     {

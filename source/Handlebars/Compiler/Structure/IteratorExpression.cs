@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Structure
 {
     internal class IteratorExpression : HandlebarsExpression
     {
@@ -11,7 +11,7 @@ namespace HandlebarsDotNet.Compiler
 
 
         public IteratorExpression(Expression sequence, Expression template)
-            : this(sequence, template, Expression.Empty())
+            : this(sequence, template, Empty())
         {
         }
 

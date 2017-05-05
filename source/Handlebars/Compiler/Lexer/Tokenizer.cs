@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Handlebars.Compiler.Lexer.Parsers;
+using Handlebars.Compiler.Lexer.Tokens;
 
-namespace HandlebarsDotNet.Compiler.Lexer
+namespace Handlebars.Compiler.Lexer
 {
     internal class Tokenizer
     {

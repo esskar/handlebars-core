@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections;
 
-namespace HandlebarsDotNet.Test
+namespace Handlebars.Test
 {
     public class ComplexIntegrationTests
     {

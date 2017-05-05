@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using HandlebarsDotNet.Compiler.Lexer;
+using Handlebars.Compiler.Lexer.Tokens;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Lexer.Converter
 {
     internal class SubExpressionConverter : ITokenConverter
     {

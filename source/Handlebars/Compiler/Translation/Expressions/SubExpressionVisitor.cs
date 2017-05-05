@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.IO;
+using System.Linq.Expressions;
 using System.Text;
-using System.Reflection;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+#if netstandard
+using System.Reflection;
+#endif
+
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class SubExpressionVisitor : HandlebarsExpressionVisitor
     {
@@ -25,7 +29,7 @@ namespace HandlebarsDotNet.Compiler
             {
                 throw new HandlebarsCompilerException("Sub-expression does not contain a converted MethodCall expression");
             }
-            HandlebarsHelper helper = GetHelperDelegateFromMethodCallExpression(helperCall);
+            var helper = GetHelperDelegateFromMethodCallExpression(helperCall);
             return Expression.Call(
 #if netstandard
                 new Func<HandlebarsHelper, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),

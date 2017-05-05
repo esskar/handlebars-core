@@ -23,7 +23,7 @@
     <PackageTags>handlebars;mustache;templating;engine;compiler</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/esskar/Handlebars.Net</RepositoryUrl>
-    <RootNamespace>HandlebarsDotNet</RootNamespace>
+    <RootNamespace>Handlebars</RootNamespace>
     <Company>Rex Morgan Sascha Kiefer</Company>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Xunit;
 
-namespace HandlebarsDotNet.Test.Providers
+namespace Handlebars.Test.Providers
 {
     public class CasparTests
     {

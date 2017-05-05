@@ -1,8 +1,12 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+#if netstandard
+using System.Reflection;
+#endif
+
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class StaticReplacer : HandlebarsExpressionVisitor
     {

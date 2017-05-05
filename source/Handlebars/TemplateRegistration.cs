@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace HandlebarsDotNet
+namespace Handlebars
 {
     public class TemplateRegistration : ITemplateRegistration
     {

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Collections.Generic;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+#if netstandard
+using System.Reflection;
+#endif
+
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class HelperFunctionBinder : HandlebarsExpressionVisitor
     {

@@ -1,7 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class BlockHelperFunctionBinder : HandlebarsExpressionVisitor
     {

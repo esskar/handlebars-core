@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Structure
 {
     internal class HashParametersExpression : HandlebarsExpression
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     public class HashParameterDictionary : Dictionary<string, object> { }
 }

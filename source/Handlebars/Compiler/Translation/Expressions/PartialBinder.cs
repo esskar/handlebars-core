@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Linq.Expressions;
+using Handlebars.Compiler.Structure;
+
 #if netstandard
 using System.Reflection;
 #endif
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class PartialBinder : HandlebarsExpressionVisitor
     {
-        public static Expression Bind(Expression expr, CompilationContext context)
+        public static System.Linq.Expressions.Expression Bind(System.Linq.Expressions.Expression expr, CompilationContext context)
         {
             return new PartialBinder(context).Visit(expr);
         }
@@ -18,7 +19,7 @@ namespace HandlebarsDotNet.Compiler
         {
         }
 
-        protected override Expression VisitStatementExpression(StatementExpression sex)
+        protected override System.Linq.Expressions.Expression VisitStatementExpression(StatementExpression sex)
         {
             if (sex.Body is PartialExpression)
             {
@@ -27,41 +28,41 @@ namespace HandlebarsDotNet.Compiler
             return sex;
         }
 
-        protected override Expression VisitPartialExpression(PartialExpression pex)
+        protected override System.Linq.Expressions.Expression VisitPartialExpression(PartialExpression pex)
         {
-            Expression bindingContext = CompilationContext.BindingContext;
+            System.Linq.Expressions.Expression bindingContext = CompilationContext.BindingContext;
             if (pex.Argument != null)
             {
-                bindingContext = Expression.Call(
+                bindingContext = System.Linq.Expressions.Expression.Call(
                     bindingContext,
                     typeof(BindingContext).GetMethod("CreateChildContext"),
                     pex.Argument);
             }
 
-            var partialInvocation = Expression.Call(
+            var partialInvocation = System.Linq.Expressions.Expression.Call(
 #if netstandard
                 new Func<string, BindingContext, HandlebarsConfiguration, bool>(InvokePartial).GetMethodInfo(),
 #else
                 new Func<string, BindingContext, HandlebarsConfiguration, bool>(InvokePartial).Method,
 #endif
-                Expression.Convert(pex.PartialName, typeof(string)),
+                System.Linq.Expressions.Expression.Convert(pex.PartialName, typeof(string)),
                 bindingContext,
-                Expression.Constant(CompilationContext.Configuration));
+                System.Linq.Expressions.Expression.Constant(CompilationContext.Configuration));
 
             var fallback = pex.Fallback;
             if (fallback == null)
             {
-                fallback = Expression.Call(
+                fallback = System.Linq.Expressions.Expression.Call(
 #if netstandard
                 new Action<string>(HandleFailedInvocation).GetMethodInfo(),
 #else
                 new Action<string>(HandleFailedInvocation).Method,
 #endif
-                Expression.Convert(pex.PartialName, typeof(string)));
+                System.Linq.Expressions.Expression.Convert(pex.PartialName, typeof(string)));
             }
 
-            return Expression.IfThen(
-                    Expression.Not(partialInvocation),
+            return System.Linq.Expressions.Expression.IfThen(
+                    System.Linq.Expressions.Expression.Not(partialInvocation),
                     fallback);
         }
 
@@ -79,8 +80,7 @@ namespace HandlebarsDotNet.Compiler
         {
             if (!configuration.TemplateRegistration.TryGetTemplate(partialName, out HandlebarsTemplate template))
             {
-                var partialLookupKey = string.Format("{0}+{1}", 
-                    context.TemplateName ?? string.Empty, partialName);
+                var partialLookupKey = $"{context.TemplateName ?? string.Empty}+{partialName}";
                 if (!configuration.TemplateRegistration.TryGetTemplate(partialLookupKey, out template))
                 {
                     template = Handlebars.Create(configuration).CompileView(partialName, context.TemplateName, false);

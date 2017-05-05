@@ -1,8 +1,7 @@
 ﻿using System;
-using HandlebarsDotNet.Compiler;
 using System.Linq.Expressions;
 
-namespace HandlebarsDotNet
+namespace Handlebars.Compiler.Structure
 {
     internal class SubExpressionExpression : HandlebarsExpression
     {

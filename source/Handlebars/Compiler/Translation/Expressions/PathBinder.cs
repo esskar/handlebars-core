@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.IO;
-using System.Dynamic;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Globalization;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class PathBinder : HandlebarsExpressionVisitor
     {

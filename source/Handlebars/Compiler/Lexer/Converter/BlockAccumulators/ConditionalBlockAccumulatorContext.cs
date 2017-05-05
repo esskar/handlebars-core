@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Lexer.Converter.BlockAccumulators
 {
     internal class ConditionalBlockAccumulatorContext : BlockAccumulatorContext
     {

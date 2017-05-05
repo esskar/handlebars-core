@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using System.IO;
 
-namespace HandlebarsDotNet.Test
+namespace Handlebars.Test
 {
 	public class TripleStashTests
 	{

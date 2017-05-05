@@ -3,8 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Handlebars.Compiler.Translation.Expressions;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler
 {
     internal class FunctionBuilder
     {

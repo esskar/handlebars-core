@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace HandlebarsDotNet
+namespace Handlebars
 {
     public interface IHandlebars
     {

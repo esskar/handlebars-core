@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal class IteratorBinder : HandlebarsExpressionVisitor
     {

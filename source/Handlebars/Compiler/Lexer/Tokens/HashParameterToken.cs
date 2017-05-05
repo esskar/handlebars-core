@@ -1,4 +1,4 @@
-﻿namespace HandlebarsDotNet.Compiler.Lexer
+﻿namespace Handlebars.Compiler.Lexer.Tokens
 {
     internal class HashParameterToken : ExpressionToken
     {

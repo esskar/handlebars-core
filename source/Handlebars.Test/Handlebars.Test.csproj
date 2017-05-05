@@ -3,7 +3,7 @@
   <PropertyGroup>
     <DebugType>full</DebugType>
     <TargetFrameworks>net461;netcoreapp1.1</TargetFrameworks>
-    <RootNamespace>HandlebarsDotNet.Test</RootNamespace>
+    <RootNamespace>Handlebars.Test</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp1.1'">

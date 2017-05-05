@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Structure
 {
     internal class BindingContext
     {

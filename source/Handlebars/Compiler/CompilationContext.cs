@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler
 {
     internal class CompilationContext
     {

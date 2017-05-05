@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace HandlebarsDotNet
+namespace Handlebars
 {
     public abstract class FileSystemTemplateContentProvider : ITemplateContentProvider
     {

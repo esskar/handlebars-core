@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Structure
 {
     internal class BlockHelperExpression : HelperExpression
     {

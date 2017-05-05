@@ -1,21 +1,16 @@
-using System;
 using System.Linq.Expressions;
+using Handlebars.Compiler.Structure;
 
-namespace HandlebarsDotNet.Compiler
+namespace Handlebars.Compiler.Translation.Expressions
 {
     internal abstract class HandlebarsExpressionVisitor : ExpressionVisitor
     {
-        private readonly CompilationContext _compilationContext;
-
         protected HandlebarsExpressionVisitor(CompilationContext compilationContext)
         {
-            _compilationContext = compilationContext;
+            CompilationContext = compilationContext;
         }
 
-        protected virtual CompilationContext CompilationContext
-        {
-            get { return _compilationContext; }
-        }
+        protected virtual CompilationContext CompilationContext { get; }
 
         public override Expression Visit(Expression exp)
         {
