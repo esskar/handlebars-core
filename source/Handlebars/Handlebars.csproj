@@ -19,15 +19,15 @@
     <PackageId>Handlebars.Net</PackageId>
     <PackageLicenseUrl>https://opensource.org/licenses/mit</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/esskar/Handlebars.Net</PackageProjectUrl>
-    <PackageReleaseNotes>API Changes</PackageReleaseNotes>
+    <PackageReleaseNotes>Namespace changes and improvments</PackageReleaseNotes>
     <PackageTags>handlebars;mustache;templating;engine;compiler</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/esskar/Handlebars.Net</RepositoryUrl>
     <RootNamespace>Handlebars</RootNamespace>
     <Company>Rex Morgan Sascha Kiefer</Company>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
-    <Version>2.0.0-esskar</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
+    <Version>2.0.1-esskar</Version>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">

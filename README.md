@@ -11,7 +11,7 @@ Handlebars.Net doesn't use a scripting engine to run a Javascript library - it c
 
 ## Install
 
-    nuget install Handlebars.Net -Version 2.0.0-esskar -Source https://www.myget.org/F/esskar/api/v3/index.json
+    nuget install Handlebars.Net -Source https://www.myget.org/F/esskar/api/v3/index.json
 
 ## Usage
 
