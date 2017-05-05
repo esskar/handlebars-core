@@ -6,27 +6,34 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class ExpressionBuilder
     {
-        private readonly HandlebarsConfiguration _configuration;
+        private readonly List<ITokenConverter> _tokenConverters;
 
         public ExpressionBuilder(HandlebarsConfiguration configuration)
         {
-            _configuration = configuration;
+            _tokenConverters = new List<ITokenConverter>
+            {
+                new CommentAndLayoutConverter(),
+                new LiteralConverter(),
+                new HelperConverter(configuration),
+                new HashParametersConverter(),
+                new PathConverter(),
+                new SubExpressionConverter(),
+                new PartialConverter(),
+                new HelperArgumentAccumulator(),
+                new ExpressionScopeConverter(),
+                new WhitespaceRemover(),
+                new StaticConverter(),
+                new BlockAccumulator(configuration)
+            };
         }
 
         public IEnumerable<Expression> ConvertTokensToExpressions(IEnumerable<object> tokens)
         {
-            tokens = CommentAndLayoutConverter.Convert(tokens);
-            tokens = LiteralConverter.Convert(tokens);
-            tokens = HelperConverter.Convert(tokens, _configuration);
-            tokens = HashParametersConverter.Convert(tokens);
-            tokens = PathConverter.Convert(tokens);
-            tokens = SubExpressionConverter.Convert(tokens);
-            tokens = PartialConverter.Convert(tokens);
-            tokens = HelperArgumentAccumulator.Accumulate(tokens);
-            tokens = ExpressionScopeConverter.Convert(tokens);
-            tokens = WhitespaceRemover.Remove(tokens);
-            tokens = StaticConverter.Convert(tokens);
-            tokens = BlockAccumulator.Accumulate(tokens, _configuration);
+            foreach (var tokenConverter in _tokenConverters)
+            {
+                tokens = tokenConverter.ConvertTokens(tokens);
+                tokens = tokens as IList<object> ?? tokens.ToList();
+            }
             return tokens.Cast<Expression>();
         }
     }

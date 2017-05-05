@@ -9,16 +9,9 @@ namespace HandlebarsDotNet.Compiler
     {
         private static readonly string[] BuiltInHelpers = { "else", "each" };
 
-        public static IEnumerable<object> Convert(
-            IEnumerable<object> sequence,
-            HandlebarsConfiguration configuration)
-        {
-            return new HelperConverter(configuration).ConvertTokens(sequence).ToList();
-        }
-
         private readonly HandlebarsConfiguration _configuration;
 
-        private HelperConverter(HandlebarsConfiguration configuration)
+        public HelperConverter(HandlebarsConfiguration configuration)
         {
             _configuration = configuration;
         }

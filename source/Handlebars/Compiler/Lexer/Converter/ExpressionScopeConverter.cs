@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HandlebarsDotNet.Compiler.Lexer;
 using System.Linq.Expressions;
@@ -8,15 +7,6 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class ExpressionScopeConverter : ITokenConverter
     {
-        public static IEnumerable<object> Convert(IEnumerable<object> sequence)
-        {
-            return new ExpressionScopeConverter().ConvertTokens(sequence).ToList();
-        }
-
-        private ExpressionScopeConverter()
-        {
-        }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();

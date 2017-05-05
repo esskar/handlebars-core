@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 using HandlebarsDotNet.Compiler.Lexer;
 
@@ -8,15 +6,6 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class SubExpressionConverter : ITokenConverter
     {
-        public static IEnumerable<object> Convert(IEnumerable<object> sequence)
-        {
-            return new SubExpressionConverter().ConvertTokens(sequence).ToList();
-        }
-
-        private SubExpressionConverter()
-        {
-        }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();
@@ -61,7 +50,7 @@ namespace HandlebarsDotNet.Compiler
                 }
                 else if ((item is Expression) == false)
                 {
-                    throw new HandlebarsCompilerException(string.Format("Token '{0}' could not be converted to an expression", item));
+                    throw new HandlebarsCompilerException($"Token '{item}' could not be converted to an expression");
                 }
                 helperArguments.Add((Expression)item);
                 item = GetNext(enumerator);

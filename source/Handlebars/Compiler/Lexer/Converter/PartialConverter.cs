@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using HandlebarsDotNet.Compiler.Lexer;
 
@@ -7,15 +6,6 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class PartialConverter : ITokenConverter
     {
-        public static IEnumerable<object> Convert(IEnumerable<object> sequence)
-        {
-            return new PartialConverter().ConvertTokens(sequence).ToList();
-        }
-
-        private PartialConverter()
-        {
-        }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();

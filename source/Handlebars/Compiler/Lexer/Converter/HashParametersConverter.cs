@@ -6,13 +6,6 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class HashParametersConverter : ITokenConverter
     {
-        public static IEnumerable<object> Convert(IEnumerable<object> sequence)
-        {
-            return new HashParametersConverter().ConvertTokens(sequence).ToList();
-        }
-
-        private HashParametersConverter() { }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();

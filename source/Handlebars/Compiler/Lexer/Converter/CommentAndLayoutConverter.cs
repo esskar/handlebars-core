@@ -6,15 +6,6 @@ namespace HandlebarsDotNet.Compiler
 {
     internal class CommentAndLayoutConverter : ITokenConverter
     {
-        public static IEnumerable<object> Convert(IEnumerable<object> sequence)
-        {
-            return new CommentAndLayoutConverter().ConvertTokens(sequence).ToList();
-        }
-
-        private CommentAndLayoutConverter()
-        {
-        }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             return sequence.Select(Convert);

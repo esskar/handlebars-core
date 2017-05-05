@@ -15,24 +15,9 @@ namespace HandlebarsDotNet.Compiler
         private static readonly Regex MatchEndsWithWhitespace = new Regex(@"\r?\n\s*?$");
         private static readonly Regex TrimEndRegex = new Regex(@"[ \t]+\z");
 
-        public static IEnumerable<object> Remove(IEnumerable<object> sequence)
-        {
-            return new WhitespaceRemover().ConvertTokens(sequence);
-        }
-
-        private WhitespaceRemover()
-        {
-        }
-
-        private static List<object> ToList(IEnumerable<object> sequence)
-        {
-            //it's already List<object> but let's pretend we don't know.
-            return sequence as List<object> ?? sequence.ToList();
-        }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
-            var list = ToList(sequence);
+            var list = sequence as IList<object> ?? sequence.ToList();
 
             ProcessTokens(list);
 

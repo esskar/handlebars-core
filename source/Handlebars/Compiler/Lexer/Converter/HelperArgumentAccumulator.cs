@@ -1,21 +1,11 @@
 ﻿using System.Linq.Expressions;
 using System.Collections.Generic;
-using System.Linq;
 using HandlebarsDotNet.Compiler.Lexer;
 
 namespace HandlebarsDotNet.Compiler
 {
     internal class HelperArgumentAccumulator : ITokenConverter
     {
-        public static IEnumerable<object> Accumulate(IEnumerable<object> sequence)
-        {
-            return new HelperArgumentAccumulator().ConvertTokens(sequence).ToList();
-        }
-
-        private HelperArgumentAccumulator()
-        {
-        }
-
         public IEnumerable<object> ConvertTokens(IEnumerable<object> sequence)
         {
             var enumerator = sequence.GetEnumerator();

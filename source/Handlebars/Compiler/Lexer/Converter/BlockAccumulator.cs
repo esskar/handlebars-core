@@ -1,21 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace HandlebarsDotNet.Compiler
 {
     internal class BlockAccumulator : ITokenConverter
     {
-        public static IEnumerable<object> Accumulate(
-            IEnumerable<object> tokens,
-            HandlebarsConfiguration configuration)
-        {
-            return new BlockAccumulator(configuration).ConvertTokens(tokens).ToList();
-        }
-
         private readonly HandlebarsConfiguration _configuration;
 
-        private BlockAccumulator(HandlebarsConfiguration configuration)
+        public BlockAccumulator(HandlebarsConfiguration configuration)
         {
             _configuration = configuration;
         }
