@@ -1,4 +1,4 @@
-Handlebars.Net [![Build Status](https://travis-ci.org/rexm/Handlebars.Net.svg?branch=master)](https://travis-ci.org/rexm/Handlebars.Net)
+Handlebars.Net [![Build Status](https://travis-ci.org/esskar/Handlebars.Net.svg?branch=master)](https://travis-ci.org/esskar/Handlebars.Net)
 ==============
 
 Blistering-fast [Handlebars.js templates](http://handlebarsjs.com) in your .NET application.
@@ -7,11 +7,11 @@ Blistering-fast [Handlebars.js templates](http://handlebarsjs.com) in your .NET 
 
 Check out the [handlebars.js documentation](http://handlebarsjs.com) for how to write Handlebars templates.
 
-Handlebars.Net doesn't use a scripting engine to run a Javascript library - it **compiles Handlebars templates directly to IL bytecode**. It also mimics the JS library's API as closely as possible.
+Handlebars.Net doesn't use a scripting engine to run a Javascript library - it **compiles Handlebars templates directly to IL bytecode**.
 
 ## Install
 
-    nuget install Handlebars.Net
+    nuget install Handlebars.Net -Version 2.0.0-esskar -Source https://www.myget.org/F/esskar/api/v3/index.json
 
 ## Usage
 
@@ -79,6 +79,32 @@ var result = template.Render(data);
 */
 ```
 
+### Using TemplateContentProvider
+
+If you want to keep your templates in the filesystem or in a database 
+you can implement the ITemplateContentProvider interface to retrieve your template from everywhere you like.
+
+#### FileSystemTemplateContentProvider
+
+The library currently provides a base implementation of the ITemplateContentProvider that
+provides backward compatibility to the ViewEngine concept of the [original Handlebars.Net library](https://github.com/rexm/Handlebars.Net).
+
+This will allow you to keep your views to be in the /Views folder like so:
+
+```
+Views\layout.hbs                |<--shared as in \Views            
+Views\partials\somepartial.hbs   <--shared as in \Views\partials
+Views\{Controller}\{Action}.hbs 
+Views\{Controller}\{Action}\partials\somepartial.hbs 
+```
+
+But it will also find partials if there are at the same level as the as the actual template file:
+
+```
+Views\layout.hbs           
+Views\someotherpartial.hbs
+```
+
 ### Registering Helpers
 
 ```c#
@@ -100,15 +126,6 @@ var result = template.Render(data);
 /* Would render:
 Click here: <a href='https://github.com/rexm/handlebars.net'>Handlebars.Net</a>
 */
-```
- 
-This will expect your views to be in the /Views folder like so:
-
-```
-Views\layout.hbs                |<--shared as in \Views            
-Views\partials\somepartial.hbs   <--shared as in  \Views\partials
-Views\{Controller}\{Action}.hbs 
-Views\{Controller}\{Action}\partials\somepartial.hbs 
 ```
 
 ## Performance
