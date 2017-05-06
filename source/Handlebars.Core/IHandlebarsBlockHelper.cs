@@ -7,6 +7,8 @@ namespace Handlebars.Core
 
     public interface IHandlebarsBlockHelper
     {
+        string Name { get; }
+
         void Execute(HandlebarsConfiguration configuration, TextWriter output, HandlebarsBlockHelperOptions options, dynamic context, params object[] arguments);
     }
 }

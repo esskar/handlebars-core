@@ -97,20 +97,20 @@ namespace Handlebars.Core
             Configuration.BlockHelpers.AddOrUpdate(helperName, n => helperFunction, (n, h) => helperFunction);
         }
 
-        public void RegisterHelper(string helperName, IHandlebarsHelper helper)
+        public void RegisterHelper(IHandlebarsHelper helper)
         {
             if (helper == null)
                 throw new ArgumentNullException(nameof(helper));
 
-            RegisterHelper(helperName, helper.Execute);
+            RegisterHelper(helper.Name, helper.Execute);
         }
 
-        public void RegisterHelper(string helperName, IHandlebarsBlockHelper helper)
+        public void RegisterHelper(IHandlebarsBlockHelper helper)
         {
             if (helper == null)
                 throw new ArgumentNullException(nameof(helper));
 
-            RegisterHelper(helperName, helper.Execute);
+            RegisterHelper(helper.Name, helper.Execute);
         }
 
         private void RegisterBuiltinHelpers()

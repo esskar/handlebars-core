@@ -24,9 +24,9 @@ namespace Handlebars.Core
 
         void RegisterHelper(string helperName, HandlebarsBlockHelperV2 helperFunction);
 
-        void RegisterHelper(string helperName, IHandlebarsHelper helper);
+        void RegisterHelper(IHandlebarsHelper helper);
 
-        void RegisterHelper(string helperName, IHandlebarsBlockHelper helper);
+        void RegisterHelper(IHandlebarsBlockHelper helper);
     }
 }
 

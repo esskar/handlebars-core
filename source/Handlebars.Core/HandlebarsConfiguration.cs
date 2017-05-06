@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using Handlebars.Core.Compiler.Resolvers;
 using Handlebars.Core.Encoders;
 using Handlebars.Core.Internals;
+using Handlebars.Core.Logging;
 
 namespace Handlebars.Core
 {
@@ -15,6 +16,10 @@ namespace Handlebars.Core
         public IHandlebarsTemplateRegistry HandlebarsTemplateRegistry { get; }
 
         public IExpressionNameResolver ExpressionNameResolver { get; set; }
+
+        public ILogger Logger { get; set; }
+
+        public LogLevel LogLevel { get; set; } = LogLevel.Info;
 
         public IHandlebarsTemplateContentProvider TemplateContentProvider { get; set; }
 

@@ -8,6 +8,8 @@ namespace Handlebars.Core
 
     public interface IHandlebarsHelper
     {
+        string Name { get; }
+
         void Execute(HandlebarsConfiguration configuration, TextWriter output, dynamic context, params object[] arguments);
     }
 }
