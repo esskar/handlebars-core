@@ -1,4 +1,4 @@
-Handlebars for .NET [![Build Status](https://travis-ci.org/esskar/handlebars-core.svg?branch=master)](https://travis-ci.org/esskar/Handlebars.Net)
+Handlebars for .NET [![Build Status](https://travis-ci.org/esskar/handlebars-core.svg?branch=master)](https://travis-ci.org/esskar/handlebars-core)
 ===================
 
 Amazing [Handlebars templates](http://handlebarsjs.com) in your .NET application.
