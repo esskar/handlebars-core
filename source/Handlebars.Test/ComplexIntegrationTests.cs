@@ -1,8 +1,8 @@
-﻿using Xunit;
+﻿using System.Collections;
 using System.IO;
-using System.Collections;
+using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class ComplexIntegrationTests
     {

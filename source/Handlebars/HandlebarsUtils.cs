@@ -1,10 +1,9 @@
 ﻿using System;
-using Handlebars.Compiler;
 using System.Collections;
 using System.Linq;
-using Handlebars.Compiler.Structure;
+using Handlebars.Core.Compiler.Structure;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     public static class HandlebarsUtils
     {

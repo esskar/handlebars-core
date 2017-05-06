@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     internal static class EnumerableExtensions
     {

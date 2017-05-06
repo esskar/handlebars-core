@@ -1,8 +1,8 @@
-﻿using Xunit;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class HelperTests
     {

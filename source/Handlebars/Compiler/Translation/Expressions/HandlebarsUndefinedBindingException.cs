@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Handlebars.Compiler.Translation.Expressions
+namespace Handlebars.Core.Compiler.Translation.Expressions
 {
     public class HandlebarsUndefinedBindingException : Exception
     {

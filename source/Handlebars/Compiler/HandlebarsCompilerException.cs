@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Handlebars.Compiler
+namespace Handlebars.Core.Compiler
 {
     public class HandlebarsCompilerException : HandlebarsException
     {

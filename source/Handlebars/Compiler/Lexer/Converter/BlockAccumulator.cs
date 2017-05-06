@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Lexer.Converter.BlockAccumulators;
-using Handlebars.Compiler.Structure;
+using Handlebars.Core.Compiler.Lexer.Converter.BlockAccumulators;
+using Handlebars.Core.Compiler.Structure;
 
-namespace Handlebars.Compiler.Lexer.Converter
+namespace Handlebars.Core.Compiler.Lexer.Converter
 {
     internal class BlockAccumulator : ITokenConverter
     {

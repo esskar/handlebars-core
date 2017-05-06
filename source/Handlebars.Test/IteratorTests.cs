@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class IteratorTests
     {

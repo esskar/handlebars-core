@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Translation.Expressions;
+using Handlebars.Core.Compiler.Translation.Expressions;
 
-namespace Handlebars.Compiler
+namespace Handlebars.Core.Compiler
 {
     internal class FunctionBuilder
     {

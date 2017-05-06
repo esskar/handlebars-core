@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     public class HtmlEncoder : ITextEncoder
     {

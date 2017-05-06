@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Handlebars.Compiler.Lexer;
-using Handlebars.Compiler.Lexer.Tokens;
+using Handlebars.Core.Compiler.Lexer;
+using Handlebars.Core.Compiler.Lexer.Tokens;
 
-namespace Handlebars.Compiler
+namespace Handlebars.Core.Compiler
 {
     internal class HandlebarsCompiler
     {

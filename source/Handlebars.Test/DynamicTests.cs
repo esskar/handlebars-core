@@ -1,9 +1,9 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
 using System.Dynamic;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class DynamicTests
     {

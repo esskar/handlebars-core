@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class WhitespaceTests
     {

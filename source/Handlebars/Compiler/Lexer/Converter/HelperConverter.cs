@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Lexer.Tokens;
-using Handlebars.Compiler.Structure;
+using Handlebars.Core.Compiler.Lexer.Tokens;
+using Handlebars.Core.Compiler.Structure;
 
-namespace Handlebars.Compiler.Lexer.Converter
+namespace Handlebars.Core.Compiler.Lexer.Converter
 {
     internal class HelperConverter : ITokenConverter
     {

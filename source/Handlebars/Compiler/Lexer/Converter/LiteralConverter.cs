@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Lexer.Tokens;
+using Handlebars.Core.Compiler.Lexer.Tokens;
 
-namespace Handlebars.Compiler.Lexer.Converter
+namespace Handlebars.Core.Compiler.Lexer.Converter
 {
     internal class LiteralConverter : ITokenConverter
     {

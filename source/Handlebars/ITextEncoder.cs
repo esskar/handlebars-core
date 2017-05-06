@@ -1,4 +1,4 @@
-﻿namespace Handlebars
+﻿namespace Handlebars.Core
 {
     public interface ITextEncoder
     {

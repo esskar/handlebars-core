@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Handlebars.Compiler.Structure
+namespace Handlebars.Core.Compiler.Structure
 {
     internal enum HandlebarsExpressionType
     {

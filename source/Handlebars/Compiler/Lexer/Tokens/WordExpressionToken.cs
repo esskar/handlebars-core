@@ -1,4 +1,4 @@
-﻿namespace Handlebars.Compiler.Lexer.Tokens
+﻿namespace Handlebars.Core.Compiler.Lexer.Tokens
 {
     internal class WordExpressionToken : ExpressionToken
     {

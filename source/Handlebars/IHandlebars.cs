@@ -1,7 +1,6 @@
-using System;
 using System.IO;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     public interface IHandlebars
     {

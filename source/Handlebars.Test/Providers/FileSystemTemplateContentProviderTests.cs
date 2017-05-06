@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace Handlebars.Test.Providers
+namespace Handlebars.Core.Test.Providers
 {
     public class FileSystemTemplateContentProviderTests
     {

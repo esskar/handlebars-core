@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq.Expressions;
-using System.Text;
-using Handlebars.Compiler.Structure;
-
-#if netstandard
 using System.Reflection;
+using System.Text;
+using Handlebars.Core.Compiler.Structure;
+#if netstandard
+
 #endif
 
-namespace Handlebars.Compiler.Translation.Expressions
+namespace Handlebars.Core.Compiler.Translation.Expressions
 {
     internal class SubExpressionVisitor : HandlebarsExpressionVisitor
     {

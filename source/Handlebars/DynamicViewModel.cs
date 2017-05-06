@@ -3,7 +3,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     public class DynamicViewModel : DynamicObject
     {

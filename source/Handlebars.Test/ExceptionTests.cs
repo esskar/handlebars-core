@@ -1,7 +1,7 @@
-﻿using Handlebars.Compiler;
+﻿using Handlebars.Core.Compiler;
 using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class ExceptionTests
     {

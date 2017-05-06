@@ -2,13 +2,13 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
-using Handlebars.Compiler.Structure;
-
-#if netstandard
 using System.Reflection;
+using Handlebars.Core.Compiler.Structure;
+#if netstandard
+
 #endif
 
-namespace Handlebars.Compiler.Translation.Expressions
+namespace Handlebars.Core.Compiler.Translation.Expressions
 {
     internal class DeferredSectionVisitor : HandlebarsExpressionVisitor
     {

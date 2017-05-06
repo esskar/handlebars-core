@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Structure;
+using Handlebars.Core.Compiler.Structure;
 
-namespace Handlebars.Compiler.Lexer.Converter.BlockAccumulators
+namespace Handlebars.Core.Compiler.Lexer.Converter.BlockAccumulators
 {
     internal class PartialBlockAccumulatorContext : BlockAccumulatorContext
     {

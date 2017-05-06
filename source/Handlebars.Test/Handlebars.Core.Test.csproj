@@ -3,16 +3,12 @@
   <PropertyGroup>
     <DebugType>full</DebugType>
     <TargetFrameworks>net461;netcoreapp1.1</TargetFrameworks>
-    <RootNamespace>Handlebars.Test</RootNamespace>
+    <RootNamespace>Handlebars.Core.Test</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp1.1'">
     <DefineConstants>$(DefineConstants);netstandard</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Handlebars\Handlebars.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -42,6 +38,10 @@
 
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp1.1'">
     <Compile Remove="**\CasparTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Handlebars\Handlebars.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Handlebars.Compiler;
+using Handlebars.Core.Compiler;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     internal class HandlebarsEnvironment : IHandlebars
     {

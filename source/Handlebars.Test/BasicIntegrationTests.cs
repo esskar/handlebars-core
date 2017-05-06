@@ -1,11 +1,11 @@
-﻿using Xunit;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using Handlebars.Compiler.Translation.Expressions;
+using Handlebars.Core.Compiler.Translation.Expressions;
+using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class BasicIntegrationTests
     {
@@ -1295,7 +1295,7 @@ namespace Handlebars.Test
             {
                 throw new NotImplementedException();
             }
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
                 throw new NotImplementedException();
             }

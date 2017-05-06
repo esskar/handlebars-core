@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Structure;
-
-#if netstandard
 using System.Reflection;
+using Handlebars.Core.Compiler.Structure;
+#if netstandard
+
 #endif
 
-namespace Handlebars.Compiler.Translation.Expressions
+namespace Handlebars.Core.Compiler.Translation.Expressions
 {
     internal class HelperFunctionBinder : HandlebarsExpressionVisitor
     {

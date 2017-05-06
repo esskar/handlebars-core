@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Handlebars.Compiler.Lexer.Converter;
+using Handlebars.Core.Compiler.Lexer.Converter;
 
-namespace Handlebars.Compiler
+namespace Handlebars.Core.Compiler
 {
     internal class ExpressionBuilder
     {

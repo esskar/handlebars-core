@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Handlebars
+namespace Handlebars.Core
 {
     public static class HandlebarsExtensions
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Handlebars.Compiler.Lexer.Tokens;
+using Handlebars.Core.Compiler.Lexer.Tokens;
 
-namespace Handlebars.Compiler.Lexer.Parsers
+namespace Handlebars.Core.Compiler.Lexer.Parsers
 {
     internal class BlockWordParser : Parser
     {

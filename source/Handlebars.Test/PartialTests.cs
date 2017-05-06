@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Xunit;
 using System.IO;
+using Xunit;
 
-namespace Handlebars.Test
+namespace Handlebars.Core.Test
 {
     public class PartialTests
     {

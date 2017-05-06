@@ -6,9 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Handlebars.Compiler.Structure;
+using Handlebars.Core.Compiler.Structure;
 
-namespace Handlebars.Compiler.Translation.Expressions
+namespace Handlebars.Core.Compiler.Translation.Expressions
 {
     internal class IteratorBinder : HandlebarsExpressionVisitor
     {

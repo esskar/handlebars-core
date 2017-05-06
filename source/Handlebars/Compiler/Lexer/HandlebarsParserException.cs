@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Handlebars.Compiler.Lexer
+namespace Handlebars.Core.Compiler.Lexer
 {
     public class HandlebarsParserException : HandlebarsException
     {
