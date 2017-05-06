@@ -31,7 +31,7 @@ namespace Handlebars.Core.Compiler
                 {
                     return EmptyLambda;
                 }
-                if (expressionsList.IsOneOf<Expression, DefaultExpression>())
+                if (expressionsList.Count == 1 && expressionsList[0] is DefaultExpression)
                 {
                     return EmptyLambda;
                 }
