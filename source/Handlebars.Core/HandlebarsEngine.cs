@@ -4,9 +4,6 @@ using Handlebars.Core.Compiler;
 
 namespace Handlebars.Core
 {
-    public delegate void HandlebarsHelper(TextWriter output, dynamic context, params object[] arguments);
-    public delegate void HandlebarsBlockHelper(TextWriter output, HelperOptions options, dynamic context, params object[] arguments);
-
     public class HandlebarsEngine : IHandlebarsEngine
     {
         private readonly HandlebarsCompiler _compiler;
@@ -59,12 +56,60 @@ namespace Handlebars.Core
 
         public void RegisterHelper(string helperName, HandlebarsHelper helperFunction)
         {
+            if (helperFunction == null)
+                throw new ArgumentNullException(nameof(helperFunction));
+
+            RegisterHelper(helperName, (configuration, output, context, arguments) =>
+            {
+                helperFunction(output, context, arguments);
+            });
+        }
+
+        public void RegisterHelper(string helperName, HandlebarsHelperV2 helperFunction)
+        {
+            if (string.IsNullOrEmpty(helperName))
+                throw new ArgumentNullException(nameof(helperName));
+            if (helperFunction == null)
+                throw new ArgumentNullException(nameof(helperFunction));
+
             Configuration.Helpers.AddOrUpdate(helperName, n => helperFunction, (n, h) => helperFunction);
         }
 
         public void RegisterHelper(string helperName, HandlebarsBlockHelper helperFunction)
         {
+            if (helperFunction == null)
+                throw new ArgumentNullException(nameof(helperFunction));
+
+            RegisterHelper(helperName, (configuration, output, options, context, arguments) =>
+            {
+                helperFunction(output, options, context, arguments);
+            });
+        }
+
+        public void RegisterHelper(string helperName, HandlebarsBlockHelperV2 helperFunction)
+        {
+            if (string.IsNullOrEmpty(helperName))
+                throw new ArgumentNullException(nameof(helperName));
+            if (helperFunction == null)
+                throw new ArgumentNullException(nameof(helperFunction));
+
             Configuration.BlockHelpers.AddOrUpdate(helperName, n => helperFunction, (n, h) => helperFunction);
+        }
+
+        public void RegisterHelper(string helperName, IHandlebarsHelper helper)
+        {
+            if (helper == null)
+                throw new ArgumentNullException(nameof(helper));
+
+            RegisterHelper(helperName, helper.Execute);
+        }
+
+        public void RegisterHelper(string helperName, IHandlebarsBlockHelper helper)
+        {
+            if (helper == null)
+                throw new ArgumentNullException(nameof(helper));
+
+            RegisterHelper(helperName, helper.Execute);
         }
 
         private void RegisterBuiltinHelpers()

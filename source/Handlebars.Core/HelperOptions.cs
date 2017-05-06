@@ -5,9 +5,7 @@ namespace Handlebars.Core
 {
     public sealed class HelperOptions
     {
-        internal HelperOptions(
-            Action<TextWriter, object> template,
-            Action<TextWriter, object> inverse)
+        internal HelperOptions(Action<TextWriter, object> template, Action<TextWriter, object> inverse)
         {
             Template = template;
             Inverse = inverse;

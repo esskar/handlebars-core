@@ -6,9 +6,9 @@ namespace Handlebars.Core
 {
     public class HandlebarsConfiguration
     {
-        public ConcurrentDictionary<string, HandlebarsHelper> Helpers { get; }
+        public ConcurrentDictionary<string, HandlebarsHelperV2> Helpers { get; }
 
-        public ConcurrentDictionary<string, HandlebarsBlockHelper> BlockHelpers { get; }
+        public ConcurrentDictionary<string, HandlebarsBlockHelperV2> BlockHelpers { get; }
 
         public ITemplateRegistration TemplateRegistration { get; }
 
@@ -29,8 +29,8 @@ namespace Handlebars.Core
 
 	    public HandlebarsConfiguration(ITemplateRegistration templateRegistration)
         {
-            Helpers = new ConcurrentDictionary<string, HandlebarsHelper>(StringComparer.OrdinalIgnoreCase);
-            BlockHelpers = new ConcurrentDictionary<string, HandlebarsBlockHelper>(StringComparer.OrdinalIgnoreCase);
+            Helpers = new ConcurrentDictionary<string, HandlebarsHelperV2>(StringComparer.OrdinalIgnoreCase);
+            BlockHelpers = new ConcurrentDictionary<string, HandlebarsBlockHelperV2>(StringComparer.OrdinalIgnoreCase);
             TemplateRegistration = templateRegistration;
             TextEncoder = new HtmlEncoder();
 	        ThrowOnUnresolvedBindingExpression = false;

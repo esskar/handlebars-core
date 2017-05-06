@@ -32,19 +32,20 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             var helper = GetHelperDelegateFromMethodCallExpression(helperCall);
             return Expression.Call(
 #if netstandard
-                new Func<HandlebarsHelper, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),
+                new Func<HandlebarsHelperV2, HandlebarsConfiguration, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),
 #else
-                new Func<HandlebarsHelper, object, object[], string>(CaptureTextWriterOutputFromHelper).Method,
+                new Func<HandlebarsHelperV2, HandlebarsConfiguration, object, object[], string>(CaptureTextWriterOutputFromHelper).Method,
 #endif
                 Expression.Constant(helper),
-                Visit(helperCall.Arguments[1]),
-                Visit(helperCall.Arguments[2]));
+                Visit(helperCall.Arguments[0]),
+                Visit(helperCall.Arguments[2]),
+                Visit(helperCall.Arguments[3]));
         }
 
-        private static HandlebarsHelper GetHelperDelegateFromMethodCallExpression(MethodCallExpression helperCall)
+        private static HandlebarsHelperV2 GetHelperDelegateFromMethodCallExpression(MethodCallExpression helperCall)
         {
             object target = helperCall.Object;
-            HandlebarsHelper helper;
+            HandlebarsHelperV2 helper;
             if (target != null)
             {
                 if (target is ConstantExpression)
@@ -56,31 +57,32 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                     throw new NotSupportedException("Helper method instance target must be reduced to a ConstantExpression");
                 }
 #if netstandard
-                helper = (HandlebarsHelper)helperCall.Method.CreateDelegate(typeof(HandlebarsHelper), target);
+                helper = (HandlebarsHelperV2)helperCall.Method.CreateDelegate(typeof(HandlebarsHelperV2), target);
 #else
-                helper = (HandlebarsHelper)Delegate.CreateDelegate(typeof(HandlebarsHelper), target, helperCall.Method);
+                helper = (HandlebarsHelperV2)Delegate.CreateDelegate(typeof(HandlebarsHelperV2), target, helperCall.Method);
 #endif
             }
             else
             {
 #if netstandard
-                helper = (HandlebarsHelper)helperCall.Method.CreateDelegate(typeof(HandlebarsHelper));
+                helper = (HandlebarsHelperV2)helperCall.Method.CreateDelegate(typeof(HandlebarsHelperV2));
 #else
-                helper = (HandlebarsHelper)Delegate.CreateDelegate(typeof(HandlebarsHelper), helperCall.Method);
+                helper = (HandlebarsHelperV2)Delegate.CreateDelegate(typeof(HandlebarsHelperV2), helperCall.Method);
 #endif
             }
             return helper;
         }
 
         private static string CaptureTextWriterOutputFromHelper(
-            HandlebarsHelper helper,
+            HandlebarsHelperV2 helper,
+            HandlebarsConfiguration configuration,
             object context,
             object[] arguments)
         {
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
             {
-                helper(writer, context, arguments);
+                helper(configuration, writer, context, arguments);
             }
             return builder.ToString();
         }

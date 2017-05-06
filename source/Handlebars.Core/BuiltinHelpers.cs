@@ -8,7 +8,7 @@ namespace Handlebars.Core
     internal static class BuiltinHelpers
     {
         [Description("with")]
-        public static void With(TextWriter output, HelperOptions options, dynamic context, params object[] arguments)
+        public static void With(HandlebarsConfiguration configuration, TextWriter output, HelperOptions options, dynamic context, params object[] arguments)
         {
             if (arguments.Length != 1)
             {
@@ -25,9 +25,9 @@ namespace Handlebars.Core
             }
         }
 
-        public static IEnumerable<KeyValuePair<string, HandlebarsHelper>> Helpers => GetHelpers<HandlebarsHelper>();
+        public static IEnumerable<KeyValuePair<string, HandlebarsHelperV2>> Helpers => GetHelpers<HandlebarsHelperV2>();
 
-        public static IEnumerable<KeyValuePair<string, HandlebarsBlockHelper>> BlockHelpers => GetHelpers<HandlebarsBlockHelper>();
+        public static IEnumerable<KeyValuePair<string, HandlebarsBlockHelperV2>> BlockHelpers => GetHelpers<HandlebarsBlockHelperV2>();
 
         private static IEnumerable<KeyValuePair<string, T>> GetHelpers<T>()
         {

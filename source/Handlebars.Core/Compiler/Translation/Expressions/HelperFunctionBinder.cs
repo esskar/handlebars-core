@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Handlebars.Core.Compiler.Structure;
-#if netstandard
 
+#if netstandard
+using System.Reflection;
 #endif
 
 namespace Handlebars.Core.Compiler.Translation.Expressions
@@ -63,11 +63,13 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         protected override Expression VisitHelperExpression(HelperExpression hex)
         {
-            if (CompilationContext.Configuration.Helpers.ContainsKey(hex.HelperName))
+            var configuration = CompilationContext.Configuration;
+            if (configuration.Helpers.ContainsKey(hex.HelperName))
             {
-                var helper = CompilationContext.Configuration.Helpers[hex.HelperName];
+                var helper = configuration.Helpers[hex.HelperName];
                 var arguments = new Expression[]
                 {
+                    Expression.Constant(configuration, typeof(HandlebarsConfiguration)), 
                     Expression.Property(
                         CompilationContext.BindingContext,
 #if netstandard
@@ -126,10 +128,11 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             string helperName,
             IEnumerable<object> arguments)
         {
-            if (CompilationContext.Configuration.Helpers.ContainsKey(helperName))
+            var configuration = CompilationContext.Configuration;
+            if (configuration.Helpers.ContainsKey(helperName))
             {
-                var helper = CompilationContext.Configuration.Helpers[helperName];
-                helper(context.TextWriter, context.Value, arguments.ToArray());
+                var helper = configuration.Helpers[helperName];
+                helper(configuration, context.TextWriter, context.Value, arguments.ToArray());
             }
             else
             {

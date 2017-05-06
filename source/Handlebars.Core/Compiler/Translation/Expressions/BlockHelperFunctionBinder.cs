@@ -22,20 +22,19 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             {
                 return Visit(sex.Body);
             }
-            else
-            {
-                return sex;
-            }
+            return sex;
         }
 
         protected override Expression VisitBlockHelperExpression(BlockHelperExpression bhex)
         {
-            var fb = new FunctionBuilder(CompilationContext.Configuration);
+            var configuration = CompilationContext.Configuration;
+            var fb = new FunctionBuilder(configuration);
             var body = fb.Compile(((BlockExpression)bhex.Body).Expressions, CompilationContext.BindingContext);
             var inversion = fb.Compile(((BlockExpression)bhex.Inversion).Expressions, CompilationContext.BindingContext);
-            var helper = CompilationContext.Configuration.BlockHelpers[bhex.HelperName.Replace("#", "")];
+            var helper = configuration.BlockHelpers[bhex.HelperName.Replace("#", "")];
             var arguments = new Expression[]
             {
+                Expression.Constant(configuration, typeof(HandlebarsConfiguration)), 
                 Expression.Property(
                     CompilationContext.BindingContext,
                     typeof(BindingContext).GetProperty("TextWriter")),
@@ -59,16 +58,13 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 #endif
                     arguments);
             }
-            else
-            {
-                return Expression.Call(
+            return Expression.Call(
 #if netstandard
                     helper.GetMethodInfo(),
 #else
-                    helper.Method,
+                helper.Method,
 #endif
-                    arguments);
-            }
+                arguments);
         }
     }
 }
