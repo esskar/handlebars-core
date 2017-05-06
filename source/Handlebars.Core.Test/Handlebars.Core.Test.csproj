@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Handlebars\Handlebars.Core.csproj" />
+    <ProjectReference Include="..\Handlebars.Core\Handlebars.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
