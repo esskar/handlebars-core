@@ -9,7 +9,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void HelperWithLiteralArguments()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("myHelper", (writer, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
@@ -19,7 +20,7 @@ namespace Handlebars.Core.Test
 
             var source = "Here are some things: {{myHelper 'foo' 'bar'}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -32,7 +33,8 @@ namespace Handlebars.Core.Test
         public void HelperWithLiteralArgumentsWithQuotes()
         {
             var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(helperName, (writer, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
@@ -43,7 +45,7 @@ namespace Handlebars.Core.Test
 
             var source = "Here are some things: {{" + helperName + " 'My \"favorite\" movie' 'bar'}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -56,7 +58,8 @@ namespace Handlebars.Core.Test
         public void InversionNoKey()
         {
             var source = "{{^key}}No key!{{/key}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var output = template.Render(new { });
             var expected = "No key!";
             Assert.Equal(expected, output);
@@ -66,7 +69,8 @@ namespace Handlebars.Core.Test
         public void InversionFalsy()
         {
             var source = "{{^key}}Falsy value!{{/key}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 key = false
@@ -80,7 +84,8 @@ namespace Handlebars.Core.Test
         public void InversionEmptySequence()
         {
             var source = "{{^key}}Empty sequence!{{/key}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     key = new string[] { }
@@ -94,7 +99,8 @@ namespace Handlebars.Core.Test
         public void InversionNonEmptySequence()
         {
             var source = "{{^key}}Empty sequence!{{/key}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     key = new[] { "element" }
@@ -109,7 +115,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{#ifCond arg1 arg2}}Args are same{{else}}Args are not same{{/ifCond}}";
 
-            Handlebars.RegisterHelper("ifCond", (writer, options, context, arguments) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("ifCond", (writer, options, context, arguments) => {
                 if(arguments[0] == arguments[1])
                 {
                     options.Template(writer, (object)context);
@@ -131,7 +138,7 @@ namespace Handlebars.Core.Test
                     arg2 = "b"
                 };
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var outputIsSame = template.Render(dataWithSameValues);
             var expectedIsSame = "Args are same";
@@ -145,7 +152,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void HelperWithNumericArguments()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("myHelper", (writer, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
@@ -155,7 +163,7 @@ namespace Handlebars.Core.Test
 
             var source = "Here are some things: {{myHelper 123 4567 -98.76}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -167,7 +175,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void HelperWithHashArgument()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("myHelper", (writer, context, args) => {
                 var hash = (Dictionary<string, object>)args[2];
                 foreach(var item in hash)
                 {
@@ -177,7 +186,7 @@ namespace Handlebars.Core.Test
 
             var source = "Here are some things:{{myHelper 'foo' 'bar' item1='val1' item2='val2'}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -189,14 +198,15 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BlockHelperWithSubExpression()
         {
-            Handlebars.RegisterHelper("isEqual", (writer, context, args) =>
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("isEqual", (writer, context, args) =>
             {
                 writer.WriteSafeString(args[0].ToString() == args[1].ToString() ? "true" : null);
             });
         
             var source = "{{#if (isEqual arg1 arg2)}}True{{/if}}";
         
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
         
             var expectedIsTrue = "True";
             var outputIsTrue = template.Render(new { arg1 = 1, arg2 = 1 });
@@ -210,7 +220,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void HelperWithSegmentLiteralArguments()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("myHelper", (writer, context, args) => {
                 var count = 0;
                 foreach (var arg in args)
                 {
@@ -220,7 +231,7 @@ namespace Handlebars.Core.Test
 
             var source = "Here are some things: {{myHelper args.[0].arg args.[1].arg 'another argument'}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var data = new
             {

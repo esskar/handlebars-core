@@ -13,7 +13,7 @@ namespace Handlebars.Core.Test
         public void BasicPath()
         {
             var source = "Hello, {{name}}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new {
                 name = "Handlebars.Net"
             };
@@ -30,7 +30,7 @@ namespace Handlebars.Core.Test
 	        {
 		        UnresolvedBindingFormatter = "('{0}' is undefined)"
 	        };
-	        var handlebars = Handlebars.Create( config );
+	        var handlebars = new HandlebarsEngine( config );
 
             var template = handlebars.Compile(source);
             var data = new {
@@ -49,7 +49,7 @@ namespace Handlebars.Core.Test
 	        {
 		        ThrowOnUnresolvedBindingExpression = true
 	        };
-	        var handlebars = Handlebars.Create( config );
+	        var handlebars = new HandlebarsEngine(config );
 	        var template = handlebars.Compile( source );
 
             var data = new {
@@ -67,7 +67,7 @@ namespace Handlebars.Core.Test
             {
                 ThrowOnUnresolvedBindingExpression = true
             };
-            var handlebars = Handlebars.Create(config);
+            var handlebars = new HandlebarsEngine(config);
             var template = handlebars.Compile(source);
 
             var data = new
@@ -96,7 +96,7 @@ namespace Handlebars.Core.Test
         public void BasicPathWhiteSpace()
         {
             var source = "Hello, {{ name }}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new {
                 name = "Handlebars.Net"
             };
@@ -108,7 +108,7 @@ namespace Handlebars.Core.Test
         public void BasicCurlies()
         {
             var source = "Hello, {name}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new {
                 name = "Handlebars.Net"
             };
@@ -120,7 +120,7 @@ namespace Handlebars.Core.Test
         public void BasicCurliesWithLeadingSlash()
         {
             var source = "Hello, \\{name\\}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new {
                 name = "Handlebars.Net"
             };
@@ -132,7 +132,8 @@ namespace Handlebars.Core.Test
         public void BasicPathArray()
         {
             var source = "Hello, {{ names.[1] }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new[] {"Foo", "Handlebars.Net"}
@@ -145,7 +146,8 @@ namespace Handlebars.Core.Test
         public void BasicPathArrayChildPath()
         {
             var source = "Hello, {{ names.[1].name }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new[] {new {name = "Foo"}, new {name = "Handlebars.Net"}}
@@ -158,7 +160,8 @@ namespace Handlebars.Core.Test
         public void BasicPathArrayNoSquareBracketsChildPath()
         {
             var source = "Hello, {{ names.1.name }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new[] { new { name = "Foo" }, new { name = "Handlebars.Net" } }
@@ -171,7 +174,7 @@ namespace Handlebars.Core.Test
         public void BasicPathDotBinding()
         {
             var source = "{{#nestedObject}}{{.}}{{/nestedObject}}";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
                 {
                     nestedObject = "A dot goes a long way"
@@ -184,7 +187,7 @@ namespace Handlebars.Core.Test
         public void BasicPathRelativeDotBinding()
         {
             var source = "{{#nestedObject}}{{../.}}{{/nestedObject}}";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
                 {
                     nestedObject = "Relative dots, yay"
@@ -197,7 +200,8 @@ namespace Handlebars.Core.Test
         public void BasicPropertyOnArray()
         {
             var source = "Array is {{ names.Length }} item(s) long";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     names = new[] { new { name = "Foo" }, new { name = "Handlebars.Net" } }
@@ -210,7 +214,8 @@ namespace Handlebars.Core.Test
         public void BasicIfElse()
         {
             var source = "Hello, {{#if basic_bool}}Bob{{else}}Sam{{/if}}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var trueData = new {
                 basic_bool = true
             };
@@ -227,7 +232,7 @@ namespace Handlebars.Core.Test
         public void BasicIfElseIf()
         {
             var source = "{{#if isActive}}active{{else if isInactive}}inactive{{/if}}";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var activeData = new {
                 isActive = true
             };
@@ -244,7 +249,8 @@ namespace Handlebars.Core.Test
         public void BasicIfElseIfElse()
         {
             var source = "{{#if isActive}}active{{else if isInactive}}inactive{{else}}nada{{/if}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var activeData = new {
                 isActive = true
             };
@@ -265,7 +271,7 @@ namespace Handlebars.Core.Test
         public void BasicWith()
         {
             var source = "Hello,{{#with person}} my good friend {{name}}{{/with}}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new {
                 person = new {
                     name = "Erik"
@@ -279,7 +285,8 @@ namespace Handlebars.Core.Test
         public void BasicWithInversion()
         {
             var source = "Hello, {{#with person}} my good friend{{else}}nevermind{{/with}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			Assert.Equal("Hello, nevermind", template.Render(new {}));
 			Assert.Equal("Hello, nevermind", template.Render(new {person = false}));
@@ -290,7 +297,7 @@ namespace Handlebars.Core.Test
         public void BasicEncoding()
         {
             var source = "Hello, {{name}}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
             {
                 name = "<b>Bob</b>"
@@ -303,7 +310,7 @@ namespace Handlebars.Core.Test
         public void BasicComment()
         {
             var source = "Hello, {{!don't render me!}}{{name}}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
             {
                 name = "Carl"
@@ -316,7 +323,8 @@ namespace Handlebars.Core.Test
         public void BasicCommentEscaped()
         {
             var source = "Hello, {{!--don't {{render}} me!--}}{{name}}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 name = "Carl"
@@ -329,7 +337,8 @@ namespace Handlebars.Core.Test
         public void BasicObjectEnumerator()
         {
             var source = "{{#each enumerateMe}}{{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 enumerateMe = new
@@ -346,7 +355,8 @@ namespace Handlebars.Core.Test
         public void BasicObjectEnumeratorWithKey()
         {
             var source = "{{#each enumerateMe}}{{@key}}: {{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 enumerateMe = new
@@ -363,7 +373,7 @@ namespace Handlebars.Core.Test
         public void BasicDictionaryEnumerator()
         {
             var source = "{{#each enumerateMe}}{{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
             {
                 enumerateMe = new Dictionary<string, object>
@@ -380,7 +390,8 @@ namespace Handlebars.Core.Test
         public void BasicDictionaryEnumeratorWithIntKeys()
         {
             var source = "{{#each enumerateMe}}{{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 enumerateMe = new Dictionary<int, object>
@@ -397,7 +408,8 @@ namespace Handlebars.Core.Test
         public void BasicDictionaryEnumeratorWithKey()
         {
             var source = "{{#each enumerateMe}}{{@key}}: {{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 enumerateMe = new Dictionary<string, object>
@@ -414,7 +426,7 @@ namespace Handlebars.Core.Test
         public void BasicDictionaryEnumeratorWithLongKey()
         {
             var source = "{{#each enumerateMe}}{{@key}}: {{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
             {
                 enumerateMe = new Dictionary<long, object>
@@ -432,7 +444,8 @@ namespace Handlebars.Core.Test
         public void BasicPathDictionaryStringKeyNoSquareBrackets()
         {
             var source = "Hello, {{ names.Foo }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new Dictionary<string, string>
@@ -448,7 +461,8 @@ namespace Handlebars.Core.Test
         public void BasicPathDictionaryStringKey()
         {
             var source = "Hello, {{ names.[Foo] }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new Dictionary<string, string>
@@ -464,7 +478,7 @@ namespace Handlebars.Core.Test
         public void BasicPathDictionaryIntKeyNoSquareBrackets()
         {
             var source = "Hello, {{ names.42 }}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
             {
                 names = new Dictionary<int, string>
@@ -480,7 +494,8 @@ namespace Handlebars.Core.Test
         public void BasicPathDictionaryLongKeyNoSquareBrackets()
         {
             var source = "Hello, {{ names.42 }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new Dictionary<long, string>
@@ -496,7 +511,7 @@ namespace Handlebars.Core.Test
         public void BasicPathDictionaryIntKey()
         {
             var source = "Hello, {{ names.[42] }}!";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var data = new
             {
                 names = new Dictionary<int, string>
@@ -512,7 +527,8 @@ namespace Handlebars.Core.Test
         public void BasicPathDictionaryLongKey()
         {
             var source = "Hello, {{ names.[42] }}!";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
             {
                 names = new Dictionary<long, string>
@@ -529,7 +545,8 @@ namespace Handlebars.Core.Test
         public void DynamicWithMetadataEnumerator()
         {
             var source = "{{#each enumerateMe}}{{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             dynamic data = new ExpandoObject();
             data.enumerateMe = new ExpandoObject();
             data.enumerateMe.foo = "hello";
@@ -542,7 +559,8 @@ namespace Handlebars.Core.Test
         public void DynamicWithMetadataEnumeratorWithKey()
         {
             var source = "{{#each enumerateMe}}{{@key}}: {{this}} {{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             dynamic data = new ExpandoObject();
             data.enumerateMe = new ExpandoObject();
             data.enumerateMe.foo = "hello";
@@ -554,13 +572,14 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicHelper()
         {
-            Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("link_to", (writer, context, parameters) => {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
             string source = @"Click here: {{link_to url text}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var data = new {
                 url = "https://github.com/rexm/handlebars.net",
@@ -575,10 +594,10 @@ namespace Handlebars.Core.Test
 		public void BasicHelperPostRegister()
 		{
 			string source = @"Click here: {{link_to_post_reg url text}}";
+		    var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
-			var template = Handlebars.Compile(source);
-
-			Handlebars.RegisterHelper("link_to_post_reg", (writer, context, parameters) => {
+			engine.RegisterHelper("link_to_post_reg", (writer, context, parameters) => {
 				writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
 			});
 
@@ -598,7 +617,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#person}}{{name}}{{/person}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 person = new {
@@ -614,8 +634,9 @@ namespace Handlebars.Core.Test
         public void BasicDeferredBlockString()
         {
             string source = "{{#person}} -{{this}}- {{/person}}";
-            
-            var template = Handlebars.Compile(source);
+
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             
             var result = template.Render(new {person = "Bill"});
             Assert.Equal(" -Bill- ", result);
@@ -626,7 +647,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{ # person }}{{ name }}{{ / person }}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 person = new {
@@ -643,7 +665,7 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#person}}{{name}}{{/person}}!";
 
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
 
             var data = new {
                 person = false
@@ -658,7 +680,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#person}}{{name}}{{/person}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 person = (object)null
@@ -673,7 +696,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#people}}{{this}} {{/people}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 people = new [] {
@@ -691,7 +715,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{^people}}nobody{{/people}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 people = new string[] {
@@ -705,7 +730,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicDeferredBlockNegatedContext()
         {
-            var template = Handlebars.Compile("Hello, {{^obj}}{{name}}{{/obj}}!");
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile("Hello, {{^obj}}{{name}}{{/obj}}!");
             
             Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody"}));
             Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody", obj = new string[0]}));
@@ -714,7 +740,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicDeferredBlockInversion()
         {
-            var template = Handlebars.Compile("Hello, {{#obj}}somebody{{else}}{{name}}{{/obj}}!");
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile("Hello, {{#obj}}somebody{{else}}{{name}}{{/obj}}!");
         
             Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody"}));
             Assert.Equal("Hello, nobody!", template.Render(new {name = "nobody", obj = false}));
@@ -724,7 +751,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicDeferredBlockNegatedInversion()
         {
-            var template = Handlebars.Compile("Hello, {{^obj}}nobody{{else}}{{name}}{{/obj}}!");
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile("Hello, {{^obj}}nobody{{else}}{{name}}{{/obj}}!");
         
             var array = new[]
             {
@@ -743,7 +771,8 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{first}} {{last}}!";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var data = new {
 				first = "Marc"
@@ -758,7 +787,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{name.first}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 name = (object)null
@@ -773,7 +803,8 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{#if falsy}}Truthy!{{/if}}";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var data = new {
 				falsy = 0
@@ -788,7 +819,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#if falsy}}Truthy!{{/if}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 falsy = (object)null
@@ -803,7 +835,7 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{#if truthy}}Truthy!{{/if}}";
 
-			var template = Handlebars.Compile(source);
+			var template = new HandlebarsEngine().Compile(source);
 
 			var data = new {
 				truthy = -0.1
@@ -818,7 +850,8 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{#if falsy}}Truthy!{{/if}}";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var data = new {
 				falsy = ""
@@ -833,7 +866,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{#if Array}}stuff: {{#each Array}}{{this}}{{/each}}{{/if}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 Array = new object[] {}
@@ -849,7 +883,8 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{{dangerous_value}}}!";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var data = new {
 				dangerous_value = "<div>There's HTML here</div>"
@@ -864,7 +899,8 @@ namespace Handlebars.Core.Test
         {
             string source = @"Hello, \{{raw_value}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
             {
@@ -880,10 +916,11 @@ namespace Handlebars.Core.Test
         {
             string source = "{{eval 2  3}}";
 
-            Handlebars.RegisterHelper("eval",
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("eval",
                 (writer, context, args) => writer.Write("{0} {1}", args[0], args[1]));
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var data = new { };
 
@@ -896,10 +933,11 @@ namespace Handlebars.Core.Test
         {
             var source = @"{{verbatim '{{foo}}'}} something {{verbatim '{{bar}}'}}";
 
-            Handlebars.RegisterHelper("verbatim",
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("verbatim",
                 (writer, context, args) => writer.Write(args[0]));
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
             
             var data = new { };
             var result = template.Render(data);
@@ -912,7 +950,8 @@ namespace Handlebars.Core.Test
         {
             string source = "{{#people}}- {{this}} is member of {{@root.group}}\n{{/people}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 group = "Engineering",
@@ -939,7 +978,8 @@ namespace Handlebars.Core.Test
                 home = false
             };
 
-            var compiler = Handlebars.Compile(template);
+            var engine = new HandlebarsEngine();
+            var compiler = engine.Compile(template);
             var result = compiler.Render(data);
             Assert.Equal("Welcome to New York City", result);
         }
@@ -951,7 +991,8 @@ namespace Handlebars.Core.Test
                 "<div id='userInfo'>UserName: {{userInfo.userName}} Language: {{userInfo.language}}</div>"
                 + "<div id='main' style='width:{{clientSettings.width}}px; height:{{clientSettings.height}}px'>body</div>";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var embeded = new Dictionary<string, object>
             {
@@ -984,7 +1025,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.[key]}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
             {
@@ -1003,7 +1045,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.key}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
             {
@@ -1022,7 +1065,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.[key]}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
             {
@@ -1039,7 +1083,7 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.[my key]}}";
 
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
 
             var result = template.Render(new
                 {
@@ -1056,7 +1100,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.[my key].prop1}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
                 {
@@ -1081,7 +1126,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.key}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
             {
@@ -1098,7 +1144,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.[42]}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
             {
@@ -1115,7 +1162,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.42}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var result = template.Render(new
             {
@@ -1133,7 +1181,8 @@ namespace Handlebars.Core.Test
             
             var source = @"{{#is ProgramID """"}}no program{{/is}}{{#is ProgramID ""1081""}}some program text{{/is}}";
 
-            Handlebars.RegisterHelper("is", (output, options, context, args) =>
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("is", (output, options, context, args) =>
                 {
                     if(args[0] == args[1])
                     {
@@ -1142,7 +1191,7 @@ namespace Handlebars.Core.Test
                 });
 
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var result = template.Render(new
                 {
@@ -1159,7 +1208,8 @@ namespace Handlebars.Core.Test
         public void DictionaryIteration()
         {
             string source = @"{{#ADictionary}}{{@key}},{{value}}{{/ADictionary}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var result = template.Render(new 
                 {
                     ADictionary = new Dictionary<string, int>
@@ -1178,7 +1228,7 @@ namespace Handlebars.Core.Test
         public void ObjectEnumeration()
         {
             string source = @"{{#each myObject}}{{#if this.length}}<b>{{@key}}</b>{{#each this}}<li>{{this}}</li>{{/each}}<br>{{/if}}{{/each}}";
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
             var result = template.Render(new 
                 {
                     myObject = new {
@@ -1195,7 +1245,7 @@ namespace Handlebars.Core.Test
         {
             var source = "{{dictionary.[my key].[another key]}}";
 
-            var template = Handlebars.Compile(source);
+            var template = new HandlebarsEngine().Compile(source);
 
             var data = new
             {

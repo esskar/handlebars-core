@@ -11,7 +11,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 name = "Marc"
@@ -20,8 +21,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{name}}";
             using(var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -33,14 +34,15 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 name = "Marc"
             };
 
             var partialSource = "{{name}}";           
-            Handlebars.RegisterTemplate("person", partialSource);            
+            engine.RegisterTemplate("person", partialSource);            
 
             var result = template.Render(data);
             Assert.Equal("Hello, Marc!", result);
@@ -51,7 +53,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person leadDev}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 leadDev = new {
@@ -62,8 +65,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{name}}";
             using(var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -75,13 +78,14 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person first='Pete'}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var partialSource = "{{first}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(null);
@@ -93,13 +97,14 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person first='Pete' last=\"Sampras\"}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var partialSource = "{{first}} {{last}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(null);
@@ -111,7 +116,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person first=leadDev.marc}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
             {
@@ -127,8 +133,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{first.name}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -140,7 +146,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person first=leadDev.marc last='Smith'}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
             {
@@ -156,8 +163,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{first.name}} {{last}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -169,13 +176,14 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person first=1 last=true}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var partialSource = "{{first}} {{last}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(null);
@@ -187,13 +195,14 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person first='Pe ({~te~}) '}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var partialSource = "{{first}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(null);
@@ -205,18 +214,19 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{> (partialNameHelper)}}!";
 
-            Handlebars.RegisterHelper("partialNameHelper", (writer, context, args) =>
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("partialNameHelper", (writer, context, args) =>
             {
                 writer.WriteSafeString("partialName");
             });
 
             using (var reader = new StringReader("world"))
             {
-                var partial = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("partialName", partial);
+                var partial = engine.Compile(reader);
+                engine.RegisterTemplate("partialName", partial);
             }
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
             var data = new { };
             var result = template.Render(data);
             Assert.Equal("Hello, world!", result);
@@ -227,7 +237,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{> (concat 'par' 'tial' item1='Na' item2='me')}}!";
 
-            Handlebars.RegisterHelper("concat", (writer, context, args) =>
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("concat", (writer, context, args) =>
             {
                 var hash = args[2] as Dictionary<string, object>;
                 writer.WriteSafeString(string.Concat(args[0], args[1], hash["item1"], hash["item2"]));
@@ -235,11 +246,11 @@ namespace Handlebars.Core.Test
 
             using (var reader = new StringReader("world"))
             {
-                var partial = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("partialName", partial);
+                var partial = engine.Compile(reader);
+                engine.RegisterTemplate("partialName", partial);
             }
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
             var data = new { };
             var result = template.Render(data);
             Assert.Equal("Hello, world!", result);
@@ -250,17 +261,18 @@ namespace Handlebars.Core.Test
         {
             var source = "Hello, {{> (lookup name) context }}!";
 
-            Handlebars.RegisterHelper("lookup", (output, context, arguments) =>
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("lookup", (output, context, arguments) =>
             {
                 output.WriteSafeString(arguments[0]);
             });
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             using (var reader = new StringReader("{{first}} {{last}}"))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("test", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("test", partialTemplate);
             }
 
             var data = new
@@ -282,17 +294,18 @@ namespace Handlebars.Core.Test
         {
             var source = "Hello, {{> (lookup name) first='Marc' last='Smith' }}!";
 
-            Handlebars.RegisterHelper("lookup", (output, context, arguments) =>
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("lookup", (output, context, arguments) =>
             {
                 output.WriteSafeString(arguments[0]);
             });
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             using (var reader = new StringReader("{{first}} {{last}}"))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("test", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("test", partialTemplate);
             }
 
             var data = new
@@ -309,7 +322,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{  >  person  }}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 name = "Marc"
@@ -318,8 +332,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{name}}";
             using(var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -331,7 +345,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person lastName='Smith'}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
             {
@@ -342,8 +357,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{firstName}} {{lastName}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -355,7 +370,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person lastName=test}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
             {
@@ -366,8 +382,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{firstName}} {{lastName}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -379,7 +395,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{>person leadDev}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
             {
@@ -394,8 +411,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{firstName}} {{lastName}}";
             using (var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person", partialTemplate);
             }
 
             var result = template.Render(data);
@@ -407,7 +424,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#>person1}}friend{{/person1}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 firstName = "Pete",
@@ -419,8 +437,8 @@ namespace Handlebars.Core.Test
 
             var partialSource = "{{firstName}} {{lastName}}";
             using (var reader = new StringReader(partialSource)) {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("person1", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("person1", partialTemplate);
             }
 
             var result2 = template.Render(data);
@@ -432,7 +450,8 @@ namespace Handlebars.Core.Test
         {
             string source = "Hello, {{#>person2 arg='Todd'}}friend{{/person2}}!";
 
-            var template = Handlebars.Compile (source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile (source);
 
             var data = new {
                 firstName = "Pete",
@@ -444,8 +463,8 @@ namespace Handlebars.Core.Test
 
             var partialSource = "{{arg}}";
             using (var reader = new StringReader (partialSource)) {
-                var partialTemplate = Handlebars.Compile (reader);
-                Handlebars.RegisterTemplate ("person2", partialTemplate);
+                var partialTemplate = engine.Compile (reader);
+                engine.RegisterTemplate ("person2", partialTemplate);
             }
 
             var result2 = template.Render(data);

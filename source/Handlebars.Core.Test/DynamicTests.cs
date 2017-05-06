@@ -14,7 +14,8 @@ namespace Handlebars.Core.Test
 
             var source = "Foo: {{foo}}\nBar: {{bar}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var output = template.Render(model);
 
@@ -28,7 +29,8 @@ namespace Handlebars.Core.Test
 
 			var source = "{{myfield}}{{#if truthy}}{{truthy}}{{/if}}";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var output = template.Render(model);
 
@@ -42,7 +44,8 @@ namespace Handlebars.Core.Test
 
 			var source = "{{myfield}}{{#if mymissingfield}}{{mymissingfield}}{{/if}}";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var output = template.Render(model);
 
@@ -56,7 +59,8 @@ namespace Handlebars.Core.Test
 
 			var source = "{{myfield}}{{#if falsy}}{{falsy}}{{/if}}";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var output = template.Render(model);
 
@@ -69,7 +73,8 @@ namespace Handlebars.Core.Test
 
             var source = "{{#each this}}{{Key}}{{Value}}{{/each}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var output = template.Render(model);
 
@@ -83,7 +88,8 @@ namespace Handlebars.Core.Test
 
             var source = "{{NotExists.Prop}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var output = template.Render(model);
 
@@ -99,7 +105,8 @@ namespace Handlebars.Core.Test
 
             var source = "{{#each this}}{{Key}}{{Value}}{{/each}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var output = template.Render(model);
 

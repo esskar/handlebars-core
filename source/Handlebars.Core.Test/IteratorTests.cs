@@ -9,7 +9,8 @@ namespace Handlebars.Core.Test
         public void BasicIterator()
         {
             var source = "Hello,{{#each people}}\n- {{name}}{{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new {
                 people = new []{
                     new { 
@@ -28,7 +29,8 @@ namespace Handlebars.Core.Test
         public void WithIndex()
         {
             var source = "Hello,{{#each people}}\n{{@index}}. {{name}}{{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     people = new[]{
@@ -66,7 +68,8 @@ namespace Handlebars.Core.Test
                         {{/each}}
                     {{/each}}    
                 {{/each}}";
-            var template = Handlebars.Compile( source );
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile( source );
             var data = new
                 {
                     level1 = new[]{
@@ -182,7 +185,8 @@ namespace Handlebars.Core.Test
         public void WithFirst()
         {
             var source = "Hello,{{#each people}}\n{{@index}}. {{name}} ({{name}} is {{#if @first}}first{{else}}not first{{/if}}){{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     people = new[]{
@@ -202,7 +206,8 @@ namespace Handlebars.Core.Test
         public void WithLast()
         {
             var source = "Hello,{{#each people}}\n{{@index}}. {{name}} ({{name}} is {{#if @last}}last{{else}}not last{{/if}}){{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     people = new[]{
@@ -222,7 +227,8 @@ namespace Handlebars.Core.Test
         public void Empty()
         {
             var source = "Hello,{{#each people}}\n- {{name}}{{else}} (no one listed){{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     people = new object[] { }
@@ -235,7 +241,8 @@ namespace Handlebars.Core.Test
         public void NullObject()
         {
             var source = "Hello,{{#each people}}\n- {{name}}{{else}} (no one listed){{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     people = (object)null
@@ -248,7 +255,8 @@ namespace Handlebars.Core.Test
         public void NullSequence()
         {
             var source = "Hello,{{#each people}}\n- {{name}}{{else}} (no one listed){{/each}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var data = new
                 {
                     people = (object[])null

@@ -7,7 +7,7 @@ namespace Handlebars.Core.Test
 {
     public class CustomConfigurationTests
     {
-        public IHandlebars HandlebarsInstance { get; private set; }
+        public IHandlebarsEngine HandlebarsInstance { get; }
         public const string ExpectedOutput = "Hello Eric Sharp from Japan. You're <b>AWESOME</b>.";
         public object Value = new
                     {
@@ -23,7 +23,7 @@ namespace Handlebars.Core.Test
                                             new UpperCamelCaseExpressionNameResolver()
                                     };
                         
-            this.HandlebarsInstance = Handlebars.Create(configuration);
+            this.HandlebarsInstance = new HandlebarsEngine(configuration);
         }
 
         #region UpperCamelCaseExpressionNameResolver Tests
@@ -80,7 +80,7 @@ namespace Handlebars.Core.Test
                                         TextEncoder = null
                                     };
 
-            var handlebarsInstance = Handlebars.Create(configuration);
+            var handlebarsInstance = new HandlebarsEngine(configuration);
 
             var output = handlebarsInstance.Compile(template).Render(Value);
 
@@ -98,7 +98,7 @@ namespace Handlebars.Core.Test
                                         TextEncoder = new JsonEncoder()
                                     };
 
-            var handlebarsInstance = Handlebars.Create(configuration);
+            var handlebarsInstance = new HandlebarsEngine(configuration);
 
             var value = new {Username = "\"<Eric>\"\n<Sharp>"};
             var output = handlebarsInstance.Compile(template).Render(value);

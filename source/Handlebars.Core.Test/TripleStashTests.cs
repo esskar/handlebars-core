@@ -10,7 +10,8 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{{>unenc_person}}}!";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var data = new {
 				name = "Marc"
@@ -19,8 +20,8 @@ namespace Handlebars.Core.Test
 			var partialSource = "<div>{{name}}</div>";
 			using(var reader = new StringReader(partialSource))
 			{
-				var partialTemplate = Handlebars.Compile(reader);
-				Handlebars.RegisterTemplate("unenc_person", partialTemplate);
+				var partialTemplate = engine.Compile(reader);
+				engine.RegisterTemplate("unenc_person", partialTemplate);
 			}
 
 			var result = template.Render(data);
@@ -32,7 +33,8 @@ namespace Handlebars.Core.Test
 		{
 			string source = "Hello, {{>enc_person}}!";
 
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
 			var data = new {
 				name = "<div>Marc</div>"
@@ -41,8 +43,8 @@ namespace Handlebars.Core.Test
 			var partialSource = "<div>{{{name}}}</div>";
 			using(var reader = new StringReader(partialSource))
 			{
-				var partialTemplate = Handlebars.Compile(reader);
-				Handlebars.RegisterTemplate("enc_person", partialTemplate);
+				var partialTemplate = engine.Compile(reader);
+				engine.RegisterTemplate("enc_person", partialTemplate);
 			}
 
 			var result = template.Render(data);
@@ -53,7 +55,8 @@ namespace Handlebars.Core.Test
 		public void UnencodedObjectEnumeratorItems()
 		{
 			var source = "{{#each enumerateMe}}{{{this}}} {{/each}}";
-			var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 			var data = new
 			{
 				enumerateMe = new
@@ -71,7 +74,8 @@ namespace Handlebars.Core.Test
         {
             string source = "{{#if a_bool}}{{{dangerous_value}}}{{/if}}Hello, {{{dangerous_value}}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
                 {
@@ -88,7 +92,8 @@ namespace Handlebars.Core.Test
         {
             string source = "{{{dangerous_value}}}...{{dangerous_value}}...{{{dangerous_value}}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new
                 {

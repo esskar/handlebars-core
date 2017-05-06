@@ -27,7 +27,8 @@ namespace Handlebars.Core.Test
 {{else}}
 {{#with b}}{{#if inner_bool}}b is true{{else}}b is false{{/if}}{{/with}}
 {{/if}}";
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
             var trueTrue = new {
                 outer_bool = true,
                 a = new {
@@ -71,7 +72,8 @@ namespace Handlebars.Core.Test
         {
             var source = "{{#if outer_bool}}{{#items}}{{link_to url text}}{{/items}}{{/if}}";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 outer_bool = true,
@@ -82,7 +84,7 @@ namespace Handlebars.Core.Test
                 }
             };
 
-            Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+            engine.RegisterHelper("link_to", (writer, context, parameters) => {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
@@ -103,18 +105,19 @@ namespace Handlebars.Core.Test
                 }
             };
 
-            Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper("link_to", (writer, context, parameters) => {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
-            Handlebars.RegisterHelper("block_helper", (writer, options, context, arguments) => {
+            engine.RegisterHelper("block_helper", (writer, options, context, arguments) => {
                 foreach(var item in (IEnumerable)arguments[0])
                 {
                     options.Template(writer, item);
                 }
             });
 
-			var template = Handlebars.Compile(source);
+			var template = engine.Compile(source);
 
             var result = template.Render(data);
             Assert.Equal("<a href='http://google.com/'>Google</a><a href='http://yahoo.com/'>Yahoo!</a>", result);
@@ -123,7 +126,8 @@ namespace Handlebars.Core.Test
         [Fact]
         public void ContextTest()
         {
-            var template = Handlebars.Compile(@"{{#each Foo}}{{../Bar}}: {{#each this}}{{../../Bar}}{{this}},{{/each}};{{/each}}");
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(@"{{#each Foo}}{{../Bar}}: {{#each this}}{{../../Bar}}{{this}},{{/each}};{{/each}}");
 
             var expected = @"Foo: FooAA,FooAAA,;Foo: FooBB,FooBBB,;";
 
@@ -153,7 +157,8 @@ namespace Handlebars.Core.Test
 				County = new[] { "Kane" }
 			};
 
-			var template = Handlebars.Compile(NaturalLanguageListTemplate);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(NaturalLanguageListTemplate);
 
 			var result = template.Render(data);
 
@@ -168,7 +173,8 @@ namespace Handlebars.Core.Test
 				County = new[] { "Kane", "Salt Lake" }
 			};
 
-			var template = Handlebars.Compile(NaturalLanguageListTemplate);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(NaturalLanguageListTemplate);
 
 			var result = template.Render(data);
 
@@ -183,7 +189,8 @@ namespace Handlebars.Core.Test
 				County = new[] { "Kane", "Salt Lake", "Weber" }
 			};
 
-			var template = Handlebars.Compile(NaturalLanguageListTemplate);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(NaturalLanguageListTemplate);
 
 			var result = template.Render(data);
 
@@ -195,7 +202,8 @@ namespace Handlebars.Core.Test
         {
             string source = "{{>personcity}}!";
 
-            var template = Handlebars.Compile(source);
+            var engine = new HandlebarsEngine();
+            var template = engine.Compile(source);
 
             var data = new {
                 name = "Marc",
@@ -205,8 +213,8 @@ namespace Handlebars.Core.Test
             var partialSource = "{{name}} is from {{@root.city}}";
             using(var reader = new StringReader(partialSource))
             {
-                var partialTemplate = Handlebars.Compile(reader);
-                Handlebars.RegisterTemplate("personcity", partialTemplate);
+                var partialTemplate = engine.Compile(reader);
+                engine.RegisterTemplate("personcity", partialTemplate);
             }
 
             var result = template.Render(data);

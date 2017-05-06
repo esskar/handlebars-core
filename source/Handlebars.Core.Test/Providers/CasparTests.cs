@@ -13,7 +13,7 @@ namespace Handlebars.Core.Test.Providers
                 TemplateContentProvider = new DiskFileSystemTemplateContentProvider()
             };
 
-            var handlebars = Handlebars.Create(configuration);
+            var handlebars = new HandlebarsEngine(configuration);
             AddHelpers(handlebars);
             var renderView = handlebars.CompileView("Providers/Casper-master/index.hbs");
             var output = renderView.Render(new
@@ -44,7 +44,7 @@ namespace Handlebars.Core.Test.Providers
                 TemplateContentProvider = new DiskFileSystemTemplateContentProvider()
             };
 
-            var handlebars = Handlebars.Create(configuration);
+            var handlebars = new HandlebarsEngine(configuration);
             AddHelpers(handlebars);
             var renderView = handlebars.CompileView("Providers/Casper-master/post.hbs");
             var output = renderView.Render(new
@@ -65,7 +65,7 @@ namespace Handlebars.Core.Test.Providers
             Assert.Equal("My Post Title", cq["h1.post-title"].Html());
         }
 
-        private static void AddHelpers(IHandlebars handlebars)
+        private static void AddHelpers(IHandlebarsEngine handlebars)
         {
             handlebars.RegisterHelper("asset",
                 (writer, context, arguments) => writer.Write("asset:" + string.Join("|", arguments)));
@@ -87,7 +87,7 @@ namespace Handlebars.Core.Test.Providers
                 TemplateContentProvider = new DiskFileSystemTemplateContentProvider()
             };
 
-            var handlebars = Handlebars.Create(configuration);
+            var handlebars = new HandlebarsEngine(configuration);
 
             AddHelpers(handlebars);
             var renderView = handlebars.CompileView("Providers/Casper-master/post-no-layout.hbs");

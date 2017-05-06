@@ -21,7 +21,7 @@ namespace Handlebars.Core.Test.Providers
             };
 
             //When a viewengine renders that view
-            var handleBars = Handlebars.Create(configuration);
+            var handleBars = new HandlebarsEngine(configuration);
             var renderView = handleBars.CompileView("views\\someview.hbs");
             var output = renderView.Render(null);
             
@@ -43,7 +43,7 @@ namespace Handlebars.Core.Test.Providers
             };
 
             //When a viewengine renders that view
-            var handlebars = Handlebars.Create(configuration);
+            var handlebars = new HandlebarsEngine(configuration);
             var render = handlebars.CompileView("views\\someview.hbs");
             var output = render.Render(null);
 
@@ -64,7 +64,7 @@ namespace Handlebars.Core.Test.Providers
             };
 
             //When a viewengine renders that view
-            var handlebars = Handlebars.Create(configuration);
+            var handlebars = new HandlebarsEngine(configuration);
             var render = handlebars.CompileView("views\\someview.hbs");
             var output = render.Render(new {@body = new {title = "THING"}});
 

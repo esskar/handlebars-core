@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Handlebars.Core
 {
-    public interface IHandlebars
+    public interface IHandlebarsEngine
     {
         HandlebarsConfiguration Configuration { get; }
 

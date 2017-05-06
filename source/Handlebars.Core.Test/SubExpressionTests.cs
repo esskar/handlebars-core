@@ -10,19 +10,20 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicSubExpression()
         {
-            var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
-            var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
+            var subHelperName = "subhelper-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(helperName, (writer, context, args) => {
                 writer.Write("Hello " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            engine.RegisterHelper(subHelperName, (writer, context, args) => {
                 writer.Write("world");
             });
 
             var source = "{{" + helperName + " (" + subHelperName + ")}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -34,19 +35,20 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicSubExpressionWithStringLiteralArgument()
         {
-            var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
-            var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
+            var subHelperName = "subhelper-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(helperName, (writer, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            engine.RegisterHelper(subHelperName, (writer, context, args) => {
                 writer.Write("Inner " + args[0]);
             });
 
             var source = "{{" + helperName + " (" + subHelperName + " 'inner-arg')}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -60,18 +62,19 @@ namespace Handlebars.Core.Test
         {
             var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
             var subHelperName = "subhelper-" + Guid.NewGuid(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(helperName, (writer, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            engine.RegisterHelper(subHelperName, (writer, context, args) => {
                 var hash = (Dictionary<string, object>)args[0];
                 writer.Write("Inner " + hash["item1"] + "-" + hash["item2"]);
             });
 
             var source = "{{" + helperName + " (" + subHelperName + " item1='inner' item2='arg')}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -83,20 +86,21 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicSubExpressionWithNumericLiteralArguments()
         {
-            var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
-            var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
+            var subHelperName = "subhelper-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(helperName, (writer, context, args) => {
                 writer.Write("Math " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            engine.RegisterHelper(subHelperName, (writer, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
 
             var source = "{{" + helperName + " (" + subHelperName + " 1 2)}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -108,19 +112,20 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicSubExpressionWithPathArgument()
         {
-            var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
-            var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            var helperName = "helper-" + Guid.NewGuid(); //randomize helper name
+            var subHelperName = "subhelper-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(helperName, (writer, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            engine.RegisterHelper(subHelperName, (writer, context, args) => {
                 writer.Write("Inner " + args[0]);
             });
 
             var source = "{{" + helperName + " (" + subHelperName + " property)}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { 
                 property = "inner-arg"
@@ -134,20 +139,21 @@ namespace Handlebars.Core.Test
         [Fact]
         public void TwoBasicSubExpressionsWithNumericLiteralArguments()
         {
-            var mathHelper = "math-" + Guid.NewGuid().ToString(); //randomize helper name
-            var addHelper = "add-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(mathHelper, (writer, context, args) => {
+            var mathHelper = "math-" + Guid.NewGuid(); //randomize helper name
+            var addHelper = "add-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(mathHelper, (writer, context, args) => {
                 writer.Write("Math " + args[0] + " " + args[1]);
             });
 
-            Handlebars.RegisterHelper(addHelper, (writer, context, args) => {
+            engine.RegisterHelper(addHelper, (writer, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
 
             var source = "{{" + mathHelper + " (" + addHelper + " 1 2) (" + addHelper + " 3 4)}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -159,20 +165,21 @@ namespace Handlebars.Core.Test
         [Fact]
         public void BasicSubExpressionWithNumericAndStringLiteralArguments()
         {
-            var writeHelper = "write-" + Guid.NewGuid().ToString(); //randomize helper name
-            var addHelper = "add-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(writeHelper, (writer, context, args) => {
+            var writeHelper = "write-" + Guid.NewGuid(); //randomize helper name
+            var addHelper = "add-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(writeHelper, (writer, context, args) => {
                 writer.Write(args[0] + " " + args[1]);
             });
 
-            Handlebars.RegisterHelper(addHelper, (writer, context, args) => {
+            engine.RegisterHelper(addHelper, (writer, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
 
             var source = "{{" + writeHelper + " (" + addHelper + " 1 2) \"hello\"}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 
@@ -184,20 +191,21 @@ namespace Handlebars.Core.Test
         [Fact]
         public void NestedSubExpressionsWithNumericLiteralArguments()
         {
-            var writeHelper = "write-" + Guid.NewGuid().ToString(); //randomize helper name
-            var addHelper = "add-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(writeHelper, (writer, context, args) => {
+            var writeHelper = "write-" + Guid.NewGuid(); //randomize helper name
+            var addHelper = "add-" + Guid.NewGuid(); //randomize helper name
+            var engine = new HandlebarsEngine();
+            engine.RegisterHelper(writeHelper, (writer, context, args) => {
                 writer.Write(args[0]);
             });
 
-            Handlebars.RegisterHelper(addHelper, (writer, context, args) => {
+            engine.RegisterHelper(addHelper, (writer, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
 
             var source = "{{" + writeHelper + " (" + addHelper + " (" + addHelper + " 1 2) 3 )}}";
 
-            var template = Handlebars.Compile(source);
+            var template = engine.Compile(source);
 
             var output = template.Render(new { });
 

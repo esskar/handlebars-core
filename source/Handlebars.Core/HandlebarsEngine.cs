@@ -4,11 +4,17 @@ using Handlebars.Core.Compiler;
 
 namespace Handlebars.Core
 {
-    internal class HandlebarsEnvironment : IHandlebars
+    public delegate void HandlebarsHelper(TextWriter output, dynamic context, params object[] arguments);
+    public delegate void HandlebarsBlockHelper(TextWriter output, HelperOptions options, dynamic context, params object[] arguments);
+
+    public class HandlebarsEngine : IHandlebarsEngine
     {
         private readonly HandlebarsCompiler _compiler;
 
-        public HandlebarsEnvironment(HandlebarsConfiguration configuration)
+        public HandlebarsEngine()
+            : this(new HandlebarsConfiguration()) { }
+
+        public HandlebarsEngine(HandlebarsConfiguration configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -20,7 +26,7 @@ namespace Handlebars.Core
 
         public HandlebarsConfiguration Configuration { get; }
 
-        public HandlebarsTemplate CompileView(string templateName, string parentTemplateName, bool throwOnErrors)
+        public HandlebarsTemplate CompileView(string templateName, string parentTemplateName = null, bool throwOnErrors = true)
         {
             return _compiler.CompileView(templateName, parentTemplateName, throwOnErrors);
         }

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using Handlebars.Core.Compiler.Structure;
 #if netstandard
-
+using System.Reflection;
 #endif
 
 namespace Handlebars.Core.Compiler.Translation.Expressions
@@ -83,7 +82,8 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                 var partialLookupKey = $"{context.TemplateName ?? string.Empty}+{partialName}";
                 if (!configuration.TemplateRegistration.TryGetTemplate(partialLookupKey, out template))
                 {
-                    template = Handlebars.Create(configuration).CompileView(partialName, context.TemplateName, false);
+                    var engine = new HandlebarsEngine(configuration);
+                    template = engine.CompileView(partialName, context.TemplateName, false);
                     if (template == null)
                         return false;
                     configuration.TemplateRegistration.RegisterTemplate(partialLookupKey, template);

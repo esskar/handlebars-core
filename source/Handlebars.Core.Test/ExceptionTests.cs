@@ -10,7 +10,8 @@ namespace Handlebars.Core.Test
         {
             Assert.Throws<HandlebarsCompilerException>(() =>
             {
-                Handlebars.Compile("{{#if 0}}test").Render(new { });
+                var engine = new HandlebarsEngine();
+                engine.Compile("{{#if 0}}test").Render(new { });
             });
         }
     }
