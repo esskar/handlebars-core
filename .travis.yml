@@ -16,10 +16,10 @@ env:
 script:
   - dotnet --info
   - dotnet restore source
-  - dotnet build source/Handlebars/Handlebars.Core.csproj --configuration Debug --framework netstandard1.3
-  - dotnet build source/Handlebars/Handlebars.Core.csproj --configuration Release --framework netstandard1.3
-  - dotnet test source/Handlebars.Test/Handlebars.Core.Test.csproj --configuration Debug --framework netcoreapp1.1
-  - dotnet test source/Handlebars.Test/Handlebars.Core.Test.csproj --configuration Release --framework netcoreapp1.1
+  - dotnet build source/Handlebars.Core/Handlebars.Core.csproj --configuration Debug --framework netstandard1.3
+  - dotnet build source/Handlebars.Core/Handlebars.Core.csproj --configuration Release --framework netstandard1.3
+  - dotnet test source/Handlebars.Core.Test/Handlebars.Core.Test.csproj --configuration Debug --framework netcoreapp1.1
+  - dotnet test source/Handlebars.Core.Test/Handlebars.Core.Test.csproj --configuration Release --framework netcoreapp1.1
 
 notifications:
   email:
