@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Handlebars.Core.Compiler;
+using Handlebars.Core.Internals;
 
 namespace Handlebars.Core
 {
@@ -43,7 +44,7 @@ namespace Handlebars.Core
 
         public void RegisterTemplate(string templateName, HandlebarsTemplate template)
         {
-            Configuration.TemplateRegistration.RegisterTemplate(templateName, template);
+            Configuration.HandlebarsTemplateRegistry.RegisterTemplate(templateName, template);
         }
 
         public void RegisterTemplate(string templateName, string template)

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Handlebars.Core.Compiler.Structure;
+using Handlebars.Core.Encoders;
+using Handlebars.Core.Internals;
+
 #if netstandard
 
 #endif

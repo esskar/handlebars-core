@@ -77,16 +77,16 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             BindingContext context,
             HandlebarsConfiguration configuration)
         {
-            if (!configuration.TemplateRegistration.TryGetTemplate(partialName, out HandlebarsTemplate template))
+            if (!configuration.HandlebarsTemplateRegistry.TryGetTemplate(partialName, out HandlebarsTemplate template))
             {
                 var partialLookupKey = $"{context.TemplateName ?? string.Empty}+{partialName}";
-                if (!configuration.TemplateRegistration.TryGetTemplate(partialLookupKey, out template))
+                if (!configuration.HandlebarsTemplateRegistry.TryGetTemplate(partialLookupKey, out template))
                 {
                     var engine = new HandlebarsEngine(configuration);
                     template = engine.CompileView(partialName, context.TemplateName, false);
                     if (template == null)
                         return false;
-                    configuration.TemplateRegistration.RegisterTemplate(partialLookupKey, template);
+                    configuration.HandlebarsTemplateRegistry.RegisterTemplate(partialLookupKey, template);
                 }
                 else
                 {

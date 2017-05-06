@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Handlebars.Core
+namespace Handlebars.Core.Internals
 {
     internal static class BuiltinHelpers
     {
         [Description("with")]
-        public static void With(HandlebarsConfiguration configuration, TextWriter output, HelperOptions options, dynamic context, params object[] arguments)
+        public static void With(HandlebarsConfiguration configuration, TextWriter output, HandlebarsBlockHelperOptions options, dynamic context, params object[] arguments)
         {
             if (arguments.Length != 1)
             {

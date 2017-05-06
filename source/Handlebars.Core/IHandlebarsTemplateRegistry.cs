@@ -1,6 +1,6 @@
 ﻿namespace Handlebars.Core
 {
-    public interface ITemplateRegistration
+    public interface IHandlebarsTemplateRegistry
     {
         void RegisterTemplate(string templateName, HandlebarsTemplate template);
 

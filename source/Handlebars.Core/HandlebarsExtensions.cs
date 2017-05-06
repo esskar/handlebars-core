@@ -1,4 +1,9 @@
 ﻿using System.IO;
+using Handlebars.Core.Internals;
+
+namespace Handlebars.Core.Internals
+{
+}
 
 namespace Handlebars.Core
 {
@@ -13,21 +18,5 @@ namespace Handlebars.Core
         {
             writer.WriteSafeString(value.ToString());
         }
-
-        private class SafeString : ISafeString
-        {
-            private readonly string _value;
-
-            public SafeString(string value)
-            {
-                _value = value;
-            }
-
-            public override string ToString()
-            {
-                return _value;
-            }
-        }
     }
 }
-

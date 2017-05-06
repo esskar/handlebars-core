@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Handlebars.Core
 {
-    public sealed class HelperOptions
+    public sealed class HandlebarsBlockHelperOptions
     {
-        internal HelperOptions(Action<TextWriter, object> template, Action<TextWriter, object> inverse)
+        internal HandlebarsBlockHelperOptions(Action<TextWriter, object> template, Action<TextWriter, object> inverse)
         {
             Template = template;
             Inverse = inverse;

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Handlebars.Core.Internals;
 
 namespace Handlebars.Core.Compiler.Structure
 {

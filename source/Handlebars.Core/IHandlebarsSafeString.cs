@@ -1,6 +1,6 @@
 ﻿namespace Handlebars.Core
 {
-    public interface ISafeString
+    public interface IHandlebarsSafeString
     {
     }
 }

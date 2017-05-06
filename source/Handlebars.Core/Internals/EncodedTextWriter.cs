@@ -1,7 +1,8 @@
 ﻿using System.IO;
 using System.Text;
+using Handlebars.Core.Encoders;
 
-namespace Handlebars.Core
+namespace Handlebars.Core.Internals
 {
 	internal class EncodedTextWriter : TextWriter
 	{
@@ -49,7 +50,7 @@ namespace Handlebars.Core
 				return;
 			}
 
-			var encode = !(value is ISafeString);
+			var encode = !(value is IHandlebarsSafeString);
 			Write(value.ToString(), encode);
 		}
 

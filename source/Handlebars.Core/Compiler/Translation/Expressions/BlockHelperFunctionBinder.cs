@@ -39,7 +39,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                     CompilationContext.BindingContext,
                     typeof(BindingContext).GetProperty("TextWriter")),
                 Expression.New(
-                        typeof(HelperOptions).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0],
+                        typeof(HandlebarsBlockHelperOptions).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0],
                         body,
                         inversion),
                 Expression.Property(

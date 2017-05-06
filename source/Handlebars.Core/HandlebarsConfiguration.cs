@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Handlebars.Core.Compiler.Resolvers;
+using Handlebars.Core.Encoders;
+using Handlebars.Core.Internals;
 
 namespace Handlebars.Core
 {
@@ -10,11 +12,11 @@ namespace Handlebars.Core
 
         public ConcurrentDictionary<string, HandlebarsBlockHelperV2> BlockHelpers { get; }
 
-        public ITemplateRegistration TemplateRegistration { get; }
+        public IHandlebarsTemplateRegistry HandlebarsTemplateRegistry { get; }
 
         public IExpressionNameResolver ExpressionNameResolver { get; set; }
 
-        public ITemplateContentProvider TemplateContentProvider { get; set; }
+        public IHandlebarsTemplateContentProvider TemplateContentProvider { get; set; }
 
         public ITextEncoder TextEncoder { get; set; }
 
@@ -23,15 +25,15 @@ namespace Handlebars.Core
 	    public bool ThrowOnUnresolvedBindingExpression { get; set; }
 
         public HandlebarsConfiguration()
-            : this(new TemplateRegistration())
+            : this(new TemplateRegistry())
         {
         }
 
-	    public HandlebarsConfiguration(ITemplateRegistration templateRegistration)
+	    public HandlebarsConfiguration(IHandlebarsTemplateRegistry templateRegistry)
         {
             Helpers = new ConcurrentDictionary<string, HandlebarsHelperV2>(StringComparer.OrdinalIgnoreCase);
             BlockHelpers = new ConcurrentDictionary<string, HandlebarsBlockHelperV2>(StringComparer.OrdinalIgnoreCase);
-            TemplateRegistration = templateRegistration;
+            HandlebarsTemplateRegistry = templateRegistry;
             TextEncoder = new HtmlEncoder();
 	        ThrowOnUnresolvedBindingExpression = false;
         }

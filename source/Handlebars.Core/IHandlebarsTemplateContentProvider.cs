@@ -1,6 +1,6 @@
 ﻿namespace Handlebars.Core
 {
-    public interface ITemplateContentProvider
+    public interface IHandlebarsTemplateContentProvider
     {
         string GetTemplateContent(string templateName, string parentTemplateName = null);
     }

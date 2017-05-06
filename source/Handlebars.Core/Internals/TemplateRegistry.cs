@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Handlebars.Core
+namespace Handlebars.Core.Internals
 {
-    public class TemplateRegistration : ITemplateRegistration
+    internal class TemplateRegistry : IHandlebarsTemplateRegistry
     {
         private readonly ConcurrentDictionary<string, HandlebarsTemplate> _registeredTemplates;
 
-        public TemplateRegistration()
+        public TemplateRegistry()
         {
             _registeredTemplates = new ConcurrentDictionary<string, HandlebarsTemplate>(StringComparer.OrdinalIgnoreCase);
         }

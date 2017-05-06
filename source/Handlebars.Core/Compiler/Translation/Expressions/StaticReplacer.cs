@@ -2,6 +2,8 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Handlebars.Core.Compiler.Structure;
+using Handlebars.Core.Internals;
+
 #if netstandard
 
 #endif

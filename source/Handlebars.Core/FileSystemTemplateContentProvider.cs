@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Handlebars.Core
 {
-    public abstract class FileSystemTemplateContentProvider : ITemplateContentProvider
+    public abstract class FileSystemTemplateContentProvider : IHandlebarsTemplateContentProvider
     {
         protected FileSystemTemplateContentProvider(string targetPath = null)
             : this(new FileSystemConfiguration(targetPath)) { }

@@ -1,6 +1,7 @@
-﻿using System;
-using Handlebars.Core.Compiler.Resolvers;
+﻿using Handlebars.Core.Compiler.Resolvers;
+using Handlebars.Core.Encoders;
 using Newtonsoft.Json;
+using System;
 using Xunit;
 
 namespace Handlebars.Core.Test
