@@ -1,5 +1,5 @@
-Handlebars.Net [![Build Status](https://travis-ci.org/esskar/Handlebars.Net.svg?branch=master)](https://travis-ci.org/esskar/Handlebars.Net)
-==============
+Handlebars for .NET [![Build Status](https://travis-ci.org/esskar/Handlebars.svg?branch=master)](https://travis-ci.org/esskar/Handlebars.Net)
+===================
 
 Blistering-fast [Handlebars.js templates](http://handlebarsjs.com) in your .NET application.
 
@@ -159,3 +159,7 @@ Pull requests are welcome! The guidelines are pretty straightforward:
 - Avoid dependencies outside of the .NET BCL
 - Maintain cross-platform compatibility (.NET/Mono; Windows/OSX/Linux/etc)
 - Follow the established code format
+
+## Thanks
+
+This project was originally cloned from [Handlebars.Net](https://github.com/rexm/Handlebars.Net).
