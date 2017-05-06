@@ -1,17 +1,17 @@
 Handlebars for .NET [![Build Status](https://travis-ci.org/esskar/Handlebars.svg?branch=master)](https://travis-ci.org/esskar/Handlebars.Net)
 ===================
 
-Blistering-fast [Handlebars.js templates](http://handlebarsjs.com) in your .NET application.
+Amazing [Handlebars templates](http://handlebarsjs.com) in your .NET application.
 
 >Handlebars.js is an extension to the Mustache templating language created by Chris Wanstrath. Handlebars.js and Mustache are both logicless templating languages that keep the view and the code separated like we all know they should be.
 
 Check out the [handlebars.js documentation](http://handlebarsjs.com) for how to write Handlebars templates.
 
-Handlebars.Net doesn't use a scripting engine to run a Javascript library - it compiles Handlebars templates directly into executable code and produces a delegate that represents the template.
+Handlebars doesn't use a scripting engine to run a Javascript library - it compiles Handlebars templates directly into executable code and produces a delegate that represents the template.
 
 ## Install
 
-    nuget install Handlebars.Net -Source https://www.myget.org/F/esskar/api/v3/index.json
+    nuget install Handlebars.Core -Source https://www.myget.org/F/esskar/api/v3/index.json
 
 ## Usage
 
@@ -24,7 +24,8 @@ string source =
   </div>
 </div>";
 
-var template = Handlebars.Compile(source);
+var handlebars = new HandlebarsEngine();
+var template = handlebars.Compile(source);
 
 var data = new {
     title = "My new post",
@@ -55,9 +56,10 @@ string source =
 string partialSource =
 @"<strong>{{name}}</strong>";
 
-Handlebars.RegisterTemplate("user", partialSource);
+var handlebars = new HandlebarsEngine();
+handlebars.RegisterTemplate("user", partialSource);
 
-var template = Handlebars.Compile(source);
+var template = handlebars.Compile(source);
 
 var data = new {
   names = new [] {
@@ -108,13 +110,14 @@ Views\someotherpartial.hbs
 ### Registering Helpers
 
 ```c#
-Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+var handlebars = new HandlebarsEngine();
+handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
   writer.WriteSafeString("<a href='" + context.url + "'>" + context.text + "</a>");
 });
 
 string source = @"Click here: {{link_to}}";
 
-var template = Handlebars.Compile(source);
+var template = handlebars.Compile(source);
 
 var data = new {
     url = "https://github.com/rexm/handlebars.net",
