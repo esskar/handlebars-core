@@ -30,7 +30,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             }
             var templateNameExpression = Expression.Constant(templateName, typeof(string));
 
-            var encodedWriterExpression = ResolveEncodedWriter(writerParameter, context.Configuration.TextEncoder);
+            var encodedWriterExpression = ResolveEncodedWriter(writerParameter, context.Engine.Configuration.TextEncoder);
             var bindingContextConstructor = typeof(BindingContext).GetConstructor(
                 new[] {typeof(object), typeof(EncodedTextWriter), typeof(BindingContext), typeof(string) });
             if (bindingContextConstructor == null)

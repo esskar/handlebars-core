@@ -41,13 +41,13 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
             var partialInvocation = Expression.Call(
 #if netstandard
-                new Func<string, BindingContext, HandlebarsConfiguration, bool>(InvokePartial).GetMethodInfo(),
+                new Func<string, BindingContext, IHandlebarsEngine, bool>(InvokePartial).GetMethodInfo(),
 #else
-                new Func<string, BindingContext, HandlebarsConfiguration, bool>(InvokePartial).Method,
+                new Func<string, BindingContext, IHandlebarsEngine, bool>(InvokePartial).Method,
 #endif
                 Expression.Convert(pex.PartialName, typeof(string)),
                 bindingContext,
-                Expression.Constant(CompilationContext.Configuration));
+                Expression.Constant(CompilationContext.Engine));
 
             var fallback = pex.Fallback;
             if (fallback == null)
@@ -76,18 +76,18 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
         private static bool InvokePartial(
             string partialName,
             BindingContext context,
-            HandlebarsConfiguration configuration)
+            IHandlebarsEngine engine)
         {
-            if (!configuration.HandlebarsTemplateRegistry.TryGetTemplate(partialName, out HandlebarsTemplate template))
+            var templateRegistry = engine.Configuration.HandlebarsTemplateRegistry;
+            if (!templateRegistry.TryGetTemplate(partialName, out HandlebarsTemplate template))
             {
                 var partialLookupKey = $"{context.TemplateName ?? string.Empty}+{partialName}";
-                if (!configuration.HandlebarsTemplateRegistry.TryGetTemplate(partialLookupKey, out template))
+                if (!templateRegistry.TryGetTemplate(partialLookupKey, out template))
                 {
-                    var engine = new HandlebarsEngine(configuration);
                     template = engine.CompileView(partialName, context.TemplateName, false);
                     if (template == null)
                         return false;
-                    configuration.HandlebarsTemplateRegistry.RegisterTemplate(partialLookupKey, template);
+                    templateRegistry.RegisterTemplate(partialLookupKey, template);
                 }
                 else
                 {

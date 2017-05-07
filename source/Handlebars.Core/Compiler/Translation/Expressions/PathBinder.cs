@@ -168,7 +168,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
                         if (hashParameters == null || hashParameters.ContainsKey(memberName) || context.ParentContext == null)
                         {
-                            if (CompilationContext.Configuration.ThrowOnUnresolvedBindingExpression)
+                            if (CompilationContext.Engine.Configuration.ThrowOnUnresolvedBindingExpression)
                                 throw new HandlebarsUndefinedBindingException(path, (instance as UndefinedBindingResult).Value);
                             return instance;
                         }
@@ -176,7 +176,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                         instance = ResolveValue(context.ParentContext, context.ParentContext.Value, memberName);
                         if (instance is UndefinedBindingResult undefinedBindingResult)
                         {
-                            if (CompilationContext.Configuration.ThrowOnUnresolvedBindingExpression)
+                            if (CompilationContext.Engine.Configuration.ThrowOnUnresolvedBindingExpression)
                                 throw new HandlebarsUndefinedBindingException(path, undefinedBindingResult.Value);
                             return instance;
                         }
@@ -188,7 +188,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private object ResolveValue(BindingContext context, object instance, string segment)
         {
-            object resolvedValue = new UndefinedBindingResult(segment, CompilationContext.Configuration);
+            object resolvedValue = CreateUndefinedBindingResult(segment);
             if (segment.StartsWith("@"))
             {
                 var contextValue = context.GetContextVariable(segment.Substring(1));
@@ -213,7 +213,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
         private object AccessMember(object instance, string memberName)
         {
             if (instance == null)
-                return new UndefinedBindingResult(memberName, CompilationContext.Configuration);
+                return CreateUndefinedBindingResult(memberName);
 
             var enumerable = instance as IEnumerable<object>;
             if (enumerable != null)
@@ -223,12 +223,12 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                 {
                     if (match.Groups["index"].Success == false || int.TryParse(match.Groups["index"].Value, out int index) == false)
                     {
-                        return new UndefinedBindingResult(memberName, CompilationContext.Configuration);
+                        return CreateUndefinedBindingResult(memberName);
                     }
 
                     var result = enumerable.ElementAtOrDefault(index);
 
-                    return result ?? new UndefinedBindingResult(memberName, CompilationContext.Configuration);
+                    return result ?? CreateUndefinedBindingResult(memberName);
                 }
             }
             var resolvedMemberName = ResolveMemberName(instance, memberName);
@@ -239,11 +239,11 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                 try
                 {
                     var result = GetProperty(instance, resolvedMemberName);
-                    return result ?? new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                    return result ?? CreateUndefinedBindingResult(resolvedMemberName);
                 }
                 catch
                 {
-                    return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                    return CreateUndefinedBindingResult(resolvedMemberName);
                 }
             }
 
@@ -266,7 +266,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                         catch (Exception)
                         {
                             // Can't convert to key type.
-                            return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                            return CreateUndefinedBindingResult(resolvedMemberName);
                         }
                     }
                 }
@@ -276,7 +276,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                     return instanceType.GetMethod("get_Item").Invoke(instance, new[] { key });
                 }
                 // Key doesn't exist.
-                return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                return CreateUndefinedBindingResult(resolvedMemberName);
             }
             // Check if the instance is IDictionary (ie, System.Collections.Hashtable)
             if (typeof(IDictionary).IsAssignableFrom(instanceType))
@@ -291,7 +291,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             MemberInfo preferredMember;
             if (members.Length == 0)
             {
-                return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                return CreateUndefinedBindingResult(resolvedMemberName);
             }
             if (members.Length > 1)
             {
@@ -306,14 +306,14 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             if (preferredMember is PropertyInfo propertyInfo)
             {
                 var propertyValue = propertyInfo.GetValue(instance, null);
-                return propertyValue ?? new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                return propertyValue ?? CreateUndefinedBindingResult(resolvedMemberName);
             }
             if (preferredMember is FieldInfo fieldInfo)
             {
                 var fieldValue = fieldInfo.GetValue(instance);
-                return fieldValue ?? new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+                return fieldValue ?? CreateUndefinedBindingResult(resolvedMemberName);
             }
-            return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Configuration);
+            return new UndefinedBindingResult(resolvedMemberName, CompilationContext.Engine.Configuration);
         }
 
         private static Type FirstGenericDictionaryTypeInstance(Type instanceType)
@@ -340,8 +340,13 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private string ResolveMemberName(object instance, string memberName)
         {
-            var resolver = CompilationContext.Configuration.ExpressionNameResolver;
+            var resolver = CompilationContext.Engine.Configuration.ExpressionNameResolver;
             return resolver != null ? resolver.ResolveExpressionName(instance, memberName) : memberName;
+        }
+
+        private UndefinedBindingResult CreateUndefinedBindingResult(string name)
+        {
+            return new UndefinedBindingResult(name, CompilationContext.Engine.Configuration);
         }
     }
 }

@@ -16,10 +16,11 @@ namespace Handlebars.Core
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
-            _compiler = new HandlebarsCompiler(configuration);
 
             Configuration = configuration;
             RegisterBuiltinHelpers();
+
+            _compiler = new HandlebarsCompiler(this);
         }
 
         public HandlebarsConfiguration Configuration { get; }

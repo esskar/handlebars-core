@@ -5,14 +5,14 @@ namespace Handlebars.Core.Compiler
 {
     internal class CompilationContext
     {
-        public CompilationContext(HandlebarsConfiguration configuration)
+        public CompilationContext(IHandlebarsEngine engine)
         {
-            Configuration = configuration;
+            Engine = engine;
             BindingContext = Expression.Variable(typeof(BindingContext), "context");
         }
 
-        public virtual HandlebarsConfiguration Configuration { get; }
+        public IHandlebarsEngine Engine { get; }
 
-        public virtual ParameterExpression BindingContext { get; }
+        public ParameterExpression BindingContext { get; }
     }
 }

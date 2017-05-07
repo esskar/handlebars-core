@@ -6,7 +6,7 @@ namespace Handlebars.Core.Internals
     {
         public string Name => "with";
 
-        public void Execute(HandlebarsConfiguration configuration, TextWriter output, HandlebarsBlockHelperOptions options,
+        public void Execute(IHandlebarsEngine engine, TextWriter output, HandlebarsBlockHelperOptions options,
             dynamic context, params object[] arguments)
         {
             if (arguments.Length != 1)

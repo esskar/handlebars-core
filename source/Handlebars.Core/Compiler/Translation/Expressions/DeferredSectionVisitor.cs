@@ -2,10 +2,9 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Handlebars.Core.Compiler.Structure;
 #if netstandard
-
+using System.Reflection;
 #endif
 
 namespace Handlebars.Core.Compiler.Translation.Expressions
@@ -39,7 +38,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private System.Linq.Expressions.Expression[] GetDeferredSectionTemplates(DeferredSectionExpression dsex)
         {
-            var fb = new FunctionBuilder(CompilationContext.Configuration);
+            var fb = new FunctionBuilder(CompilationContext.Engine);
             var body = fb.Compile(dsex.Body.Expressions, CompilationContext.BindingContext);
             var inversion = fb.Compile(dsex.Inversion.Expressions, CompilationContext.BindingContext);
 

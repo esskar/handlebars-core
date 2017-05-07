@@ -63,13 +63,14 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         protected override Expression VisitHelperExpression(HelperExpression hex)
         {
-            var configuration = CompilationContext.Configuration;
+            var engine = CompilationContext.Engine;
+            var configuration = engine.Configuration;
             if (configuration.Helpers.ContainsKey(hex.HelperName))
             {
                 var helper = configuration.Helpers[hex.HelperName];
                 var arguments = new Expression[]
                 {
-                    Expression.Constant(configuration, typeof(HandlebarsConfiguration)), 
+                    Expression.Constant(engine, typeof(IHandlebarsEngine)), 
                     Expression.Property(
                         CompilationContext.BindingContext,
 #if netstandard
@@ -108,19 +109,16 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                         arguments);
                 }
             }
-            else
-            {
-                return Expression.Call(
-                    Expression.Constant(this),
+            return Expression.Call(
+                Expression.Constant(this),
 #if netstandard
                     new Action<BindingContext, string, IEnumerable<object>>(LateBindHelperExpression).GetMethodInfo(),
 #else
-                    new Action<BindingContext, string, IEnumerable<object>>(LateBindHelperExpression).Method,
+                new Action<BindingContext, string, IEnumerable<object>>(LateBindHelperExpression).Method,
 #endif
-                    CompilationContext.BindingContext,
-                    Expression.Constant(hex.HelperName),
-                    Expression.NewArrayInit(typeof(object), hex.Arguments));
-            }
+                CompilationContext.BindingContext,
+                Expression.Constant(hex.HelperName),
+                Expression.NewArrayInit(typeof(object), hex.Arguments));
         }
 
         private void LateBindHelperExpression(
@@ -128,11 +126,11 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             string helperName,
             IEnumerable<object> arguments)
         {
-            var configuration = CompilationContext.Configuration;
+            var configuration = CompilationContext.Engine.Configuration;
             if (configuration.Helpers.ContainsKey(helperName))
             {
                 var helper = configuration.Helpers[helperName];
-                helper(configuration, context.TextWriter, context.Value, arguments.ToArray());
+                helper(CompilationContext.Engine, context.TextWriter, context.Value, arguments.ToArray());
             }
             else
             {
