@@ -19,15 +19,16 @@
     <PackageId>Handlebars.Core</PackageId>
     <PackageLicenseUrl>https://opensource.org/licenses/mit</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/esskar/handlebars-core</PackageProjectUrl>
-    <PackageReleaseNotes>Improvments and log-helper added</PackageReleaseNotes>
+    <PackageReleaseNotes>* Performance
+* Reusing IHandlebarsEngine</PackageReleaseNotes>
     <PackageTags>handlebars;mustache;templating;engine;compiler</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/esskar/handlebars-core</RepositoryUrl>
     <RootNamespace>Handlebars.Core</RootNamespace>
     <Company>Sascha Kiefer</Company>
-    <AssemblyVersion>2.0.2.0</AssemblyVersion>
-    <FileVersion>2.0.2.0</FileVersion>
-    <Version>2.0.2</Version>
+    <AssemblyVersion>2.0.3.0</AssemblyVersion>
+    <FileVersion>2.0.3.0</FileVersion>
+    <Version>2.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
