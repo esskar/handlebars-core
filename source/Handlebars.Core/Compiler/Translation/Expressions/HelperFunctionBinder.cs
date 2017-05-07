@@ -65,9 +65,8 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
         {
             var engine = CompilationContext.Engine;
             var configuration = engine.Configuration;
-            if (configuration.Helpers.ContainsKey(hex.HelperName))
+            if (configuration.Helpers.TryGetValue(hex.HelperName, out HandlebarsHelperV2 helper))
             {
-                var helper = configuration.Helpers[hex.HelperName];
                 var arguments = new Expression[]
                 {
                     Expression.Constant(engine, typeof(IHandlebarsEngine)), 
@@ -127,9 +126,8 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             IEnumerable<object> arguments)
         {
             var configuration = CompilationContext.Engine.Configuration;
-            if (configuration.Helpers.ContainsKey(helperName))
+            if (configuration.Helpers.TryGetValue(helperName, out HandlebarsHelperV2 helper))
             {
-                var helper = configuration.Helpers[helperName];
                 helper(CompilationContext.Engine, context.TextWriter, context.Value, arguments.ToArray());
             }
             else

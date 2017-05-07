@@ -271,9 +271,10 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
                     }
                 }
 
-                if ((bool)instanceType.GetMethod("ContainsKey").Invoke(instance, new[] { key }))
+                var arguments = new[] {key, null};
+                if ((bool)instanceType.GetMethod("TryGetValue").Invoke(instance, arguments))
                 {
-                    return instanceType.GetMethod("get_Item").Invoke(instance, new[] { key });
+                    return arguments[1];
                 }
                 // Key doesn't exist.
                 return CreateUndefinedBindingResult(resolvedMemberName);
