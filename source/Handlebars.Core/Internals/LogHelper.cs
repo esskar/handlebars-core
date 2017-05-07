@@ -12,8 +12,9 @@ namespace Handlebars.Core.Internals
 
         public string Name => "log";
 
-        public void Execute(HandlebarsConfiguration configuration, TextWriter output, dynamic context, params object[] arguments)
+        public void Execute(IHandlebarsEngine engine, TextWriter output, dynamic context, params object[] arguments)
         {
+            var configuration = engine.Configuration;
             var logger = configuration.Logger;
             if (logger == null || configuration.LogLevel == LogLevel.None)
                 return;

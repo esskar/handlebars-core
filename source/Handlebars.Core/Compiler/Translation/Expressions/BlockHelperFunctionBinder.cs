@@ -27,14 +27,15 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         protected override Expression VisitBlockHelperExpression(BlockHelperExpression bhex)
         {
-            var configuration = CompilationContext.Configuration;
-            var fb = new FunctionBuilder(configuration);
+            var engine = CompilationContext.Engine;
+            var fb = new FunctionBuilder(engine);
             var body = fb.Compile(((BlockExpression)bhex.Body).Expressions, CompilationContext.BindingContext);
             var inversion = fb.Compile(((BlockExpression)bhex.Inversion).Expressions, CompilationContext.BindingContext);
+            var configuration = engine.Configuration;
             var helper = configuration.BlockHelpers[bhex.HelperName.Replace("#", "")];
             var arguments = new Expression[]
             {
-                Expression.Constant(configuration, typeof(HandlebarsConfiguration)), 
+                Expression.Constant(engine, typeof(IHandlebarsEngine)), 
                 Expression.Property(
                     CompilationContext.BindingContext,
                     typeof(BindingContext).GetProperty("TextWriter")),

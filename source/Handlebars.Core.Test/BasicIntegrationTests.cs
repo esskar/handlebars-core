@@ -1280,7 +1280,8 @@ namespace Handlebars.Core.Test
             }
             public bool TryGetValue(string key, out string value)
             {
-                throw new NotImplementedException();
+                value = "Hello world!";
+                return true;
             }
             public string this[string index]
             {

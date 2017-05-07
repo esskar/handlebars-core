@@ -9,16 +9,17 @@ namespace Handlebars.Core.Compiler
 {
     internal class FunctionBuilder
     {
-        private readonly HandlebarsConfiguration _configuration;
+        private readonly IHandlebarsEngine _engine;
+
         private static readonly Expression EmptyLambda =
             Expression.Lambda<Action<TextWriter, object>>(
                 Expression.Empty(),
                 Expression.Parameter(typeof(TextWriter)),
                 Expression.Parameter(typeof(object)));
 
-        public FunctionBuilder(HandlebarsConfiguration configuration)
+        public FunctionBuilder(IHandlebarsEngine engine)
         {
-            _configuration = configuration;
+            _engine = engine;
         }
 
         public Expression Compile(IEnumerable<Expression> expressions, Expression parentContext, string templateName = null)
@@ -35,7 +36,7 @@ namespace Handlebars.Core.Compiler
                 {
                     return EmptyLambda;
                 }
-                var compilationContext = new CompilationContext(_configuration);
+                var compilationContext = new CompilationContext(_engine);
                 var expression = CreateExpressionBlock(expressionsList);
                 expression = CommentVisitor.Visit(expression, compilationContext);
                 expression = UnencodedStatementVisitor.Visit(expression, compilationContext);

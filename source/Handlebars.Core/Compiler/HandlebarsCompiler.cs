@@ -15,14 +15,14 @@ namespace Handlebars.Core.Compiler
         private readonly Tokenizer _tokenizer;
         private readonly FunctionBuilder _functionBuilder;
         private readonly ExpressionBuilder _expressionBuilder;
-        private readonly HandlebarsConfiguration _configuration;
+        private readonly IHandlebarsEngine _engine;
 
-        public HandlebarsCompiler(HandlebarsConfiguration configuration)
+        public HandlebarsCompiler(IHandlebarsEngine engine)
         {
-            _configuration = configuration;
             _tokenizer = new Tokenizer();
-            _expressionBuilder = new ExpressionBuilder(configuration);
-            _functionBuilder = new FunctionBuilder(configuration);
+            _expressionBuilder = new ExpressionBuilder(engine.Configuration);
+            _functionBuilder = new FunctionBuilder(engine);
+            _engine = engine;
         }
 
         public Action<TextWriter, object> Compile(TextReader source)
@@ -34,7 +34,7 @@ namespace Handlebars.Core.Compiler
 
         internal HandlebarsTemplate CompileView(string templateName, string parentTemplateName = null, bool throwOnErrors = true)
         {
-            var templateLocator = _configuration.TemplateContentProvider;
+            var templateLocator = _engine.Configuration.TemplateContentProvider;
             if (templateLocator == null)
             {
                 if (throwOnErrors)

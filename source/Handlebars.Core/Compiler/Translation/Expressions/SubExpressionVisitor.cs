@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
 using Handlebars.Core.Compiler.Structure;
 #if netstandard
-
+using System.Reflection;
 #endif
 
 namespace Handlebars.Core.Compiler.Translation.Expressions
@@ -32,9 +31,9 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
             var helper = GetHelperDelegateFromMethodCallExpression(helperCall);
             return Expression.Call(
 #if netstandard
-                new Func<HandlebarsHelperV2, HandlebarsConfiguration, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),
+                new Func<HandlebarsHelperV2, IHandlebarsEngine, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),
 #else
-                new Func<HandlebarsHelperV2, HandlebarsConfiguration, object, object[], string>(CaptureTextWriterOutputFromHelper).Method,
+                new Func<HandlebarsHelperV2, IHandlebarsEngine, object, object[], string>(CaptureTextWriterOutputFromHelper).Method,
 #endif
                 Expression.Constant(helper),
                 Visit(helperCall.Arguments[0]),
@@ -75,14 +74,14 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private static string CaptureTextWriterOutputFromHelper(
             HandlebarsHelperV2 helper,
-            HandlebarsConfiguration configuration,
+            IHandlebarsEngine engine,
             object context,
             object[] arguments)
         {
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
             {
-                helper(configuration, writer, context, arguments);
+                helper(engine, writer, context, arguments);
             }
             return builder.ToString();
         }

@@ -77,7 +77,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private Expression GetEnumerableIterator(Expression contextParameter, IteratorExpression iex)
         {
-            var fb = new FunctionBuilder(CompilationContext.Configuration);
+            var fb = new FunctionBuilder(CompilationContext.Engine);
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
@@ -99,7 +99,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private Expression GetObjectIterator(Expression contextParameter, IteratorExpression iex)
         {
-            var fb = new FunctionBuilder(CompilationContext.Configuration);
+            var fb = new FunctionBuilder(CompilationContext.Engine);
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
@@ -121,7 +121,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private Expression GetDictionaryIterator(Expression contextParameter, IteratorExpression iex)
         {
-            var fb = new FunctionBuilder(CompilationContext.Configuration);
+            var fb = new FunctionBuilder(CompilationContext.Engine);
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
@@ -143,7 +143,7 @@ namespace Handlebars.Core.Compiler.Translation.Expressions
 
         private Expression GetDynamicIterator(Expression contextParameter, IteratorExpression iex)
         {
-            var fb = new FunctionBuilder(CompilationContext.Configuration);
+            var fb = new FunctionBuilder(CompilationContext.Engine);
             return Expression.Block(
                 Expression.Assign(contextParameter,
                     Expression.New(
