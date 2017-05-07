@@ -11,7 +11,7 @@ Handlebars doesn't use a scripting engine to run a Javascript library - it compi
 
 ## Install
 
-    nuget install Handlebars.Core -Source https://www.myget.org/F/esskar/api/v3/index.json
+    nuget install Handlebars.Core
 
 ## Usage
 
@@ -150,7 +150,7 @@ A frequent performance issue that comes up is JSON.NET's `JObject`, which for re
 
 - [ ] **Add unit tests!**
 - [x] [Support for sub-expressions](https://github.com/rexm/Handlebars.Net/issues/48)
-- [ ] `lookup`, `log`, and `helperMissing` helpers
+- [ ] `lookup` and `helperMissing` helpers
 - [x] [Support for whitespace control](https://github.com/rexm/Handlebars.Net/issues/52)
 - [ ] MVC view engine
 - [ ] Nancy view engine
