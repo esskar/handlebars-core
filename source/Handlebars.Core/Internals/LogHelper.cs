@@ -2,8 +2,9 @@
 using System.IO;
 using System.Linq;
 using Handlebars.Core.Compiler.Translation.Expressions;
+using Handlebars.Core.Logging;
 
-namespace Handlebars.Core.Logging
+namespace Handlebars.Core.Internals
 {
     internal class LogHelper : IHandlebarsHelper
     {

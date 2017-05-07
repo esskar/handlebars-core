@@ -115,13 +115,13 @@ namespace Handlebars.Core
 
         private void RegisterBuiltinHelpers()
         {
-            foreach (var helperDefinition in BuiltinHelpers.Helpers)
+            foreach (var helper in BuiltinHelpers.Helpers)
             {
-                RegisterHelper(helperDefinition.Key, helperDefinition.Value);
+                RegisterHelper(helper);
             }
-            foreach (var helperDefinition in BuiltinHelpers.BlockHelpers)
+            foreach (var helper in BuiltinHelpers.BlockHelpers)
             {
-                RegisterHelper(helperDefinition.Key, helperDefinition.Value);
+                RegisterHelper(helper);
             }
         }
     }

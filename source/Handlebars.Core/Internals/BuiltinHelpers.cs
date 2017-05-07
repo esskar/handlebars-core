@@ -1,64 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Handlebars.Core.Internals
 {
     internal static class BuiltinHelpers
     {
-        [Description("with")]
-        public static void With(HandlebarsConfiguration configuration, TextWriter output, HandlebarsBlockHelperOptions options, dynamic context, params object[] arguments)
+        private static IList<Type> _builtinTypes;
+
+        public static IEnumerable<IHandlebarsHelper> Helpers => GetHelpers<IHandlebarsHelper>();
+
+        public static IEnumerable<IHandlebarsBlockHelper> BlockHelpers => GetHelpers<IHandlebarsBlockHelper>();
+
+        private static IEnumerable<T> GetHelpers<T>()
         {
-            if (arguments.Length != 1)
+            if (_builtinTypes == null)
             {
-                throw new HandlebarsException("{{with}} helper must have exactly one argument");
+                Assembly assembly;
+#if netstandard
+                assembly = typeof(BuiltinHelpers).GetTypeInfo().Assembly;
+#else
+                assembly = typeof(BuiltinHelpers).Assembly;
+#endif
+                _builtinTypes = assembly.GetTypes();
             }
 
-            if (HandlebarsUtils.IsTruthyOrNonEmpty(arguments[0]))
+            var instances = new List<T>();
+
+            var type = typeof(T);
+            foreach (var builtinType in _builtinTypes.Where(t => type.IsAssignableFrom(t)))
             {
-                options.Template(output, arguments[0]);
+                var instance = CreateInstance(builtinType);
+                if (instance != null)
+                    instances.Add((T)instance);
             }
-            else
-            {
-                options.Inverse(output, context);
-            }
+
+            return instances;
         }
 
-        public static IEnumerable<KeyValuePair<string, HandlebarsHelperV2>> Helpers => GetHelpers<HandlebarsHelperV2>();
-
-        public static IEnumerable<KeyValuePair<string, HandlebarsBlockHelperV2>> BlockHelpers => GetHelpers<HandlebarsBlockHelperV2>();
-
-        private static IEnumerable<KeyValuePair<string, T>> GetHelpers<T>()
+        private static object CreateInstance(Type type)
         {
-            var builtInHelpersType = typeof(BuiltinHelpers);
-            foreach (var method in builtInHelpersType.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public))
+            try
             {
-                Delegate possibleDelegate;
-                try
-                {
-#if netstandard
-                    possibleDelegate = method.CreateDelegate(typeof(T));
-#else
-                    possibleDelegate = Delegate.CreateDelegate(typeof(T), method);
-#endif
-                }
-                catch
-                {
-                    possibleDelegate = null;
-                }
-                if (possibleDelegate != null)
-                {
-#if netstandard
-                    yield return new KeyValuePair<string, T>(
-                        method.GetCustomAttribute<DescriptionAttribute>().Description,
-                        (T)(object)possibleDelegate);
-#else
-                    yield return new KeyValuePair<string, T>(
-                        ((DescriptionAttribute)Attribute.GetCustomAttribute(method, typeof(DescriptionAttribute))).Description,
-                        (T)(object)possibleDelegate);
-#endif
-                }
+                var constructor = type.GetConstructor(new Type[] {});
+                return constructor?.Invoke(new object[] { });
+            }
+            catch
+            {
+                return null;
             }
         }
     }
