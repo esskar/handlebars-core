@@ -15,7 +15,7 @@
     <Authors>Sascha Kiefer</Authors>
     <Copyright>Copyright © 2017 Sascha Kiefer</Copyright>
     <Description>Amazing Handlebars templates in your .NET application.</Description>
-    <PackageIconUrl>https://raw.githubusercontent.com/esskar/handlebars-core/master/hbnet-icon.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/esskar/handlebars-core/master/handlebars-icon.png</PackageIconUrl>
     <PackageId>Handlebars.Core</PackageId>
     <PackageLicenseUrl>https://opensource.org/licenses/mit</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/esskar/handlebars-core</PackageProjectUrl>
