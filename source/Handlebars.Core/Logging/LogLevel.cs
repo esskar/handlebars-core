@@ -2,6 +2,7 @@
 {
     public enum LogLevel
     {
+        None,
         Debug,
         Info,
         Warn,

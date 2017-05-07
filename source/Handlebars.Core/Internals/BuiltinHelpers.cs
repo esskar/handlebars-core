@@ -29,7 +29,13 @@ namespace Handlebars.Core.Internals
             var instances = new List<T>();
 
             var type = typeof(T);
-            foreach (var builtinType in _builtinTypes.Where(t => type.IsAssignableFrom(t)))
+            foreach (var builtinType in _builtinTypes.Where(t =>
+#if netstandard
+                t.GetTypeInfo().IsClass
+#else
+                t.IsClass
+#endif
+                && type.IsAssignableFrom(t)))
             {
                 var instance = CreateInstance(builtinType);
                 if (instance != null)

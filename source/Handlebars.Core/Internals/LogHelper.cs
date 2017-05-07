@@ -15,13 +15,13 @@ namespace Handlebars.Core.Internals
         public void Execute(HandlebarsConfiguration configuration, TextWriter output, dynamic context, params object[] arguments)
         {
             var logger = configuration.Logger;
-            if (logger == null)
+            if (logger == null || configuration.LogLevel == LogLevel.None)
                 return;
 
             var parameters = arguments.LastOrDefault() as HashParameterDictionary;
             var logLevel = GetLogLevel(parameters);
 
-            if (configuration.LogLevel < logLevel)
+            if (logLevel < configuration.LogLevel || logLevel == LogLevel.None)
                 return;
 
             var count = parameters != null ? arguments.Length - 1 : arguments.Length;

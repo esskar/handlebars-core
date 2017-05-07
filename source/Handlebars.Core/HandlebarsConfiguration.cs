@@ -39,6 +39,7 @@ namespace Handlebars.Core
             Helpers = new ConcurrentDictionary<string, HandlebarsHelperV2>(StringComparer.OrdinalIgnoreCase);
             BlockHelpers = new ConcurrentDictionary<string, HandlebarsBlockHelperV2>(StringComparer.OrdinalIgnoreCase);
             HandlebarsTemplateRegistry = templateRegistry;
+            Logger = new ConsoleLogger();
             TextEncoder = new HtmlEncoder();
 	        ThrowOnUnresolvedBindingExpression = false;
         }
