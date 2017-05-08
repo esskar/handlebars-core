@@ -14,13 +14,13 @@ namespace Handlebars.Core.Compiler
     {
         private readonly Tokenizer _tokenizer;
         private readonly FunctionBuilder _functionBuilder;
-        private readonly ExpressionBuilder _expressionBuilder;
+        private readonly TokenExpressionConverter _tokenExpressionConverter;
         private readonly IHandlebarsEngine _engine;
 
         public HandlebarsCompiler(IHandlebarsEngine engine)
         {
             _tokenizer = new Tokenizer();
-            _expressionBuilder = new ExpressionBuilder(engine.Configuration);
+            _tokenExpressionConverter = new TokenExpressionConverter(engine.Configuration);
             _functionBuilder = new FunctionBuilder(engine);
             _engine = engine;
         }
@@ -28,7 +28,7 @@ namespace Handlebars.Core.Compiler
         public Action<TextWriter, object> Compile(TextReader source)
         {
             var tokens = _tokenizer.Tokenize(source).ToList();
-            var expressions = _expressionBuilder.ConvertTokensToExpressions(tokens);
+            var expressions = _tokenExpressionConverter.ConvertTokensToExpressions(tokens);
             return _functionBuilder.Compile(expressions);
         }
 
@@ -55,7 +55,7 @@ namespace Handlebars.Core.Compiler
             }
             var layoutToken = tokens.OfType<LayoutToken>().SingleOrDefault();
 
-            var expressions = _expressionBuilder.ConvertTokensToExpressions(tokens);
+            var expressions = _tokenExpressionConverter.ConvertTokensToExpressions(tokens);
             var compiledView = _functionBuilder.Compile(expressions, templateName);
             var compiledTemplate = new HandlebarsTemplate(compiledView, templateName);
             if (layoutToken == null)

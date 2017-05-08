@@ -5,11 +5,11 @@ using Handlebars.Core.Compiler.Lexer.Converter;
 
 namespace Handlebars.Core.Compiler
 {
-    internal class ExpressionBuilder
+    internal class TokenExpressionConverter
     {
         private readonly List<ITokenConverter> _tokenConverters;
 
-        public ExpressionBuilder(HandlebarsConfiguration configuration)
+        public TokenExpressionConverter(HandlebarsConfiguration configuration)
         {
             _tokenConverters = new List<ITokenConverter>
             {
