@@ -86,26 +86,7 @@ var result = template.Render(data);
 If you want to keep your templates in the filesystem or in a database 
 you can implement the ITemplateContentProvider interface to retrieve your template from everywhere you like.
 
-#### FileSystemTemplateContentProvider
-
-The library currently provides a base implementation of the ITemplateContentProvider that
-provides backward compatibility to the ViewEngine concept of the [original Handlebars.Net library](https://github.com/rexm/Handlebars.Net).
-
-This will allow you to keep your views to be in the /Views folder like so:
-
-```
-Views\layout.hbs                |<--shared as in \Views            
-Views\partials\somepartial.hbs   <--shared as in \Views\partials
-Views\{Controller}\{Action}.hbs 
-Views\{Controller}\{Action}\partials\somepartial.hbs 
-```
-
-But it will also find partials if there are at the same level as the as the actual template file:
-
-```
-Views\layout.hbs           
-Views\someotherpartial.hbs
-```
+* [FileSystemTemplateContentProvider](https://github.com/esskar/handlebars-contentprovider-filesystem)
 
 ### Registering Helpers
 
