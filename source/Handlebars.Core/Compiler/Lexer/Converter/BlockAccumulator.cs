@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 using Handlebars.Core.Compiler.Lexer.Converter.BlockAccumulators;
-using Handlebars.Core.Compiler.Structure;
 
 namespace Handlebars.Core.Compiler.Lexer.Converter
 {
@@ -23,7 +22,6 @@ namespace Handlebars.Core.Compiler.Lexer.Converter
                 var context = BlockAccumulatorContext.Create(item, _configuration);
                 if (context != null)
                 {
-                    // item = UnwrapStatement(item);
                     yield return AccumulateBlock(enumerator, context);
                 }
                 else
@@ -56,12 +54,6 @@ namespace Handlebars.Core.Compiler.Lexer.Converter
             }
             throw new HandlebarsCompilerException(
                 $"Reached end of template before block expression '{context.Name}' was closed");
-        }
-
-        private static Expression UnwrapStatement(Expression item)
-        {
-            var statementExpression = item as StatementExpression;
-            return statementExpression != null ? statementExpression.Body : item;
         }
     }
 }
